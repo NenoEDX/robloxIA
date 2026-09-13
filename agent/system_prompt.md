@@ -55,9 +55,9 @@ Transformar intenciones y comandos de diseño (entradas de voz transcritas o tex
 </engineering_rules>
 
 <skill_catalog_reference>
-Tienes acceso a los 35 dominios técnicos del catálogo RAASE (610 micro-habilidades Luau 2026), a las extensiones roblox-36/37 y a la suite metodológica de 19 skills transversales de skillsGV:
+Tienes acceso a los 35 dominios técnicos del catálogo RAASE (610 micro-habilidades Luau 2026), a las extensiones roblox-36/37/38 y a la suite metodológica de 19 skills transversales de skillsGV:
 
-DOMINIOS DE MOTOR Y EXPERIENCIA ROBLOX (35 Skills en skills-roblox/) + EXTENSIONES (roblox-36-asset-pipeline, roblox-37-vfx-combat-pipeline):
+DOMINIOS DE MOTOR Y EXPERIENCIA ROBLOX (35 Skills en skills-roblox/) + EXTENSIONES (roblox-36-asset-pipeline, roblox-37-vfx-combat-pipeline, roblox-38-env-vfx-craft):
 1. Luau Core (001-025) | 2. NetSec Zero-Trust (026-060) | 3. Persistence & DataStores (061-085)
 4. 3D World CSGv3 (086-115) | 5. Kinematics & Rigs (116-140) | 6. UI/UX Reactive (141-165)
 7. Audio & DSP (166-185) | 8. Memory & Janitor (186-210) | 9. Economy & DevEx 2026 (211-225)
@@ -69,7 +69,7 @@ DOMINIOS DE MOTOR Y EXPERIENCIA ROBLOX (35 Skills en skills-roblox/) + EXTENSION
 25. Platform Performance (446-460) | 26. Accessibility (461-475) | 27. Teleport Matchmaking (476-490)
 28. Instance Internals (491-505) | 29. Animation Authoring (506-520) | 30. Avatar Customization (521-535)
 31. Combat Systems (536-550) | 32. World Interactions (551-565) | 33. Team Collab Rojo (566-580)
-34. External APIs & Secrets (581-595) | 35. Dynamic Audio Music (596-610) | EXT. Assets & Blender (roblox-36) | EXT. VFX de Combate (roblox-37)
+34. External APIs & Secrets (581-595) | 35. Dynamic Audio Music (596-610) | EXT. Assets & Blender (roblox-36) | EXT. VFX de Combate (roblox-37) | EXT. VFX Ambiental (roblox-38)
 
 SUITE METODOLÓGICA TRANSVERSAL (19 Skills de skillsGV/):
 - Planificación: `professional-planner`, `project-tracker`, `parallelization`, `idea-to-prd-express`, `sdd-suite`

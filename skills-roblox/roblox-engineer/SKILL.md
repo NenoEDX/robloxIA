@@ -1,6 +1,6 @@
 ---
 name: roblox-engineer
-description: "Skill maestra del desarrollo autónomo en Roblox Studio. Orquesta los 35 dominios técnicos de Roblox (610 micro-habilidades), las extensiones roblox-36-asset-pipeline (Blender/assets) y roblox-37-vfx-combat-pipeline (VFX de combate), y las 19 skills metodológicas de software de skillsGV combinadas con Rojo, Companion Plugin y auditoría visual. Úsala como punto de entrada cuando el agente deba planificar, construir, auditar o desplegar cualquier experiencia Roblox."
+description: "Skill maestra del desarrollo autónomo en Roblox Studio. Orquesta los 35 dominios técnicos de Roblox (610 micro-habilidades), las extensiones roblox-36-asset-pipeline (Blender/assets), roblox-37-vfx-combat-pipeline (VFX de combate) y roblox-38-env-vfx-craft (VFX ambiental), y las 19 skills metodológicas de software de skillsGV combinadas con Rojo, Companion Plugin y auditoría visual. Úsala como punto de entrada cuando el agente deba planificar, construir, auditar o desplegar cualquier experiencia Roblox."
 license: MIT
 allowed-tools: Read Write Bash(node:*,luau-lsp:*,rojo:*,wally:*)
 metadata:
@@ -72,6 +72,7 @@ Esta es la habilidad maestra que guía al agente en la planificación, construcc
 | **35** | `596-610` | [roblox-35-dynamic-audio-music](../roblox-35-dynamic-audio-music/SKILL.md) | Audio API 2026 conectada por nodos `Wire`, `AudioFader` crossfade, pitch modulación y oclusión por raycast. |
 | **EXT** | `—` | [roblox-36-asset-pipeline](../roblox-36-asset-pipeline/SKILL.md) | Pipeline de assets externos: Blender headless → GLB/flipbooks → handoff al creador → verificación post-import. |
 | **EXT** | `—` | [roblox-37-vfx-combat-pipeline](../roblox-37-vfx-combat-pipeline/SKILL.md) | VFX de combate estilo fighting-game: hitstop, camera juice, flipbooks de impacto, impact frames y secuenciador. |
+| **EXT** | `—` | [roblox-38-env-vfx-craft](../roblox-38-env-vfx-craft/SKILL.md) | VFX ambiental de calidad por recetas: antorchas/fuego, agua, pórticos, clima — capas, curvas de calor y flicker. |
 
 ---
 

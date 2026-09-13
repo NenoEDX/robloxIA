@@ -210,9 +210,9 @@ node agent/orchestrator_cli.mjs capture
 
 ---
 
-## 📚 Catálogo de Habilidades (610 Skills en 35 Dominios Técnicos + 2 Extensiones)
+## 📚 Catálogo de Habilidades (610 Skills en 35 Dominios Técnicos + 3 Extensiones)
 
-> **Extensiones RAASE 2.1** (fuera del registry JSON): `roblox-36-asset-pipeline` (pipeline Blender → handoff humano → verificación post-import) y `roblox-37-vfx-combat-pipeline` (VFX de combate estilo fighting-game). Portabilidad de modelo/harness: `docs/HARNESS-PORTABILITY.md` + `adapters/`.
+> **Extensiones RAASE 2.1** (fuera del registry JSON): `roblox-36-asset-pipeline` (pipeline Blender → handoff humano → verificación post-import), `roblox-37-vfx-combat-pipeline` (VFX de combate estilo fighting-game) y `roblox-38-env-vfx-craft` (VFX ambiental por recetas: antorchas, agua, clima, magia). Portabilidad de modelo/harness: `docs/HARNESS-PORTABILITY.md` + `adapters/`.
 
 El catálogo RAASE cubre 35 dominios de ingeniería de Roblox en estándar `agentskills.io` (610 micro-habilidades con Luau `--!strict`, reglas y snippets de producción):
 
