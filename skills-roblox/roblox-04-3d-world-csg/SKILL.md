@@ -24,7 +24,7 @@ Este módulo rige la creación de entornos tridimensionales, modelado paramétri
 - **Regla:** Validar y optimizar la importación de mallas GLB/FBX asegurando proporciones de escala uniformes y jerarquías limpias.
 
 ### 087. `3d-triangle-budget-compliance`
-- **Regla:** Respetar el presupuesto poligonal por objeto (máximo 4,000 a 10,000 triángulos según categoría) para mantener 60 FPS estables.
+- **Regla:** Respetar el presupuesto poligonal por objeto (límite oficial de 20,000 triángulos por mesh individual; las operaciones CSG que exceden el tope simplifican el resultado a 20k, o fallan si no se puede) para mantener 60 FPS estables.
 
 ### 088. `3d-building-mesh-fragmentation`
 - **Regla:** Dividir estructuras arquitectónicas grandes en componentes modulares repetibles en lugar de mallas colosales únicas.
@@ -34,9 +34,10 @@ Este módulo rige la creación de entornos tridimensionales, modelado paramétri
 
 ### 090. `csg-watertight-mesh-assertion`
 - **Regla:** Verificar que las partes base a operar mediante CSG no posean caras invertidas ni huecos para evitar operaciones fallidas.
+- **Reparación (watertight):** Blender (3D Print Toolbox, Mesh Repair Tools) o Meshlab reparan huecos y caras invertidas; `Solidify` de Blender da grosor a shells.
 
 ### 091. `csg-geometry-service-union`
-- **Regla:** Emplear GeometryService:UnionAsync() de forma asíncrona para combinar geometrías sin bloquear el hilo de ejecución principal.
+- **Regla:** Emplear GeometryService:UnionAsync() de forma asíncrona para combinar geometrías sin bloquear el hilo de ejecución principal; configurar sus opciones verificadas: `CollisionFidelity`, `RenderFidelity`, `SplitApart` (default `true`) y `CalculateConstraintsToPreserve`.
 
 ### 092. `csg-geometry-service-subtract`
 - **Regla:** Utilizar GeometryService:SubtractAsync() asegurando que la parte negativa solape completamente la superficie a perforar.
@@ -45,10 +46,10 @@ Este módulo rige la creación de entornos tridimensionales, modelado paramétri
 - **Regla:** Aplicar GeometryService:IntersectAsync() calculando el volumen volumétrico común exacto entre dos partes.
 
 ### 094. `csg-geometry-service-sweeppart`
-- **Regla:** Generar extrusiones dinámicas de geometrías a lo largo de curvas con GeometryService:SweepPartAsync().
+- **Regla:** Generar extrusiones dinámicas de geometrías a lo largo de curvas con GeometryService:SweepPartAsync() (requiere la Beta Feature "Solid Modeling On Meshes", File → Beta Features; no es release pleno).
 
 ### 095. `csg-geometry-service-fragment`
-- **Regla:** Fragmentar mallas sólidas de forma dinámica para efectos de destrucción procedural en tiempo de ejecución.
+- **Regla:** Fragmentar mallas sólidas de forma dinámica con GeometryService:FragmentAsync() para efectos de destrucción procedural en tiempo de ejecución (requiere la Beta Feature "Solid Modeling On Meshes", File → Beta Features; no es release pleno).
 
 ### 096. `terrain-procedural-perlin-islands`
 - **Regla:** Generar topografía insular natural mediante ruido Perlin o simplex muestreado en 2D y 3D.
@@ -109,3 +110,10 @@ Este módulo rige la creación de entornos tridimensionales, modelado paramétri
 
 ### 115. `3d-wireframe-handle-debugging`
 - **Regla:** Utilizar WireframeHandleAdornment para visualizar cajas de colisión y áreas de influencia espacial durante el desarrollo.
+
+## 🧱 Anexo: Un-merge, negación y CSG sobre meshes (notas)
+
+- **Un-merge:** no existe API in-game de separación; el Separate de Studio (Shift+Ctrl+U) es la única vía (se deshace en el editor, no por script).
+- **Negación in-game:** tag `rbxNegate` vía `CollectionService`.
+- **Reemplazo de geometría:** `SubstituteGeometry()` / `MeshPart:ApplyMesh()`.
+- **Beta gate:** `SweepPartAsync`, `FragmentAsync` y el CSG sobre meshes requieren la Beta Feature "Solid Modeling On Meshes" (File → Beta Features).

@@ -81,6 +81,12 @@ Si el lote fue pre-aprobado por el creador, se salta la confirmación y se infor
   - Studio → **3D Importer** → **Scale Unit = Meter** (el default *Stud* produce ~3.57× de diferencia; el flujo asume 1 stud ≈ 0.28 m).
   - Si el importer rechaza `.glb`, re-exportar como `.gltf` (`--format GLTF_SEPARATE` en la plantilla) — misma geometría.
   - Aplicar escala y collision → registrar cada `rbxassetid://` en el manifiesto → **avisar "LISTO"**.
+- **Requisitos de exportación verificados** (confirmar antes de importar):
+  - Transform congelado (`scale (1,1,1)`, `rot (0,0,0)`) y root en `(0,0,0)`.
+  - Máx. 4 influencias por vértice, sin influencias al root.
+  - Un solo track de animación por export.
+  - Cages `_InnerCage` / `_OuterCage`.
+  - Geometría watertight, sin N-gons, sin grosor 0.
 
 ### 6. Verificación post-import (automática vía Companion Plugin — alcance REAL)
 Cuando el creador confirma, el agente verifica **cada** mesh con `INSPECT_OBJECT` sobre los campos que el plugin realmente expone:
@@ -93,7 +99,7 @@ Correcciones vía `MODIFY_OBJECT` limitadas a la whitelist real del plugin (incl
 ## Reglas Inviolables
 
 1. **Licencia primero**: marketplace solo con licencia verificada y atribución si aplica; assets generados por IA según ToS de la herramienta; prohibido material de origen dudoso.
-2. **Presupuesto antes de fabricar**: props ≤ 5,000 tris; héroes/armas ≤ 20,000; flipbooks: atlas **≤ 1,024 px** (cuadrado potencia de dos — Grid4x4 con frames ≤256 px, Grid8x8 con frames ≤128 px). Ajustar por plataforma (roblox-25).
+2. **Presupuesto antes de fabricar**: props ≤ 5,000 tris; héroes/armas ≤ 20,000 (tope oficial por mesh individual; alineado con roblox-04); flipbooks: atlas **≤ 1,024 px** (cuadrado potencia de dos — Grid4x4 con frames ≤256 px, Grid8x8 con frames ≤128 px). Ajustar por plataforma (roblox-25).
 3. **Naming determinista**: `<tipo>_<nombre>_<variante>` (`mesh_sword_ember`, `tex_impact_fire_4x4`). Carpetas `exports/<lote>/`.
 4. **RN-10 aplica a los meshes**: los meshes que el creador puso por su cuenta son **intocables** — la verificación reporta, no reemplaza. Los assets **de este lote** (fabricados a pedido y entregados por el creador) SÍ pueden reposicionarse/escalarse por RPC dentro de la whitelist, siempre coordinado con él.
 5. **Nada de assets sin verificación**: cada asset entra al handoff solo con su artefacto de verificación según tipo (mesh: preview + tri count en log; flipbook: frames RGBA + atlas; rig: GLB + preview).
