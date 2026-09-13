@@ -68,7 +68,7 @@ El puente ya no opera a ciegas. Dispone de primitivas RPC completas para consult
   * **Botones de acción rápida**: Pausar/Reanudar sondeo, Limpiar Props (`Clear Props`) y Test de Conexión (`Ping Bridge`).
   * **Activity Stream**: Consola de logs con marca de tiempo de cada orden recibida.
 
-### 6. Catálogo Ampliado a 610 Habilidades (35 Dominios Técnicos)
+### 6. Catálogo Ampliado a 610 Habilidades (35 Dominios Técnicos + Extensiones 36/37)
 Se consolidó el catálogo completo de 35 módulos formales bajo el estándar `agentskills.io` (235 núcleo de motor + 45 nivelación y arte + 330 sistemas de juego y plataforma avanzada), complementado con 19 skills metodológicas de ingeniería:
 * **Dominios 01 a 10** (Skills 001-235): Núcleo de Luau estricto, redes Zero-Trust, persistencia, mundo 3D, cinemática, UI reactiva, audio, memoria y automatización.
 * **Dominios 11 a 13** (Skills 236-280): Map making, modelado modular y efectos visuales VFX.
@@ -210,7 +210,9 @@ node agent/orchestrator_cli.mjs capture
 
 ---
 
-## 📚 Catálogo de Habilidades (610 Skills en 35 Dominios Técnicos)
+## 📚 Catálogo de Habilidades (610 Skills en 35 Dominios Técnicos + 2 Extensiones)
+
+> **Extensiones RAASE 2.1** (fuera del registry JSON): `roblox-36-asset-pipeline` (pipeline Blender → handoff humano → verificación post-import) y `roblox-37-vfx-combat-pipeline` (VFX de combate estilo fighting-game). Portabilidad de modelo/harness: `docs/HARNESS-PORTABILITY.md` + `adapters/`.
 
 El catálogo RAASE cubre 35 dominios de ingeniería de Roblox en estándar `agentskills.io` (610 micro-habilidades con Luau `--!strict`, reglas y snippets de producción):
 
