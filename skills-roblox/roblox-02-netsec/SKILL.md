@@ -131,3 +131,47 @@ En la arquitectura Zero-Trust de RAASE 2.1, el servidor es el único árbitro de
 1. **Network Ownership Restricto:** Todas las partes interactivas, proyectiles, vehículos compartidos y drops de botín deben tener `part:SetNetworkOwner(nil)`. Esto delega el cálculo de integración de física a la CPU del servidor, anulando cualquier exploit de manipulación de velocidad o colisiones cliente-side.
 2. **Reconciliación y Predicción:** El cliente puede ejecutar predicción local de movimiento para suavidad perceptual, pero el servidor realiza reconciliación estricta; cualquier desvío mayor al umbral de tolerancia es corregido inmediatamente mediante snapshot autoritativo.
 3. **Validación de Línea de Visión (Raycast):** Ninguna interacción espacial ni disparo de proyectil es efectivo sin una validación geométrica en el servidor que confirme que la trayectoria está despejada de obstáculos impenetrables.
+
+## 📡 Anexo: Plumbing canónico de remotos (cliente ↔ servidor)
+Flujo canónico de la arquitectura Zero-Trust (verificado 2026-09-13): el cliente solo declara intenciones; el servidor valida antes de ejecutar y responde.
+
+- **Cliente → servidor (intención → validación → respuesta):** `FireServer` envía la intención; `OnServerEvent` la recibe con `player` como primer argumento. Orden obligatorio: validación de tipos (026) → distancia (029) + rate limiter (032) → respuesta con `FireClient`.
+- **Servidor → cliente:** `FireClient(player, …)` con `OnClientEvent` para respuestas puntuales; `FireAllClients` para difusión a todos los clientes.
+- **Decisión Reliable vs Unreliable:** `UnreliableRemoteEvent` es one-way; sacrifica orden y confiabilidad por performance de red. Úsalo para datos que cambian continuamente o no son críticos. Comparte la misma superficie de métodos y eventos que `RemoteEvent`.
+
+Snippet mínimo (`--!strict`), validación server-side antes de responder:
+
+```luau
+--!strict
+-- Cliente: solo envía la intención
+remoteEvent:FireServer(actionName, targetPart)
+
+-- Servidor: validación → ejecución → respuesta
+remoteEvent.OnServerEvent:Connect(function(player: Player, actionName: string, targetPart: Instance)
+    if typeof(actionName) ~= "string" or typeof(targetPart) ~= "Instance" then
+        return -- validación de tipos (026)
+    end
+    -- distancia (029) + rate limiter (032) antes de ejecutar; luego responder:
+    remoteEvent:FireClient(player, "ack")
+end)
+```
+
+Tabla de decisión:
+
+| Aspecto | `RemoteEvent` | `UnreliableRemoteEvent` |
+|---|---|---|
+| Confiabilidad | Garantiza la entrega | Puede perder paquetes |
+| Orden | Preserva el orden de envío | No garantiza orden |
+| Dirección | Bidireccional | One-way (una sola dirección por disparo) |
+| Uso | Datos críticos (compras, muertes, rondas) | Datos continuos o no críticos (cosméticos de alta frecuencia) |
+| Superficie API | Métodos y eventos estándar | Misma superficie de métodos y eventos que `RemoteEvent` |
+
+- **Riesgos de `InvokeClient`:** (1) un error en el cliente se propaga al servidor; (2) la desconexión del cliente produce error; (3) si el cliente no retorna, el servidor yieldea indefinidamente. Para un flujo servidor→cliente de una vía, preferir `RemoteEvent`.
+- **Limitaciones de argumentos (serialización):**
+  1. Índices no-string se convierten a string.
+  2. Las funciones se serializan como `nil`.
+  3. No mezclar claves numéricas y string en una misma tabla.
+  4. Evitar `nil` en índices y valores.
+  5. Las tablas se copian (se pierde la identidad).
+  6. Las metatables se pierden.
+  7. Las instancias no replicables llegan como `nil`.
