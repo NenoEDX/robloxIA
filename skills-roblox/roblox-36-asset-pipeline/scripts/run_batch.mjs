@@ -63,6 +63,15 @@ function buildCommand(asset, outDir, blenderBin) {
   if (typeof asset.id !== "string" || asset.id.trim() === "") {
     fail("cada asset requiere un id string no vacío.");
   }
+  const templates = {
+    mesh: path.join(__dirname, "blender_export_example.py"),
+    flipbook: path.join(__dirname, "blender_flipbook_example.py"),
+  };
+  for (const [kind, template] of Object.entries(templates)) {
+    if (!fs.existsSync(template)) {
+      fail(`plantilla faltante para ${kind}: ${template} (instalación incompleta de la skill roblox-36)`);
+    }
+  }
   if (asset.tipo === "mesh") {
     const dims = asset.dimensionesStuds || [];
     if (!Array.isArray(dims) || dims.length !== 3) {
@@ -79,7 +88,7 @@ function buildCommand(asset, outDir, blenderBin) {
       "--python-exit-code",
       "1",
       "--python",
-      path.join(__dirname, "blender_export_example.py"),
+      templates.mesh,
       "--",
       "--name",
       asset.id,
@@ -102,7 +111,7 @@ function buildCommand(asset, outDir, blenderBin) {
       "--python-exit-code",
       "1",
       "--python",
-      path.join(__dirname, "blender_flipbook_example.py"),
+      templates.flipbook,
       "--",
       "--out",
       flipOut,

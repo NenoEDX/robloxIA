@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-blender_flipbook_example.py — Plantilla de referencia RAASE 2.1 (roblox-37-vfx-combat-pipeline)
+blender_flipbook_example.py — Plantilla de referencia RAASE 2.1 (roblox-36-asset-pipeline; consumida por roblox-37 para flipbooks de combate)
 
 Genera un FLIPBOOK de impacto (onda de choque estilizada) renderizando N frames
 a PNG transparente, listos para empaquetar como atlas sprite-sheet para
