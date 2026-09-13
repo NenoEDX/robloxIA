@@ -232,5 +232,6 @@ Este módulo establece los estándares de ingeniería de sonido, grafos de proce
 
 ## 🎧 Anexo: Simulación Acústica y Wire Graph 2026
 La Audio API 2026 transforma la infraestructura de sonido de Roblox:
-- **Nodos de Cableado (Wires):** Permiten encadenar salidas sonoras (`AudioPlayer`, `AudioDeviceInput`) con procesadores de señal (`AudioFilter`, `AudioPitchShifter`, `AudioFader`) hacia emisores 3D (`AudioEmitter`) o el oyente del jugador (`AudioListener`).
+- **Nodos de Cableado (Wires):** Permiten encadenar salidas sonoras (`AudioPlayer`, `AudioDeviceInput`) con procesadores de señal (`AudioFilter`, `AudioPitchShifter`, `AudioFader`, `AudioDistortion`, `AudioEcho`, `AudioCompressor`, `AudioEqualizer`, `AudioTremolo`, `AudioFlanger`) hacia emisores 3D (`AudioEmitter`) o el oyente del jugador (`AudioListener`).
 - **Acústica Fisiológica y Geométrica:** Permite oclusión dependiente de la densidad de materiales de los muros y reverberación dinámica calculada por el volumen espacial de la habitación.
+- **Frontera con roblox-07:** esta skill cubre el grafo Wire avanzado; los fundamentos de DSP y la tabla de migración legacy→moderna viven en [roblox-07-audio-dsp](../roblox-07-audio-dsp/SKILL.md).

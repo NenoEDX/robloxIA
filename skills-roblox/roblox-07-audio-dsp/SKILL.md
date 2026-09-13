@@ -81,3 +81,20 @@ Este módulo rige el diseño acústico, procesamiento de señal (DSP) y espacial
 La arquitectura de audio 2026 permite una simulación física del sonido:
 1. **Oclusión y Obstrucción:** Se calcula el ángulo y espesor de las paredes interpuestas mediante raycasting multi-muestra; la obstrucción atenúa la energía directa preservando el rebote tardío, mientras que la oclusión total filtra todas las frecuencias superiores a 800 Hz.
 2. **Audio API Wire Graph:** Reemplazo de los emisores tradicionales por grafos formales con `AudioPlayer`, `AudioEmitter`, `AudioListener` y cables `Wire`, permitiendo encadenar efectos DSP arbitrarios por nodo antes de la espacialización.
+
+## 🔁 Anexo: Migración legacy → Audio API (tabla de equivalencias)
+Los efectos legacy `*SoundEffect` conviven con los nodos modernos de la Audio API (verificado 2026-09-13); equivalencias directas:
+
+| Efecto legacy (`*SoundEffect`) | Nodo moderno (Audio API) |
+|---|---|
+| `DistortionSoundEffect` | → `AudioDistortion` |
+| `EqualizerSoundEffect` | → `AudioEqualizer` |
+| `ReverbSoundEffect` | → `AudioReverb` |
+| `CompressorSoundEffect` | → `AudioCompressor` |
+| `ChorusSoundEffect` | → `AudioChorus` |
+| `FlangeSoundEffect` | → `AudioFlanger` |
+| `TremoloSoundEffect` | → `AudioTremolo` |
+| `EchoSoundEffect` | → `AudioEcho` |
+
+- **Orden de efectos:** el orden de la cadena altera el resultado: `Chorus→Distortion` ≠ `Distortion→Chorus`.
+- **Frontera:** el grafo Wire avanzado se documenta en [roblox-35-dynamic-audio-music](../roblox-35-dynamic-audio-music/SKILL.md).
