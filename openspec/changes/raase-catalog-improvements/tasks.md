@@ -73,10 +73,10 @@ git diff -U0 -- skills-roblox/roblox-04-3d-world-csg/SKILL.md skills-roblox/robl
 
 **Archivos:** `skills-roblox/roblox-07-audio-dsp/SKILL.md`, `skills-roblox/roblox-35-dynamic-audio-music/SKILL.md`.
 
-- [ ] 3.1 **(B1, anexo tras L83 en 07)** Título exacto `## 🔁 Anexo: Migración legacy → Audio API (tabla de equivalencias)`; tabla de 2 columnas con exactamente 8 filas (Distortion→`AudioDistortion`, Equalizer→`AudioEqualizer`, Reverb→`AudioReverb`, Compressor→`AudioCompressor`, Chorus→`AudioChorus`, Flange→`AudioFlanger`, Tremolo→`AudioTremolo`, Echo→`AudioEcho`); nota de orden "Chorus→Distortion ≠ Distortion→Chorus"; cross-ref a `roblox-35`.
-- [ ] 3.2 **(B2, 35 L235)** Extender la enumeración de procesadores con los 6 nodos faltantes (`AudioDistortion`, `AudioEcho`, `AudioCompressor`, `AudioEqualizer`, `AudioTremolo`, `AudioFlanger`) → 9 procesadores nombrados.
-- [ ] 3.3 **(B3, 35 tras L236)** Bullet de frontera: 35 = grafo Wire avanzado; fundamentos y tabla de migración viven en `roblox-07` (cross-ref inverso).
-- [ ] 3.4 **DoD (spec `audio-legacy-modern-mapping`, 5 reqs):** exactamente 8 equivalencias sin clases extra (R1); nota de orden con ejemplo invertido (R2); seis nodos en 35 (R3); cross-refs bidireccionales y sin recetas duplicadas (R4); 0 `AudioLimiter`/`AudioGate`, sin multi-reverb ni "sin scripting" (R5). Anexo de 07 solo-agrega: reglas existentes intactas.
+- [x] 3.1 **(B1, anexo tras L83 en 07)** Título exacto `## 🔁 Anexo: Migración legacy → Audio API (tabla de equivalencias)`; tabla de 2 columnas con exactamente 8 filas (Distortion→`AudioDistortion`, Equalizer→`AudioEqualizer`, Reverb→`AudioReverb`, Compressor→`AudioCompressor`, Chorus→`AudioChorus`, Flange→`AudioFlanger`, Tremolo→`AudioTremolo`, Echo→`AudioEcho`); nota de orden "Chorus→Distortion ≠ Distortion→Chorus"; cross-ref a `roblox-35`.
+- [x] 3.2 **(B2, 35 L235)** Extender la enumeración de procesadores con los 6 nodos faltantes (`AudioDistortion`, `AudioEcho`, `AudioCompressor`, `AudioEqualizer`, `AudioTremolo`, `AudioFlanger`) → 9 procesadores nombrados.
+- [x] 3.3 **(B3, 35 tras L236)** Bullet de frontera: 35 = grafo Wire avanzado; fundamentos y tabla de migración viven en `roblox-07` (cross-ref inverso).
+- [x] 3.4 **DoD (spec `audio-legacy-modern-mapping`, 5 reqs):** exactamente 8 equivalencias sin clases extra (R1); nota de orden con ejemplo invertido (R2); seis nodos en 35 (R3); cross-refs bidireccionales y sin recetas duplicadas (R4); 0 `AudioLimiter`/`AudioGate`, sin multi-reverb ni "sin scripting" (R5). Anexo de 07 solo-agrega: reglas existentes intactas.
 
 **Verificación (PowerShell):**
 
@@ -97,14 +97,14 @@ git diff -U0 -- skills-roblox/roblox-07-audio-dsp/SKILL.md skills-roblox/roblox-
 
 **Archivos:** `skills-roblox/roblox-02-netsec/SKILL.md`.
 
-- [ ] 4.1 **(C1, anexo tras L133)** Título exacto `## 📡 Anexo: Plumbing canónico de remotos (cliente ↔ servidor)`:
+- [x] 4.1 **(C1, anexo tras L133)** Título exacto `## 📡 Anexo: Plumbing canónico de remotos (cliente ↔ servidor)`:
   - cliente→servidor: `FireServer` + `OnServerEvent(player, …)` (player como primer argumento) con snippet `--!strict`; validación de tipos (026) → distancia (029) + rate limiter (032) → respuesta `FireClient(player, "ack")`.
   - servidor→cliente: `FireClient`/`OnClientEvent`; `FireAllClients` para difusión.
   - tabla de decisión (5 filas) `RemoteEvent` vs `UnreliableRemoteEvent`.
   - riesgos de `InvokeClient` (3) + recomendación de `RemoteEvent` para una vía.
   - 7 limitaciones de argumentos (índices no-string → string; funciones → `nil`; no mezclar claves numéricas y string; evitar `nil`; tablas copiadas; metatables perdidas; instancias no replicables → `nil`).
   - guarda: sin cifras de rate (V20/V21).
-- [ ] 4.2 **DoD (spec `remotes-canonical-plumbing`, 6 reqs):** plumbing con validación server-side (R1); respuestas al cliente (R2); tabla Reliable/Unreliable (R3); riesgos de `InvokeClient` (R4); siete limitaciones (R5); 0 cifras nuevas y reglas 032 (L41) / 051 (L98) intactas (R6).
+- [x] 4.2 **DoD (spec `remotes-canonical-plumbing`, 6 reqs):** plumbing con validación server-side (R1); respuestas al cliente (R2); tabla Reliable/Unreliable (R3); riesgos de `InvokeClient` (R4); siete limitaciones (R5); 0 cifras nuevas y reglas 032 (L41) / 051 (L98) intactas (R6).
 
 **Verificación (PowerShell):**
 
@@ -119,15 +119,15 @@ git diff -U0 -- skills-roblox/roblox-02-netsec/SKILL.md | Select-String -Pattern
 
 ## WU5 — Cierre: validación completa (gate de `sdd-verify`)
 
-- [ ] 5.1 Ejecutar el validador strict (`C:\Users\j1347\Desktop\skills\00-meta-skills\skill-validator\scripts\validate-skills.mjs` (read-only)) → 39/39, exit 0.
-- [ ] 5.2 Conteos intactos: 39 entradas / 610 micro-skills / 35 dominios.
-- [ ] 5.3 Cero reglas `### NNN.` nuevas en el diff acumulado de los 6 archivos.
-- [ ] 5.4 Tokens prohibidos ausentes en los 6 archivos FINALES: `SeparateAsync`, `AudioLimiter`, `AudioGate`, `StarterPlayer.GameSettings`.
-- [ ] 5.5 Índices no-op: hashes post == hashes de WU0.2 (los 3 índices están sucios por el lote roblox-38: no deben cambiar).
-- [ ] 5.6 `agent/raase_skills.json` sin cambios (0 diff); sin `SOURCES.md` nuevo; sin micro-skills numeradas nuevas.
-- [ ] 5.7 Aislamiento: `git status --short` == baseline de WU0.3 + 6 `M` de los 6 archivos editados; nada más (el lote roblox-38 queda intacto).
-- [ ] 5.8 Lectura de vuelta de los 6 archivos: títulos exactos de anexos, cross-refs 07↔35, hechos del Addendum A, frontmatter intacto.
-- [ ] 5.9 Sin commit: WU5 es solo verificación y alimenta `sdd-verify`.
+- [x] 5.1 Ejecutar el validador strict (`C:\Users\j1347\Desktop\skills\00-meta-skills\skill-validator\scripts\validate-skills.mjs` (read-only)) → 39/39, exit 0.
+- [x] 5.2 Conteos intactos: 39 entradas / 610 micro-skills / 35 dominios.
+- [x] 5.3 Cero reglas `### NNN.` nuevas en el diff acumulado de los 6 archivos.
+- [x] 5.4 Tokens prohibidos ausentes en los 6 archivos FINALES: `SeparateAsync`, `AudioLimiter`, `AudioGate`, `StarterPlayer.GameSettings`.
+- [x] 5.5 Índices no-op: hashes post == hashes de WU0.2 (los 3 índices están sucios por el lote roblox-38: no deben cambiar).
+- [x] 5.6 `agent/raase_skills.json` sin cambios (0 diff); sin `SOURCES.md` nuevo; sin micro-skills numeradas nuevas.
+- [x] 5.7 Aislamiento: `git status --short` == baseline de WU0.3 + 6 `M` de los 6 archivos editados; nada más (el lote roblox-38 queda intacto).
+- [x] 5.8 Lectura de vuelta de los 6 archivos: títulos exactos de anexos, cross-refs 07↔35, hechos del Addendum A, frontmatter intacto.
+- [x] 5.9 Sin commit: WU5 es solo verificación y alimenta `sdd-verify`.
 
 ```powershell
 node "C:\Users\j1347\Desktop\skills\00-meta-skills\skill-validator\scripts\validate-skills.mjs" "skills-roblox" --strict; $LASTEXITCODE   # 39/39 · 0
