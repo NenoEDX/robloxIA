@@ -3,6 +3,7 @@ name: roblox-36-asset-pipeline
 description: "Rige la adquisición y fabricación de assets que el motor no puede expresar con primitivas — extensión RAASE 2.1 (no registrada en raase_skills.json, como roblox-engineer). Define: criterios de decisión entre Blender headless, marketplace con licencia, generación de imágenes (impact frames/texturas) y geometría de motor; el manifiesto de assets por lote; la generación batch con Blender (GLB + previews + reporte de handoff); el protocolo de aviso al creador para importación manual en Studio; y la verificación post-import vía Companion Plugin (escala, orientación, colisión, presupuesto de triángulos). Úsala cuando el diseño requiera mallas, texturas animadas (flipbooks) o rigs originales, o cuando debas decidir si un asset se fabrica, se compra o se reemplaza por geometría del motor."
 license: MIT
 allowed-tools: Read Write Bash(node:*,blender:*,python:*)
+allows-script-exec: "run_batch.mjs ejecuta Blender headless (blender --background) para fabricar assets por lote — herramienta local del creador, sin red"
 metadata:
   domain: "Asset Pipeline & External Tooling"
   author: "RAASE 2.1 / robloxIA"
