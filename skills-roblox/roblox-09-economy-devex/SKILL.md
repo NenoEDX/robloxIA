@@ -14,9 +14,10 @@ metadata:
 Este módulo rige las políticas de monetización y diseño económico auditadas bajo el programa Roblox Developer Exchange (DevEx 2026).
 
 ## Marco de Tasas DevEx 2026
+- **Vigencia verificada:** 2026-09-13 (documentación oficial de Roblox); la tasa 18+ rige desde el 8-jun-2026.
 - **Tasa Estándar 2026:** $0.0038 USD por Robux (umbral mínimo de retiro: 30.000 R$ = $114.00 USD).
-- **Tasa Preferencial U.S. 18+:** $0.0054 USD por Robux (30.000 R$ = $162.00 USD). Requiere avatares estrictamente en formato R15 y verificación de identidad.
-- **Tasa Legada:** $0.0035 USD por Robux para balances generados antes de septiembre de 2025.
+- **Tasa Preferencial U.S. 18+:** $0.0054 USD por Robux (30.000 R$ = $162.00 USD). La verificación de edad/identidad corresponde al **jugador comprador U.S. 18+** (facial age estimation o government ID) y aplica a developer products, passes, subscriptions y private servers en juegos elegibles.
+- **Tasa Legada:** $0.0035 USD por Robux para saldos anteriores al 5-sep-2025, 10 a. m. PT.
 
 ## Catálogo de Habilidades Técnicas
 
@@ -42,13 +43,13 @@ Este módulo rige las políticas de monetización y diseño económico auditadas
 - **Regla:** Manejar contabilidad retrocompatible para Robux históricos calculados a $0.0035 USD por Robux.
 
 ### 218. `economy-devex-us-18-plus-qualifier`
-- **Regla:** Auditar y certificar que la experiencia califique para la tasa preferencial U.S. 18+ de $0.0054 USD por Robux cumpliendo los requisitos de identidad y formato de juego.
+- **Regla:** Auditar y certificar que la experiencia califique para la tasa preferencial U.S. 18+ de $0.0054 USD por Robux con los criterios verificados: 100 % del playtime como R15 platform; human-form custom (cabeza + 2 brazos + 2 piernas; 12 limb parts O 12 limb joints distribuidas; torso ≥2; bípedo completo) **o** nonhuman-form custom (también califica); sin R6 en ningún momento; animation packs R15; NPCs no se evalúan.
 
 ### 219. `economy-r15-strict-avatar-enforcement`
-- **Regla:** Excluir avatares R6 legados e imponer personajes R15 modernos en `StarterPlayer.GameSettings` para calificar a la tasa preferencial U.S. 18+ ($0.0054/R).
+- **Regla:** La exigencia R15 aplica al sistema de avatares platform para la tasa 18+ (correr 100 % en R15, sin R6); no es requisito del DevEx estándar.
 
 ### 220. `economy-devex-threshold-audit`
-- **Regla:** Verificar que la cuenta de desarrollo supere el umbral mínimo oficial de 30.000 Robux ganados legítimamente antes de solicitar DevEx.
+- **Regla:** Verificar que la cuenta de desarrollo supere el umbral mínimo oficial de 30.000 Robux ganados legítimamente antes de solicitar DevEx (requisitos base: 13+, email verificado, portal DevEx, formularios W-9/W-8).
 
 ### 221. `economy-lootbox-probability-disclosure`
 - **Regla:** En mecánicas de recompensas aleatorias o cajas de botín, mostrar de forma obligatoria y pública en la UI los porcentajes de probabilidad exactos antes de comprar.
