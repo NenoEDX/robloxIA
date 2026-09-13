@@ -1,0 +1,30 @@
+{
+  "batch": "combat-system",
+  "createdAt": "2026-09-13T00:00:00Z",
+  "approvedAt": null,
+  "approvedBy": null,
+  "assets": [
+    {
+      "id": "mesh_sword_ember",
+      "nombre": "Espada Ember",
+      "tipo": "mesh",
+      "rol": "Arma equipable del jugador",
+      "dimensionesStuds": [0.5, 5.5, 0.8],
+      "triBudget": 4000,
+      "estilo": "fantasía oscura, low-poly con bevels",
+      "destino": "ReplicatedStorage.Assets.Weapons",
+      "prioridad": "alta"
+    },
+    {
+      "id": "tex_impact_fire",
+      "nombre": "Impacto de fuego",
+      "tipo": "flipbook",
+      "frames": 16,
+      "rol": "Flipbook de impacto para el sistema de combate",
+      "triBudget": null,
+      "estilo": "naranja/rojo cálido, estilizado",
+      "destino": "ReplicatedStorage.Assets.VFX",
+      "prioridad": "alta"
+    }
+  ]
+}
