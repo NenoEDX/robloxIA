@@ -1,0 +1,81 @@
+# OpenSpec — configuración SDD para robloxIA (RAASE 2.1)
+# Creado por sdd-init: 2026-09-13.
+
+schema: spec-driven
+
+context: |
+  Tech stack: Node.js v24.11.1 (bridge HTTP sin dependencias + CLI del agente en .mjs,
+  tests con node:assert), Luau --!strict en plugin/ y project_template/ (Rojo/Wally),
+  Python 3.14 (screen_capture.py; Blender pendiente de instalación para el pipeline de assets).
+  Catálogo de 39 skills en formato agentskills.io (español) bajo skills-roblox/.
+  Architecture: puente HTTP local 127.0.0.1:34873 con long-polling, Bearer token
+  (crypto.timingSafeEqual), reportNonce exclusivo por comando y cortacircuitos de captura
+  (HTTP 429 tras 2 capturas sin mutación real). Plugin Luau como actuador de escena con
+  ChangeHistoryService (RN-08), soberanía del creador (RN-10) y convergencia visual de
+  2 pases (RN-11). Bridge zero-deps.
+  Testing: sin framework; verificación de facto con `node bridge/test_bridge_v2_1.mjs`
+  (hermético), `node bridge/test_circuit_breaker.mjs` (requiere Studio + Python),
+  `node --check`, `python -m py_compile` y el validador externo de skills. strict_tdd: false.
+  Style: Luau --!strict, StyLua (tabs, 100 columnas), Selene; documentación y skills en
+  español neutro profesional.
+  Contexto completo: openspec/project.md
+
+testing:
+  strict_tdd: false
+  reason: >-
+    No existe test runner (vitest/jest/lune/testez) ni un comando workspace-level único que
+    cubra todos los componentes del repo; la verificación es por scripts .mjs ad-hoc y
+    chequeos de sintaxis. bridge/package.json no define script "test".
+  hermetic_command: 'node bridge/test_bridge_v2_1.mjs'
+  commands:
+    - name: bridge-integration
+      command: 'node bridge/test_bridge_v2_1.mjs'
+      hermetic: true
+      notes: >-
+        Levanta server.mjs en el puerto 34879 con token de prueba
+        (ROBLOXIA_NO_WRITE_TOKEN_FILE=1). No requiere Roblox Studio.
+    - name: circuit-breaker-real-delta
+      command: 'node bridge/test_circuit_breaker.mjs'
+      hermetic: false
+      notes: >-
+        Ejecuta capturas reales de viewport (POST /api/capture); requiere Python y una
+        ventana de Roblox Studio visible. Puerto 34881. No correr en CI ni sin Studio.
+    - name: syntax-node
+      command: 'node --check <archivo.mjs>'
+      hermetic: true
+      notes: 'Alias: node -c. Verificado en test_bridge_v2_1.mjs (exit 0).'
+    - name: syntax-python
+      command: 'python -m py_compile bridge/screen_capture.py'
+      hermetic: true
+      notes: 'Escribe __pycache__ (gitignored).'
+    - name: skills-catalog-validation
+      command: 'node "C:\Users\j1347\Desktop\skills\00-meta-skills\skill-validator\scripts\validate-skills.mjs" "skills-roblox" --strict'
+      hermetic: true
+      notes: 'Ejecutar desde la raíz del repo. Estado en el init: 39/39 pass, 0 errores, exit 0 en modo strict.'
+
+rules:
+  proposal:
+    - Incluir plan de rollback en cambios de bridge/plugin (protocolo en vivo con Studio)
+    - Respetar RN-10 (soberanía del creador) y RN-11 (máximo 2 pases visuales) en todo alcance
+  specs:
+    - Usar Given/When/Then en escenarios
+    - Usar palabras RFC 2119 (MUST, SHALL, SHOULD, MAY)
+    - Redactar en español neutro profesional (convención del repo)
+  design:
+    - 'Documentar decisiones de seguridad: Bearer token, reportNonce, CORS localhost, validación server-side'
+    - No introducir dependencias npm en bridge/ sin justificación explícita (zero-deps)
+  tasks:
+    - Agrupar por fase con numeración jerárquica
+    - Mantener tareas completables en una sesión (slices de hasta ~400 líneas de cambio)
+  apply:
+    guidelines:
+      - Seguir patrones existentes (ESM .mjs, Luau --!strict, Janitor, biblioteca task)
+      - No tocar archivos fuera del alcance del change sin actualizar tasks.md
+    tdd: false
+    test_command: 'node bridge/test_bridge_v2_1.mjs'
+  verify:
+    test_command: 'node bridge/test_bridge_v2_1.mjs'
+    build_command: ''
+    coverage_threshold: 0
+  archive:
+    - Advertir antes de mergear deltas destructivos del catálogo de skills
