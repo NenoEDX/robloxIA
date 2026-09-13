@@ -22,15 +22,17 @@ Toda edición del catálogo MUST quedar reflejada en `skills-roblox/SKILLS.md`, 
 - WHEN se comparan los índices contra la línea base
 - THEN los tres permanecen sin cambios
 
-### Requirement: Validador strict como gate de cierre
+### Requirement: Validador strict como gate de cierre (scoped a target externo)
 
-El cierre MUST ejecutar el validador del catálogo en modo strict desde la raíz del repo (`validate-skills.mjs "skills-roblox" --strict`) y MUST obtener 39/39 evaluaciones exitosas con exit 0.
+El cierre MUST ejecutar el validador del catálogo en su modo scopiado para targets externos no-catálogo: `validate-skills.mjs "skills-roblox" --strict --skip-index-sync` desde la raíz del repo, y MUST obtener `39 pass · 0 issues` con exit 0.
 
-#### Scenario: Gate verde
+Los chequeos `catalog.json`/`manifest-*` pertenecen al catálogo del harness (skillsGV) y NO aplican a una carpeta de dominio externa: el validador vigente (revisión `skills-25-upgrade` WU3a, sin scoping de targets externos) los dispara como falsos positivos de entorno — verificados por Judgment Day (2026-09-13) como ajenos a este change, con corrección pendiente del lado del validador (fixtures + test de identidad por `REPO_ROOT`, sin fail-open; handoff registrado). La sincronía de índices (Requisito 1) se evidencia por la verificación no-op de hashes durante apply (registrada en `apply-progress.md`), dado que la familia index-sync forma parte del scope omitido del comando scopiado.
+
+#### Scenario: Gate verde (scoped)
 
 - GIVEN el catálogo editado
-- WHEN se ejecuta el validador strict
-- THEN la salida reporta 39/39 pass, 0 errores
+- WHEN se ejecuta `validate-skills.mjs "skills-roblox" --strict --skip-index-sync`
+- THEN la salida reporta 39 pass, 0 issues
 - AND el exit code es 0
 
 ### Requirement: Conteos y registro intactos
