@@ -37,7 +37,11 @@ Transformar intenciones y comandos de diseño (entradas de voz transcritas o tex
    - Llama a `:Destroy()` formalmente en cada instancia desechada.
    - Reutiliza objetos con pooling (*PartCache*) para proyectiles en lugar de llamar a `Instance.new` constantemente.
 
-4. 3D, CSGv3 Y CINEMÁTICA:
+4. 3D, DOCTRINA MESH-FIRST Y AUDITORÍA CONTRA REFERENCIAS:
+   - PROHIBICIÓN ESTRICTA DE "SLOP DE CUBOS": Jamás intentes construir vehículos (autos, camiones, buses), armas, maquinaria, props detallados, muebles complejos, NPCs o vegetación apilando bloques primitivos (Part, Wedge, Cylinder).
+   - OBLIGACIÓN MESH-FIRST: Para cualquier objeto con volumen y detalle, la PRIMERA Y OBLIGATORIA OPCIÓN es una Malla 3D Dedicada (MeshPart / archivo .glb) modelada en Blender, generada con herramientas Image-to-3D o tomada de packs curados. Las partes básicas se reservan únicamente para suelos planos, aceras, colisiones invisibles y triggers.
+   - AUDITORÍA ESTÉTICA CONTRA REFERENCIAS: Antes de aprobar cualquier modelo o escena, contrástalo mental y visualmente con objetos del mundo real y arte conceptual AAA. Audita activamente escala en studs (avatar: 5x2 studs), proporciones reales, ausencia de partes flotantes y coherencia visual mediante captures de Viewport.
+   - PROHIBICIÓN ABSOLUTA DE GEOMETRÍA FLOTANTE: Prohibido dejar techos, carteles, vehículos, maniquíes o muebles suspendidos en el aire sin soporte visible. Todo objeto terrestre debe calcular su altura mediante Raycast o la fórmula matemática: posY = surfaceY + (sizeY / 2). Los carteles deben montarse sobre postes o paredes, y las cubiertas deben descansar exactamente sobre muros o pilares en sus 4 esquinas.
    - Presupuesto de polígonos: Máximo 20.000 triángulos por malla unitaria; props bajo 5.000 triángulos.
    - En operaciones booleanas dinámicas (`GeometryService:UnionAsync`), usa únicamente geometrías herméticas (*watertight*).
    - Manipula EXCLUSIVAMENTE `Motor6D.Transform` en el hilo de render (`RenderStepped`) para cinemática procedural. Prohibido alterar `C0/C1` en bucles de tiempo de ejecución.

@@ -26,6 +26,24 @@ Este proyecto implementa el sistema **RAASE 2.0 (robloxIA)**: una arquitectura a
 - En animaciones procedimentales (apuntado, giros de cabeza), manipular EXCLUSIVAMENTE `Motor6D.Transform` en hilos de render (`RenderStepped`).
 - Prohibido terminantemente modificar `C0` o `C1` en bucles en tiempo de ejecución.
 
+## Doctrina de Modelado 3D "Mesh-First" y Auditoría contra Referencias
+- **Prohibición Estricta de "Slop de Cubos"**:
+  * Queda TERMINANTEMENTE PROHIBIDO intentar construir vehículos (autos, buses, tanques), armas, maquinaria, props detallados, muebles complejos, maniquíes/NPCs o vegetación apilando bloques primitivos (`Part`, `Wedge`, `Cylinder`).
+  * Para cualquier objeto complejo, la PRIMERA Y OBLIGATORIA OPCIÓN es una **Malla 3D Dedicada (`MeshPart` / `.glb`)** modelada en Blender, generada con herramientas Image-to-3D (Tripo3D, Meshy, Trellis) o extraída de packs de assets curados.
+  * Los bloques primitivos del motor se restringen EXCLUSIVAMENTE a: suelos base, aceras planas, cajas de colisión invisibles (`Transparency = 1`), triggers de volumen y zonas de interacción.
+- **Auditoría Estética y Comparación con Referencias Reales**:
+  * Antes de dar por bueno un asset o dar por concluido un escenario, el agente DEBE contrastar mental y visualmente las proporciones contra objetos del mundo real o referencias de arte conceptual AAA.
+  * Checklist de calidad visual (Escala de Avatar: 5 studs de alto x 2 studs de ancho):
+    1. ¿Las ruedas, puertas y asientos tienen proporción humana creíble?
+    2. ¿Existen techos, losas o partes flotando sin soporte estructural?
+    3. ¿Se ve como un objeto real o como un "juguete tosco de bloques"?
+  * Si al auditar con `capture` el modelo se ve fuera de lugar, infantil o desalineado, el agente DEBE descartar la geometría primitiva y priorizar la generación o importación de la malla 3D dedicada.
+- **Prohibición Absoluta de Geometría Flotante (Ground-Snapping & Anclaje Estructural)**:
+  * Queda TERMINANTEMENTE PROHIBIDO dejar techos, carteles, muebles, vehículos, maniquíes o escombros flotando en el aire sin soporte físico visible.
+  * **Anclaje al suelo obligatorio:** Todo objeto terrestre debe calcular su altura mediante `Raycast` hacia abajo o mediante la fórmula matemática estricta: `posY = surfaceY + (sizeY / 2)`. Cero coordenadas Y inventadas a ojo.
+  * **Carteles y letreros:** Deben nacer montados sobre un poste que toque el suelo o pegados directamente a la superficie de un muro (`SurfaceGui`). Prohibido instanciar carteles suspendidos en el vacío.
+  * **Integridad estructural en cubiertas:** Toda losa de techo debe coincidir exactamente con la cota superior de los muros o pilares de soporte en sus 4 esquinas.
+
 ## DevEx 2026
 - `MarketplaceService.ProcessReceipt` debe ser idempotente, guardando el `PurchaseId` en DataStore mediante `UpdateAsync()` antes de otorgar beneficios.
 - Si la base de datos falla, retornar siempre `Enum.ProductPurchaseDecision.NotProcessedYet`.

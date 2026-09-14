@@ -90,3 +90,24 @@ end
 
 ### 265. `model-assembly-memory-footprint-cap`
 - **Regla:** Un modelo modular reutilizable no debe exceder de 60 partes primitivas individuales. Elementos más complejos deben consolidarse mediante operaciones CSG o `MeshPart`.
+
+### 266. `model-mesh-first-anti-slop-policy`
+- **Regla:** Queda terminantemente PROHIBIDO intentar construir vehículos (autos, buses, camiones, tanques), armas, maquinaria detallada, muebles complejos, NPCs/maniquíes o vegetación agrupando bloques primitivos (`Part`, `Wedge`, `Cylinder`).
+- **Estándar:** Todo prop complejo DEBE ser una Malla 3D Dedicada (`MeshPart` / archivo `.glb` creado en Blender, Image-to-3D o packs curados). Las partes primitivas se reservan únicamente para suelos planos, aceras, colisiones invisibles y triggers de volumen.
+
+### 267. `model-reference-backed-aesthetic-audit`
+- **Regla:** Todo modelo o conjunto arquitectónico debe auditarse comparándolo activamente con una referencia visual del mundo real o concept art AAA antes de darse por terminado.
+- **Checklist de Auditoría Estética:**
+  1. ¿Escala humana exacta respecto al avatar R15 (5 studs alto x 2.5 ancho)?
+  2. ¿Proporciones verosímiles (ruedas simétricas y alineadas al chasis, puertas a escala, techos firmes con soporte estructural real)?
+  3. ¿Ausencia de geometrías flotantes o desalineadas?
+  4. Si la auditoría con `capture` muestra que el objeto parece un "juguete tosco de bloques" o está fuera de lugar, el agente DEBE descartar los cubos y priorizar la malla 3D dedicada.
+
+### 268. `model-ground-snap-anti-floating`
+- **Regla:** Queda terminantemente PROHIBIDO instanciar techos, carteles, muebles, vehículos, maniquíes o escombros suspendidos en el aire sin contacto físico o soporte visible.
+- **Estándar de Asentamiento:**
+  1. **Ground-Snapping:** Todo objeto en el suelo debe anclar su base calculando `posY = floorY + (sizeY / 2)` o mediante un `Raycast` hacia abajo al instanciarse en Luau. Cero cotas Y arbitrarias a ojo.
+  2. **Carteles y Rótulos:** Deben montarse sobre postes fijados al piso o adherirse directamente a la pared (`SurfaceGui` sobre la cara del muro).
+  3. **Cubiertas y Techos:** El plano inferior del techo DEBE coincidir milimétricamente con la cota superior de los muros o pilares que lo sustentan.
+
+
