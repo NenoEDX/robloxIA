@@ -19,7 +19,7 @@ import process from 'node:process';
 import { BRIDGE_URL, getBridgeToken, sendCommand } from '../lib/bridge-client.mjs';
 import * as K from './lib/lobby_kit.mjs';
 
-const ROOT = 'ConcienciaZombieLobby';
+const ROOT = 'Campamento7_Lobby';
 const FOLDERS = [
   '01_Central_Plaza',
   '02_Checkpoint_Norte',
@@ -218,6 +218,8 @@ Z['02_Checkpoint_Norte'] = () => {
   parts.push(K.box('Checkpoint_Apron', [64, 0.35, 56], [0, 0.175, -78], [58, 56, 52], 'Asphalt'));
   parts.push(K.box('Gate_WallL', [26, 12, 3], [-19, 6 + B, -78], [96, 92, 85], 'Concrete'));
   parts.push(K.box('Gate_WallR', [26, 12, 3], [19, 6 + B, -78], [96, 92, 85], 'Concrete'));
+  parts.push(K.box('Gate_WallL_Base', [26.4, 1.3, 0.6], [-19, 0.65 + B, -76.2], [78, 75, 70], 'Concrete', { canCollide: false }));
+  parts.push(K.box('Gate_WallR_Base', [26.4, 1.3, 0.6], [19, 0.65 + B, -76.2], [78, 75, 70], 'Concrete', { canCollide: false }));
   parts.push(K.box('Gate_WallL_Top', [26.4, 0.6, 3.4], [-19, 12.3 + B, -78], [78, 75, 70], 'Concrete', { canCollide: false }));
   parts.push(K.box('Gate_WallR_Top', [26.4, 0.6, 3.4], [19, 12.3 + B, -78], [78, 75, 70], 'Concrete', { canCollide: false }));
   parts.push(K.box('Gate_WireA', [26, 0.07, 0.07], [-19, 13 + B, -78], [70, 70, 74], 'Metal', { canCollide: false }));
@@ -364,6 +366,8 @@ Z['03_Arsenal_Bunker'] = () => {
   // Structure (open to the west)
   parts.push(K.box('Arsenal_Apron', [46, 0.4, 50], [72, 0.2, 0], [62, 60, 56], 'Concrete'));
   parts.push(K.box('Arsenal_BackWall', [3, 10, 44], [92, 5 + B, 0], [100, 98, 92], 'Concrete'));
+  parts.push(K.box('Arsenal_BackWall_Base', [44.4, 1.3, 0.5], [90.4, 0.65 + B, 0], [78, 76, 70], 'Concrete', { canCollide: false }));
+  parts.push(K.box('Arsenal_BackWall_Cornice', [44.6, 0.6, 0.7], [90.1, 9.8 + B, 0], [70, 68, 64], 'Concrete', { canCollide: false }));
   parts.push(K.box('Arsenal_SideWallN', [36, 10, 3], [74, 5 + B, -21.5], [96, 94, 88], 'Concrete'));
   parts.push(K.box('Arsenal_SideWallS', [36, 10, 3], [74, 5 + B, 21.5], [96, 94, 88], 'Concrete'));
   parts.push(K.box('Arsenal_Roof', [40, 0.9, 48], [74, 10.45 + B, 0], [58, 56, 54], 'Metal',

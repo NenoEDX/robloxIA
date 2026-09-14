@@ -23,5 +23,6 @@ _Index/
 __pycache__/
 *.pyc
 .bridge_token
+exports/
 
 
