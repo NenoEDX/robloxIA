@@ -19,6 +19,7 @@ test("All Zombie Awareness v4.0 Luau modules start with --!strict and avoid depr
   const files = [
     "shared/Types.luau",
     "shared/ZombieCatalogs.luau",
+    "shared/LobbyBuilder.luau",
     "server/DataPersistenceService.luau",
     "server/MonetizationService.luau",
     "server/NetworkSecurityService.luau",
@@ -116,15 +117,28 @@ test("DataPersistenceService.luau enforces User_{UserId} Session Locking, 180s b
   assert.ok(persistence.includes("flushCriticalTransaction"), "Must flush immediately on critical transactions");
 });
 
-test("MissionGenService.luau and ThreatAndDistrictService.luau implement 6-stage seed pipeline and +5/min threat loop", () => {
+test("MissionGenService.luau, LobbyBuilder.luau, and ThreatAndDistrictService.luau implement 6-stage seed pipeline, Z0 architectural lobby, and +5/min threat loop", () => {
   const missionGen = readSrc("server/MissionGenService.luau");
+  const lobbyBuilder = readSrc("shared/LobbyBuilder.luau");
   const threatSvc = readSrc("server/ThreatAndDistrictService.luau");
 
   assert.ok(missionGen.includes("VoxelTerrainBuilder.GenerateFBM"), "Must use VoxelTerrainBuilder.GenerateFBM");
   assert.ok(missionGen.includes("VoxelTerrainBuilder.CarveRoadPath"), "Must use VoxelTerrainBuilder.CarveRoadPath");
   assert.ok(missionGen.includes("WorldAssembler.PlaceGrounded"), "Must ground prefabs via WorldAssembler.PlaceGrounded");
+  assert.ok(missionGen.includes("LobbyBuilder.buildCompleteSafeHavenZ0"), "Must delegate Z0 lobby to LobbyBuilder.buildCompleteSafeHavenZ0");
   assert.ok(missionGen.includes("RAASE_BreachWall"), "Must tag 400 HP breachable walls");
-  assert.ok(missionGen.includes("ModelStreamingMode.Persistent"), "Must set Persistent streaming on Z0 and Special Zones");
+  assert.ok(missionGen.includes("ModelStreamingMode.Persistent"), "Must set Persistent streaming on Special Zones");
+
+  assert.ok(lobbyBuilder.includes("Z0_SafeHaven_Persistent"), "Must create Z0_SafeHaven_Persistent");
+  assert.ok(lobbyBuilder.includes("A01_CentroDeMando"), "Must build A-01 Command Center");
+  assert.ok(lobbyBuilder.includes("A02_ArmeriaYBoveda"), "Must build A-02/A-08 Armory & Vault");
+  assert.ok(lobbyBuilder.includes("A06_LaboratorioConciencia"), "Must build A-06 Consciousness Lab");
+  assert.ok(lobbyBuilder.includes("A05_CuartelMercenarios"), "Must build A-05 Mercenary Barracks");
+  assert.ok(lobbyBuilder.includes("A07_SalaDeMapas"), "Must build A-07 Map Room");
+  assert.ok(lobbyBuilder.includes("A21_InvernaderoHidroponico"), "Must build A-21 Hydroponic Greenhouse");
+  assert.ok(lobbyBuilder.includes("A23_HelipuertoDeExtraccion"), "Must build A-23 Helipad");
+  assert.ok(lobbyBuilder.includes("CentralPlaza_TelemetryPylon"), "Must build Central Plaza Telemetry Pylon");
+  assert.ok(!lobbyBuilder.includes("Enum.NormalId.South") && !lobbyBuilder.includes("Enum.NormalId.North"), "Must only use valid Enum.NormalId faces");
 
   assert.ok(threatSvc.includes("assignSpecialistToDistrict"), "Must allow assigning specialists to districts");
   assert.ok(threatSvc.includes("liberateDistrict"), "Must permanently liberate district at Threat 0");

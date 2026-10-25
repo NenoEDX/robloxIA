@@ -22,6 +22,7 @@ local Workspace = game:GetService("Workspace")
 local sharedFolder = ReplicatedStorage:WaitForChild("RAASE_Shared")
 local Types = require(sharedFolder:WaitForChild("Types") :: any)
 local ZombieCatalogs = require(sharedFolder:WaitForChild("ZombieCatalogs") :: any)
+local LobbyBuilder = require(sharedFolder:WaitForChild("LobbyBuilder") :: any)
 local VoxelTerrainBuilder = require(sharedFolder:WaitForChild("VoxelTerrainBuilder") :: any)
 local WorldAssembler = require(sharedFolder:WaitForChild("WorldAssembler") :: any)
 
@@ -189,72 +190,12 @@ end
 --[[
 	Construye el Refugio Propio del jugador (256x256 studs) en Z0 con ModelStreamingMode.Persistent
 	y los edificios del Catálogo A (Armería A-02, Cuartel A-05, Laboratorio A-06, Sala de Mapas A-07,
-	Bóveda A-08, Torres A-14, Jardín Hidropónico A-21 y Helipuerto A-23).
+	Bóveda A-08, Torres A-14, Jardín Hidropónico A-21 y Helipuerto A-23) usando LobbyBuilder RAASE 3.0.
 --]]
 local function buildSafeHavenZ0(parent: Instance): Model
-	local haven = Instance.new("Model")
-	haven.Name = "Z0_SafeHaven_Persistent"
-	pcall(function()
-		(haven :: any).ModelStreamingMode = Enum.ModelStreamingMode.Persistent
-	end)
-	haven.Parent = parent
-
 	local center = ZombieCatalogs.Districts.Z0.centerPosition
-
-	local platform = createAnchoredPart(
-		haven,
-		"HavenPlatform_256x256",
-		Vector3.new(256, 2, 256),
-		CFrame.new(center.X, 1, center.Z),
-		Color3.fromRGB(78, 84, 92),
-		Enum.Material.Concrete,
-		true
-	)
-	haven.PrimaryPart = platform
-
-	-- SpawnLocation oficial en Z0
-	local spawnLoc = Instance.new("SpawnLocation")
-	spawnLoc.Name = "Z0_DeploymentSpawn"
-	spawnLoc.Size = Vector3.new(12, 1, 12)
-	spawnLoc.CFrame = CFrame.new(center.X, 2.55, center.Z + 80)
-	spawnLoc.Anchored = true
-	spawnLoc.Color = Color3.fromRGB(50, 180, 120)
-	spawnLoc.Material = Enum.Material.Neon
-	spawnLoc.Parent = haven
-
-	-- Zona de Extracción Segura (Bóveda A-08 / Helipuerto A-23)
-	local extractionPad = createAnchoredPart(
-		haven,
-		"A23_Helipad_ExtractionZone",
-		Vector3.new(28, 0.6, 28),
-		CFrame.new(center.X, 2.35, center.Z + 40),
-		Color3.fromRGB(45, 130, 200),
-		Enum.Material.CorrodedMetal,
-		true
-	)
-	CollectionService:AddTag(extractionPad, "ZA_SafeExtractionZone")
-
-	-- Estaciones del Catálogo A alrededor de la plaza del Refugio
-	local stations = {
-		{ id = "A-01", name = "A01_CentroDeMando", offset = Vector3.new(0, 0, -70), size = Vector3.new(36, 16, 24), color = Color3.fromRGB(65, 95, 140) },
-		{ id = "A-02", name = "A02_ArmeriaModular", offset = Vector3.new(-75, 0, -25), size = Vector3.new(28, 14, 20), color = Color3.fromRGB(140, 85, 50) },
-		{ id = "A-05", name = "A05_CuartelMercenarios", offset = Vector3.new(75, 0, -25), size = Vector3.new(28, 14, 20), color = Color3.fromRGB(70, 115, 80) },
-		{ id = "A-06", name = "A06_LaboratorioConciencia", offset = Vector3.new(-75, 0, 35), size = Vector3.new(26, 14, 22), color = Color3.fromRGB(45, 160, 175) },
-		{ id = "A-07", name = "A07_SalaDeMapas", offset = Vector3.new(75, 0, 35), size = Vector3.new(24, 12, 20), color = Color3.fromRGB(95, 110, 145) },
-		{ id = "A-21", name = "A21_JardinHidroponico", offset = Vector3.new(-55, 0, 85), size = Vector3.new(24, 10, 18), color = Color3.fromRGB(60, 155, 95) },
-	}
-
-	for _, st in ipairs(stations) do
-		local bldg = buildUrbanPrefabModel(st.name, st.size.X, st.size.Z, st.size.Y, st.color, Enum.Material.Concrete)
-		bldg:SetAttribute("ZA_CatalogABuildingId", st.id)
-		bldg:SetAttribute("ZA_BuildingTier", 1)
-		bldg.Parent = haven
-		WorldAssembler.PlaceGrounded(bldg, center + st.offset, {
-			GridSnap = 2,
-			AlignToSlope = false,
-		})
-	end
-
+	local haven = LobbyBuilder.buildCompleteSafeHavenZ0(parent, center)
+	activeInstanceCount += #haven:GetDescendants()
 	return haven
 end
 
