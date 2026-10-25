@@ -1,13 +1,298 @@
 --!strict
+--[[
+	Types.luau
+	Contratos Maestros de Tipos para Zombie Awareness (v4.0) bajo el estándar RAASE 3.0.
+	Incluye los contratos de los 4 Módulos Maestros y el ecosistema completo de 3 Facciones
+	(150 unidades, 32 armas Lv1–10 + Emisor G-20, Distritos Z0–Z7 + 2 Zonas Especiales,
+	16 Eventos Procedurales y Persistencia con Session Locking).
+--]]
+
+export type FactionId = "Human" | "Mutant" | "Zombie"
+
+export type SubFactionId =
+	"Human_Specialist"
+	| "Human_Melee"
+	| "Human_Ranged"
+	| "Mutant_Green"
+	| "Mutant_Anthro"
+	| "Mutant_Brute"
+	| "Mutant_MegaBoss"
+	| "Zombie_Melee"
+	| "Zombie_Ranged"
+	| "Zombie_ArmoredBeast"
+	| "Zombie_Brute"
+	| "Zombie_MegaBoss"
+
+export type DistrictId =
+	"Z0"
+	| "Z1"
+	| "Z2"
+	| "Z3"
+	| "Z4"
+	| "Z5"
+	| "Z6"
+	| "Z7"
+	| "Special_West"
+	| "Special_East"
+
+export type MasterRigId = "RIG-01" | "RIG-02" | "RIG-03" | "RIG-04" | "RIG-05" | "RIG-06"
+
+export type PoolCategory =
+	"Pool_Human"
+	| "Pool_Mutant_Green"
+	| "Pool_Mutant_Anthro"
+	| "Pool_Zombie_Base"
+	| "Pool_Brute"
+
+export type PathfindingPriority = 1 | 2 | 3 | 4 | 5
+
+export type AmmoFamily = "Light" | "Medium" | "Heavy" | "Special" | "Explosive" | "None"
+
+export type WeaponFamily = "Pistol" | "Rifle" | "Shotgun" | "Heavy" | "Melee" | "Emitter"
+
+export type WeaponSlotCategory =
+	"Primary"
+	| "Sniper"
+	| "Secondary"
+	| "Melee"
+	| "Special"
+	| "Flexible"
+	| "ConsciousnessEmitter"
+
+export type LootRarity = "Common" | "Rare" | "Epic" | "Legendary" | "Unique"
+
+export type MercenaryId = "Recruit" | "Sniper" | "FieldMedic" | "Sapper" | "Tamer" | "Ghost"
+
+export type VFXPresetId =
+	"VFX_Muzzle_Ballistic"
+	| "VFX_Flame_Stream"
+	| "VFX_Toxic_Acid"
+	| "VFX_Tesla_Arc"
+	| "VFX_Hypnosis_Wave"
+	| "VFX_Hulk_Shockwave"
+	| "VFX_Melee_Slash_Blood"
+	| "VFX_Rocket_Barrage"
+	| "VFX_Weapon_Lv10_Aura"
+
+export type ProceduralEventId =
+	"E-01"
+	| "E-02"
+	| "E-03"
+	| "E-04"
+	| "E-05"
+	| "E-06"
+	| "E-07"
+	| "E-08"
+	| "E-09"
+	| "E-10"
+	| "E-11"
+	| "E-12"
+	| "E-13"
+	| "E-14"
+	| "E-15"
+	| "E-16"
+
+export type UnitDefinition = {
+	id: string,
+	name: string,
+	faction: FactionId,
+	subFaction: SubFactionId,
+	masterRig: MasterRigId,
+	poolCategory: PoolCategory,
+	pathPriority: PathfindingPriority,
+	hp: number,
+	dps: number,
+	speed: number,
+	rangeStuds: number,
+	heightStuds: number,
+	weaponOrTool: string,
+	tacticalBehavior: string,
+	vfxPreset: VFXPresetId,
+	primaryColor: Color3,
+	accentColor: Color3,
+	hypnotizable: boolean,
+	crucibleWeight: number,
+	passiveResourceType: ("Scrap" | "Components" | "Cores" | "HealAura")?,
+	passiveDailyAmount: number?,
+}
+
+export type WeaponDefinition = {
+	id: string,
+	code: string,
+	name: string,
+	family: WeaponFamily,
+	slotCategory: WeaponSlotCategory,
+	ammoFamily: AmmoFamily,
+	baseDamage: number,
+	fireRatePerSec: number,
+	magazineSize: number,
+	reloadSeconds: number,
+	rangeStuds: number,
+	spreadDeg: number,
+	headshotMultiplier: number,
+	vfxPreset: VFXPresetId,
+	lv10AuraColor: Color3,
+}
+
+export type WeaponComputedStats = {
+	weaponId: string,
+	level: number,
+	damage: number,
+	magazineSize: number,
+	reloadSeconds: number,
+	spreadDeg: number,
+	dps: number,
+	materialTierName: string,
+}
+
+export type VFXPresetConfig = {
+	id: VFXPresetId,
+	flipbookLayout: ("Grid4x4" | "Grid8x8" | "None"),
+	flipbookMode: ("OneShot" | "Loop" | "Random"),
+	colorStart: Color3,
+	colorMid: Color3,
+	colorEnd: Color3,
+	sizeStart: number,
+	sizePeak: number,
+	sizeEnd: number,
+	squash: number,
+	lightEmission: number,
+	rate: number,
+	burstCount: number,
+	lifetimeMin: number,
+	lifetimeMax: number,
+	speedMin: number,
+	speedMax: number,
+	drag: number,
+	acceleration: Vector3,
+}
+
+export type DistrictConfig = {
+	id: DistrictId,
+	name: string,
+	ringOrder: number,
+	initialThreat: number,
+	maxThreat: number,
+	passiveRegenPerMin: number,
+	centerPosition: Vector3,
+	radiusStuds: number,
+	streamingPersistent: boolean,
+	lootWeights: {
+		Common: number,
+		Rare: number,
+		Epic: number,
+		Legendary: number,
+		Unique: number,
+	},
+}
+
+export type DistrictRuntimeState = {
+	id: DistrictId,
+	threatLevel: number,
+	maxThreat: number,
+	liberated: boolean,
+	outpostRebuilt: boolean,
+	factoryRebuilt: boolean,
+	shelterRebuilt: boolean,
+	repellerActive: boolean,
+	assignedBuilders: number,
+	assignedEngineers: number,
+	assignedSoldiers: number,
+	assignedCaptains: number,
+	quarantineLockedUntil: number,
+}
+
+export type CrucibleRuntimeState = {
+	westDeathPoints: number,
+	eastDeathPoints: number,
+	totemsRemainingEast: number,
+	serverBossMutex: boolean,
+	activeMegaBossId: ("Z-BOSS-01" | "M-BOSS-01")?,
+	activeMegaBossHp: number,
+	activeMegaBossMaxHp: number,
+	bossSpawnedAt: number?,
+}
+
+export type ProceduralEventConfig = {
+	id: ProceduralEventId,
+	name: string,
+	factions: { FactionId },
+	allowedZones: { DistrictId },
+	durationSec: number,
+	triggerType: "Auto" | "Timer" | "Threat70" | "Threat90" | "NightCycle" | "LiberateZ5" | "Crucible1000",
+	rewardSummary: string,
+	failurePenaltyThreat: number,
+}
+
+export type RefugeBuildingConfig = {
+	id: string,
+	name: string,
+	maxTier: number,
+	requiredSpecialistId: string?,
+	baseScrapCost: number,
+	baseComponentsCost: number,
+	baseCoresCost: number,
+	description: string,
+}
+
+export type TacticalBackpack = {
+	unsecuredScrap: number,
+	unsecuredComponents: number,
+	unsecuredCores: number,
+	escortedSpecialists: { string },
+	unsecuredLootItems: { string },
+}
+
+export type LoadoutSlots = {
+	slot1_PrimaryA: string,
+	slot2_PrimaryB: string,
+	slot3_Sniper: string,
+	slot4_SecondaryA: string,
+	slot5_SecondaryB: string,
+	slot6_MeleeA: string,
+	slot7_MeleeB: string,
+	slot8_Special: string,
+	slot9_FlexA: string,
+	slot10_FlexB: string,
+	emitterG20Tier: number,
+}
+
+export type SkillTreeState = {
+	survivalRank: number,
+	consciousnessRank: number,
+	combatRank: number,
+	pulseUnlocked: boolean,
+	tacticalDashUnlocked: boolean,
+	qteExecutionUnlocked: boolean,
+}
 
 export type PlayerData = {
-	coins: number,
-	gems: number,
-	jumpMultiplier: number,
-	speedMultiplier: number,
-	inventory: { string },
-	unlockedIslands: { string },
 	schemaVersion: number,
+	refugeSeed: string,
+	scrap: number,
+	components: number,
+	consciousnessCores: number,
+	humanLoyalty: number,
+	renegadeUntil: number,
+	g20Tier: number,
+	squadCap: number,
+	ammoPools: {
+		Light: number,
+		Medium: number,
+		Heavy: number,
+		Special: number,
+		Explosive: number,
+	},
+	weaponLevels: { [string]: number },
+	loadout: LoadoutSlots,
+	rescuedSpecialists: { [string]: number },
+	refugeBuildings: { [string]: number },
+	hiredMercenaries: { [MercenaryId]: boolean },
+	activeMercenaries: { MercenaryId },
+	liberatedDistricts: { [DistrictId]: boolean },
+	skillTree: SkillTreeState,
+	tacticalBackpack: TacticalBackpack,
+	bestMegaBossKillSec: number?,
 	sessionLockTimestamp: number?,
 	sessionLockJobId: string?,
 }
@@ -24,15 +309,6 @@ export type TokenBucket = {
 	lastRefill: number,
 	maxTokens: number,
 	refillRatePerSec: number,
-}
-
-export type IslandBiome = "Grass" | "Desert" | "Ice" | "Volcanic"
-
-export type IslandConfig = {
-	name: string,
-	biome: IslandBiome,
-	radius: number,
-	position: Vector3,
 }
 
 export type VoxelTerrainConfig = {
