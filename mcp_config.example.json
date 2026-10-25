@@ -1,0 +1,51 @@
+{
+  "$schema": "https://modelcontextprotocol.io/schema/mcp-config.json",
+  "_comment": "Configuración MCP para RAASE 3.0 Next-Gen (Roblox Studio). IMPORTANTE: En Windows, NO uses %LOCALAPPDATA% sin expandir en 'command'; usa la ruta absoluta resuelta por 'node bridge/mcp_doctor.mjs'.",
+  "mcpServers": {
+    "StudioMCP": {
+      "command": "C:/Users/TU_USUARIO/AppData/Local/Roblox/Versions/version-xxxxxxxxxxxxxxxx/mcp.bat",
+      "args": [
+        "--studio"
+      ]
+    }
+  },
+  "raaseCoexistence": {
+    "studioMcp": {
+      "transport": "stdio",
+      "requiresStudioId": true,
+      "discoveryTool": "list_roblox_studios",
+      "officialTools": [
+        "execute_luau",
+        "insert_model",
+        "generate_mesh",
+        "generate_material",
+        "start_stop_play",
+        "character_navigation",
+        "user_keyboard_input",
+        "user_mouse_input",
+        "get_console_output",
+        "screen_capture"
+      ],
+      "communityToolsNotInOfficial": {
+        "insert_asset": "Usar execute_luau con game:GetService('InsertService'):LoadAsset(assetId) o MCPBridge BUILD_BATCH",
+        "generate_procedural_model": "Usar generate_mesh (Cube 3D oficial) o pipeline Blender headless + Open Cloud v1/assets",
+        "store_image": "Usar Open Cloud Assets API POST /assets/v1/assets (Decal/Image)",
+        "upload_image": "Usar Open Cloud Assets API POST /assets/v1/assets (Decal/Image)"
+      }
+    },
+    "mcpBridge": {
+      "url": "http://127.0.0.1:7843",
+      "pluginFile": "plugin/CompanionPlugin.server.luau",
+      "role": "Actuador declarativo de alto rendimiento (SmartUpsert RN-10, Raycast Grounding, Terrain, Materials, Lighting)"
+    },
+    "rojo": {
+      "projectFile": "project_template/default.project.json",
+      "managedContainers": [
+        "ServerScriptService.RAASE_Server",
+        "ReplicatedStorage.RAASE_Shared",
+        "StarterPlayer.StarterPlayerScripts.RAASE_Client"
+      ],
+      "sovereigntyRule": "PROHIBIDO mutar .Source de scripts dentro de contenedores sincronizados por Rojo mediante execute_luau. Todo código Luau persistente se escribe en project_template/src/ en disco y se invoca vía require() desde execute_luau."
+    }
+  }
+}
