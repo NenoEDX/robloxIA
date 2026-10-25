@@ -46,7 +46,7 @@ Branch: `feat/zombie-awareness-v4` | Delivery: work-unit commits por tarea (Conv
 - [x] **T2** (S2 | route: inline | status: completed | commit: `85852ad`): Implementar `MissionGenService.luau` (semilla 8 chars, Z0–Z7, Zonas Especiales, prefabs con brechas 400 HP) y `ThreatAndDistrictService.luau`.
 - [x] **T3** (S3 | route: inline | status: completed | commit: `576d45c`): Implementar `AIService.luau` (Object Pool 180 NPCs, Perception Batching 20/frame, cola 4 `ComputeAsync`, Steering y `ServerBossMutex`).
 - [x] **T4** (S4 | route: inline | status: completed | commit: `a2ea9ea`): Implementar `CombatAndArsenalService.luau`, `EventSchedulerService.luau` (eventos E-01..E-16) y bootstrap `init.server.luau`.
-- [x] **T5** (S5 | route: inline | status: completed | commit: pending): Reescribir `CharacterController.client.luau` y `HUDController.client.luau`, desplegar `Workspace.ZA_World_ZA40SEED` en Roblox Studio y verificar suite completa `node --test bridge/test_*.mjs` (22/22 PASS).
+- [x] **T5** (S5 | route: inline | status: completed | commit: `d53fcb4`): Reescribir `CharacterController.client.luau` y `HUDController.client.luau`, desplegar `Workspace.ZA_World_ZA40SEED` en Roblox Studio y verificar suite completa `node --test bridge/test_*.mjs` (22/22 PASS).
 
 ## Log
 
