@@ -1,7 +1,7 @@
-# robloxIA — Sistema Autónomo de Desarrollo para Roblox Studio (RAASE 2.1)
+# robloxIA — Sistema Autónomo de Desarrollo para Roblox Studio (RAASE 3.0 Next-Gen)
 ### *Inspirado en el sistema "Generador de Robux 3000" (DEValen) y basado en estándares de ingeniería Luau 2026*
 
-`robloxIA` (Roblox Autonomous Agent Studio Engine — **RAASE 2.1**) es una arquitectura de desarrollo desatendido de grado de producción que convierte a cualquier agente de Inteligencia Artificial (Google Antigravity, Claude Code, OpenAI Codex, OpenCode, Cursor) en un **Ingeniero de Software y Diseñador Técnico Autónomo de Roblox Studio**.
+`robloxIA` (Roblox Autonomous Agent Studio Engine — **RAASE 3.0 Next-Gen**) es una arquitectura de desarrollo desatendido de grado de producción que convierte a cualquier agente de Inteligencia Artificial (Google Antigravity, Claude Code, OpenAI Codex, OpenCode, Cursor) en un **Ingeniero de Software y Diseñador Técnico Autónomo de Roblox Studio**.
 
 El sistema traduce intenciones de alto nivel (vía voz, chat o terminal) en:
 1. **Lógica autoritativa en Luau estricto (`--!strict`)** libre de vulnerabilidades y fugas de memoria mediante ciclo de vida con `Janitor`.
@@ -11,21 +11,24 @@ El sistema traduce intenciones de alto nivel (vía voz, chat o terminal) en:
 
 ---
 
-## 🏛️ Arquitectura del Sistema (RAASE 2.1)
+## 🏛️ Arquitectura del Sistema (RAASE 3.0 Next-Gen)
 
 ```mermaid
 flowchart TD
     subgraph HostPlane ["1. Capa de Control y Orquestación (Host OS)"]
         User["Creador / Desarrollador (Voz / Chat / CLI)"] --> Agent["Agente Autónomo (Antigravity / Claude / Codex)"]
         Agent --> Router["skillsGV Router (209 Skills)"]
-        Agent --> Catalog["Catálogo RAASE 2.1 (610 Luau Skills)"]
-        Agent --> Bridge["Host Bridge HTTP Server (:34873)\n[Circuit Breaker / Mutex]"]
+        Agent --> Catalog["Catálogo RAASE 3.0 (610 Luau Skills)"]
+        Agent --> StudioMCP["Servidor Oficial StudioMCP (stdio / studio_id)"]
+        Agent --> Bridge["Host Bridge HTTP Server (:34873 / :7843)\n[Circuit Breaker / Mutex]"]
         Agent --> Rojo["Rojo File Sync Server (:34872)"]
+        Agent --> OpenCloud["Open Cloud Assets API v1/assets (.glb / .fbx)"]
         Agent --> VisionWorker["Host Screen Capture Worker (Win32 Non-Invasive)"]
     end
 
     subgraph StudioPlane ["2. Capa de Ejecución (Roblox Studio Engine)"]
-        Rojo <-->|Sync Código Luau Bidireccional| DataModel["DataModel (ServerScriptService, ReplicatedStorage)"]
+        Rojo <-->|Sync Código Luau Bidireccional| DataModel["DataModel (ServerScriptService, ReplicatedStorage.RAASE_Shared)"]
+        StudioMCP <-->|execute_luau / Playtest QA| DataModel
         Bridge <-->|HTTP Long-Polling JSON RPC| CompanionPlugin["Companion Plugin 2.1\n[DockWidget / Smart Upsert / Undo Recording]"]
         CompanionPlugin --> Viewport["Roblox Studio 3D Viewport"]
         Viewport -.->|Frame Buffer| VisionWorker
@@ -37,7 +40,7 @@ flowchart TD
 
 ---
 
-## 🌟 Novedades y Mejoras de RAASE 2.1
+## 🌟 Novedades y Mejoras de RAASE 2.1 y 3.0 Next-Gen
 
 ### 1. Grafo de Escena Bidireccional (Introspección Total)
 El puente ya no opera a ciegas. Dispone de primitivas RPC completas para consultar y modificar el árbol del juego:
@@ -68,17 +71,41 @@ El puente ya no opera a ciegas. Dispone de primitivas RPC completas para consult
   * **Botones de acción rápida**: Pausar/Reanudar sondeo, Limpiar Props (`Clear Props`) y Test de Conexión (`Ping Bridge`).
   * **Activity Stream**: Consola de logs con marca de tiempo de cada orden recibida.
 
-### 6. Catálogo Ampliado a 610 Habilidades (35 Dominios Técnicos + Extensiones 36/37)
+### 6. Catálogo Ampliado a 610 Habilidades (35 Dominios Técnicos + Extensiones 36/37/38)
 Se consolidó el catálogo completo de 35 módulos formales bajo el estándar `agentskills.io` (235 núcleo de motor + 45 nivelación y arte + 330 sistemas de juego y plataforma avanzada), complementado con 19 skills metodológicas de ingeniería:
 * **Dominios 01 a 10** (Skills 001-235): Núcleo de Luau estricto, redes Zero-Trust, persistencia, mundo 3D, cinemática, UI reactiva, audio, memoria y automatización.
 * **Dominios 11 a 13** (Skills 236-280): Map making, modelado modular y efectos visuales VFX.
 * **Dominios 14 a 35** (Skills 281-610): Pathfinding de NPCs, input contextual, chat y voz espacial, analíticas, monetización avanzada, pipelines CI/CD con TestEZ, moderación, física moderna, cámaras cinemáticas, Parallel Luau con Actors, internacionalización, optimización de streaming, accesibilidad, matchmaking, internals de DataModel, animación R15, avatares y layered clothing, combate volumétrico, interacciones seguras, colaboración en equipo, integraciones de red/secretos y Audio API 2026.
 
+### 7. Evolución Next-Gen RAASE 3.0: Los 4 Módulos Maestros y Playtest QA en Bucle Cerrado
+* **Coexistencia Rojo + `StudioMCP` + `MCPBridge` (`bridge/mcp_doctor.mjs` y `mcp_config.example.json`)**:
+  * Todo código Luau persistente reside en `project_template/src/` y es sincronizado por **Rojo** (`default.project.json` -> `ReplicatedStorage.RAASE_Shared`, `ServerScriptService.RAASE_Server`, `StarterPlayerScripts.RAASE_Client`).
+  * Prohibido mutar `.Source` en contenedores Rojo desde `execute_luau`; `StudioMCP` (`stdio`, usando ruta absoluta a `mcp.bat` en Windows y enrutamiento `studio_id` vía `list_roblox_studios`) requiere e invoca declarativamente los Módulos Maestros.
+* **Pipeline 3D con Color Garantizado y Open Cloud (`bridge/open_cloud.mjs` y `blender_export_example.py`)**:
+  * Exportación headless desde Blender con `apply_deterministic_transforms` (`1 stud = 0.28 m`), `bake_materials_to_vertex_colors` (`BYTE_COLOR`/`CORNER`), `map_uv_to_palette_atlas` (colapso de islas UV a escala `(0, 0)` sobre paleta $16 \times 16$) y `validate_mesh_budget` (`< 20,000` triángulos).
+  * Ingesta vía Open Cloud Assets API (`POST /assets/v1/assets`) soportando `.glb` (`model/gltf-binary`), `.fbx` (`model/fbx`), `.mp3`/`.ogg` y `.png`, con bloqueo preventivo de `.rbxm` externos.
+* **Firmas Exactas de los 4 Módulos Maestros (`ReplicatedStorage.RAASE_Shared`)**:
+  1. **`VoxelTerrainBuilder`** (`project_template/src/shared/VoxelTerrainBuilder.luau`):
+     * `VoxelTerrainBuilder.GenerateFBM(config)` (`Region3:ExpandToGrid(4)`, ruido Perlin FBM de 4–6 octavas, ocupancia fraccional continua $\in [0, 1]$, materiales automáticos `Rock`, `Sand`, `Grass`, `Snow`, `Water`).
+     * `VoxelTerrainBuilder.CarveRoadPath(points, widthStuds, roadMaterial?)` (`ReadVoxels` / `WriteVoxels`).
+  2. **`WorldAssembler`** (`project_template/src/shared/WorldAssembler.luau`):
+     * `WorldAssembler.PlaceGrounded(model, position, options?)` (`workspace:Raycast` vertical hacia abajo + `GetExtentsSize().Y / 2` + `AlignToSlope` opcional + snapping a grilla).
+     * `WorldAssembler.SmartUpsert(parent, template, name, targetPosition, options?)` (respeta `RAASE_Locked == true` bajo `RN-10`).
+  3. **`ProceduralAnimator`** (`project_template/src/shared/ProceduralAnimator.luau`):
+     * `ProceduralAnimator.AttachIK(character, config)` (`IKControl` nativo + `BallSocketConstraint` con `LimitsEnabled = true` para jugador local, héroes y bosses; para hordas masivas mantener `Motor6D.Transform`).
+     * `ProceduralAnimator.CreateSpring2D(omega0?, zeta?, initialPosition?)` ($\zeta \in [0.45, 0.75]$).
+     * `ProceduralAnimator.CreateFlipbookController(imageLabel, columns, rows, frameWidthPx, frameHeightPx, fps?)`.
+  4. **`VFXAndJuiceEngine`** (`project_template/src/shared/VFXAndJuiceEngine.luau`):
+     * `VFXAndJuiceEngine.CastEffect(effectType, cframe, scale?, options?)` (5 capas: `CoreFlash` + `ShockwaveRing` + `SlashBeam` `FaceCamera = false` + `DirectionalSparks` `VelocityParallel`/`Squash = -1.5` + `VoxelDebris` con `Raycast` al suelo).
+     * `VFXAndJuiceEngine.AddTrauma(amount)` ($S = T^3$ en `Enum.RenderPriority.Camera.Value + 1`), `VFXAndJuiceEngine.TriggerHitFlash(targetModel, duration?)` (`Highlight` blanco `0.1 -> 1.0` en `0.12s`), `VFXAndJuiceEngine.ApplyHitstop(character, frames)` y `VFXAndJuiceEngine.PlayModulatedSound(...)` ($\pm 9\%$ pitch + knockback).
+* **Protocolo de Playtest QA en Bucle Cerrado**:
+  * Toda tarea de gameplay concluye ejecutando en `StudioMCP`: `start_stop_play` -> `character_navigation` -> `user_keyboard_input`/`user_mouse_input` -> `get_console_output` (0 errores) -> `screen_capture` (bajo cortacircuitos `RN-11` de máx. 2 pasadas) -> `start_stop_play`.
+
 ---
 
 ## 🛠️ Historial de Bugs Corregidos (Changelog de Estabilidad)
 
-| Fallo / Síntoma | Causa Técnica | Solución Implementada en RAASE 2.1 |
+| Fallo / Síntoma | Causa Técnica | Solución Implementada en RAASE 2.1 / 3.0 |
 | :--- | :--- | :--- |
 | **Error en `SET_LIGHTING` (`RobloxScript capability`)** | Intentar escribir `Lighting.Technology` directamente lanzaba un error fatal de permisos de seguridad en el hilo del plugin. | Todas las propiedades de `Lighting` ahora se ejecutan dentro de bloques `pcall`, aplicando iluminación, sombras, reloj y atmósfera de forma segura. |
 | **Parpadeo en falso de "🔴 OFFLINE" tras cada comando** | `updateStatusUI()` mutaba `connectionStatus = "BUSY"`. Al terminar el comando (`isBusy = false`), la UI no encontraba el estado `"ONLINE"` y caía en la rama `else` (OFFLINE) hasta el siguiente tick. | Se separó la salud de la red (`connectionStatus`) del estado de ejecución (`isBusy`). La UI muestra `🟣 BUSY` y regresa fluidamente a `🟢 ONLINE` sin parpadear en rojo. |
@@ -93,10 +120,14 @@ Se consolidó el catálogo completo de 35 módulos formales bajo el estándar `a
 
 ```
 robloxIA/
-├── bridge/                         # Servidor local de enlace Host <-> Studio
+├── bridge/                         # Servidor local de enlace Host <-> Studio y Doctor MCP
 │   ├── server.mjs                  # Servidor HTTP REST + Long-Polling + Cortacircuitos (:34873)
+│   ├── mcp_doctor.mjs              # Doctor de coexistencia StudioMCP + MCPBridge + Rojo + Open Cloud
 │   ├── screen_capture.py           # Capturador host-side de Viewport no invasivo
-│   ├── open_cloud.mjs              # Conector de subida a Roblox Open Cloud API
+│   ├── open_cloud.mjs              # Conector de subida a Roblox Open Cloud API (.glb / .fbx / .mp3 / .png)
+│   ├── test_mcp_doctor.mjs         # Tests unitarios de StudioMCP y soberanía Rojo
+│   ├── test_open_cloud.mjs         # Tests unitarios de Open Cloud y exportación Blender
+│   ├── test_master_modules.mjs     # Tests de contratos de los 4 Módulos Maestros Luau
 │   ├── test_bridge_v2_1.mjs        # Suite de pruebas unitarias e integración del bridge
 │   ├── test_circuit_breaker.mjs    # Test automatizado del cortacircuitos de capturas
 │   └── package.json                # Configuración npm del bridge
@@ -118,26 +149,32 @@ robloxIA/
 │       ├── client/                 # Scripts en StarterPlayerScripts
 │       │   ├── CharacterController.client.luau # Cinemática procedural Motor6D.Transform
 │       │   └── HUDController.client.luau       # UI reactiva escalada sin distorsión
-│       └── shared/                 # Módulos en ReplicatedStorage
-│           ├── Types.luau          # Tipado estricto Luau 2026
-│           └── Janitor.luau        # Erradicación de fugas de memoria
+│       └── shared/                 # Módulos Maestros en ReplicatedStorage.RAASE_Shared
+│           ├── Types.luau                  # Tipado estricto Luau 2026
+│           ├── Janitor.luau                # Erradicación de fugas de memoria
+│           ├── VoxelTerrainBuilder.luau    # Terreno FBM Perlin (4-6 octavas) + CarveRoadPath
+│           ├── WorldAssembler.luau         # Ground-snapping por Raycast + SmartUpsert (RN-10)
+│           ├── ProceduralAnimator.luau     # IKControl + BallSocketConstraint + Spring2D + Flipbooks
+│           └── VFXAndJuiceEngine.luau      # VFX de 5 capas + Trauma Cúbico S=T^3 + Hit-Flash 0.12s
 ├── agent/                          # Herramientas del Agente Autónomo
-│   ├── system_prompt.md            # Master System Prompt con reglas RN-10 y RN-11
+│   ├── system_prompt.md            # Master System Prompt con reglas RN-10, RN-11 y 4 Módulos Maestros
 │   ├── raase_skills.json           # Matriz indexada de las 610 micro-habilidades técnicas (35 dominios)
 │   ├── orchestrator_cli.mjs        # CLI para canalizar comandos, inspección y visión
 │   ├── fix_terrain_and_details.mjs # Utilidad de nivelación de terreno
-│   └── generators/                 # Generadores procedurales de alto nivel
-│       ├── build_magic_lobby.mjs   # Generador modular del Magic Lobby medieval
-│       ├── attach_prompts_and_guis.mjs # Inyector de ProximityPrompts y BillboardGuis
-│       ├── capture_tour.mjs        # Recorrido guiado de capturas con cámara estricta
-│       └── deploy_server_scripts.mjs # Inyector directo de servicios en Studio
+│   └── generators/                 # Generadores procedurales de alto nivel y Blender headless
 ├── skills-roblox/                  # Especificación formal de skills (agentskills.io)
 │   ├── roblox-11-map-making/       # Level Design y zonificación espacial
-│   ├── roblox-12-model-maker/      # Modelado modular y directiva anti-neón
-│   └── roblox-13-vfx-maker/        # Partículas, vigas, estelas e iluminación
+│   ├── roblox-12-model-maker/      # Modelado modular y doctrina dual Mesh-First
+│   ├── roblox-13-vfx-maker/        # Partículas, vigas, estelas e iluminación
+│   ├── roblox-36-asset-pipeline/   # Blender Vertex Colors + Palette Atlas UV + <20k tris
+│   ├── roblox-37-vfx-combat-pipeline/ # Secuenciador de impacto y combate
+│   └── roblox-38-env-vfx-craft/    # VFX ambiental por recetas
 ├── docs/                           # Documentación y Especificación Técnica
-│   └── RAASE_2_0_SPECIFICATION.md  # Blueprint arquitectónico formal
+│   ├── RAASE_2_0_SPECIFICATION.md  # Blueprint arquitectónico formal 2.0
+│   └── ARQUITECTURA_ROBLOX_IA_NEXTGEN.md # Especificación Next-Gen 3.0 y 6 puntos ciegos resueltos
+├── mcp_config.example.json         # Plantilla MCP para StudioMCP oficial + MCPBridge + Rojo
 ├── PROJECT_TRACKER.md              # Ledger de estado del proyecto (skillsGV format)
+├── AGENTS.md                       # Contratos maestros para agentes multi-CLI
 ├── CLAUDE.md                       # Reglas de desarrollo para agentes CLI
 └── README.md                       # Documentación principal
 ```
@@ -146,12 +183,13 @@ robloxIA/
 
 ## 🚀 Guía de Inicio Rápido (Setup en 4 Pasos)
 
-### 1. Iniciar el Servidor de Enlace (Bridge)
+### 1. Diagnosticar el Entorno MCP y Iniciar el Bridge
 En una terminal:
 ```bash
+node bridge/mcp_doctor.mjs
 node bridge/server.mjs
 ```
-El servidor escuchará en `http://127.0.0.1:34873`, generará un Bearer Token criptográfico seguro y lo guardará en `bridge/.bridge_token`.
+`mcp_doctor.mjs` resuelve la ruta absoluta de `mcp.bat` para `StudioMCP` y verifica los mapeos de Rojo y credenciales Open Cloud. `server.mjs` escuchará en `http://127.0.0.1:34873` y guardará el token en `bridge/.bridge_token`.
 
 ### 2. Instalar el Companion Plugin y Configurar Token en Roblox Studio
 * Abre **Roblox Studio**.
@@ -172,29 +210,16 @@ rojo serve project_template/default.project.json
 ```
 En Studio, abre el plugin de Rojo y presiona **Connect**.
 
-### 4. Usar la CLI del Orquestador
-Puedes interactuar directamente con Studio desde tu terminal o permitir que el agente lo haga:
+### 4. Usar la CLI del Orquestador y Suite de Tests
 ```bash
+# Ejecutar todas las suites de verificación (16 tests)
+node --test bridge/test_mcp_doctor.mjs bridge/test_open_cloud.mjs bridge/test_master_modules.mjs bridge/test_circuit_breaker.mjs bridge/test_bridge_v2_1.mjs
+
 # Consultar estado y telemetría del bridge
 node agent/orchestrator_cli.mjs status
 
 # Inspeccionar el grafo de escena en Workspace (profundidad 1)
 node agent/orchestrator_cli.mjs scene-graph workspace 1
-
-# Inspeccionar un objeto específico y todas sus propiedades
-node agent/orchestrator_cli.mjs inspect "MagicLobby_Zone3_PotionShop"
-
-# Modificar propiedades in-situ de una parte existente
-node agent/orchestrator_cli.mjs modify "Plaza_Lawn_Selectable" '{"Color": [95, 150, 80], "Transparency": 0.05}'
-
-# Borrar una instancia de forma segura
-node agent/orchestrator_cli.mjs delete "ObjetoAntiguo"
-
-# Limpiar una zona espacial AABB (Centro: 0, 10, 0 | Tamaño: 50, 20, 50)
-node agent/orchestrator_cli.mjs clear-zone 0 10 0 50 20 50
-
-# Tomar una captura del Viewport para auditoría visual
-node agent/orchestrator_cli.mjs capture
 ```
 
 ---
@@ -204,7 +229,7 @@ node agent/orchestrator_cli.mjs capture
 * **Strict Typing Obligatorio**: Todo script inicia con `--!strict`. Tipos nominales y estructurales explícitos con `export type ...`.
 * **Seguridad Zero-Trust**: El cliente jamás declara daño o dinero. Todos los `RemoteEvent` validan tipos (`typeof()`), distancias espaciales (`.Magnitude <= 15`) y están protegidos por limitadores de tasa *Token Bucket* con señuelos *honeypots*.
 * **Gestión de Memoria con Janitor**: Ningún `RBXScriptConnection` queda huérfano. Todo objeto destruido invoca `:Destroy()` formalmente.
-* **Cinemática en RenderStepped**: Toda manipulación procedural en personajes altera EXCLUSIVAMENTE `Motor6D.Transform` en el hilo de render. Prohibido modificar `C0/C1` en bucles de tiempo de ejecución.
+* **Cinemática Dual (`IKControl` + `Motor6D.Transform`)**: `ProceduralAnimator.AttachIK` para héroes/bosses ($\le 12$ rigs) y `Motor6D.Transform` en `RenderStepped` para multitudes. Prohibido modificar `C0/C1` en bucles de tiempo de ejecución.
 * **DevEx 2026 e Idempotencia**: `MarketplaceService.ProcessReceipt` persiste el `PurchaseId` en DataStore mediante `UpdateAsync()` antes de otorgar beneficios. Exclusividad de avatares R15 para calificar a la tasa preferencial U.S. 18+ ($0.0054 por Robux).
 * **Soberanía del Creador (RN-10)**: Las modificaciones manuales del usuario en Studio son ley. Ningún agente puede re-crear partes eliminadas ni sobreescribir decisiones de diseño sin autorización expresa.
 
@@ -212,53 +237,6 @@ node agent/orchestrator_cli.mjs capture
 
 ## 📚 Catálogo de Habilidades (610 Skills en 35 Dominios Técnicos + 3 Extensiones)
 
-> **Extensiones RAASE 2.1** (fuera del registry JSON): `roblox-36-asset-pipeline` (pipeline Blender → handoff humano → verificación post-import), `roblox-37-vfx-combat-pipeline` (VFX de combate estilo fighting-game) y `roblox-38-env-vfx-craft` (VFX ambiental por recetas: antorchas, agua, clima, magia). Portabilidad de modelo/harness: `docs/HARNESS-PORTABILITY.md` + `adapters/`.
-
-El catálogo RAASE cubre 35 dominios de ingeniería de Roblox en estándar `agentskills.io` (610 micro-habilidades con Luau `--!strict`, reglas y snippets de producción):
-
-### Núcleo de Motor, Redes y Persistencia (01 - 10)
-1. `roblox-01-luau-core` (001-025): Luau Language & Strict Typing
-2. `roblox-02-netsec` (026-060): Networking & Anti-Exploit Security
-3. `roblox-03-persistence-datastores` (061-085): Persistence & DataStores
-4. `roblox-04-3d-world-csg` (086-115): 3D World, CSGv3 & Procedural
-5. `roblox-05-kinematics-rigs` (116-140): Rigging & Kinematics
-6. `roblox-06-ui-ux-gui` (141-165): UI/UX & Reactive GUI
-7. `roblox-07-audio-dsp` (166-185): Audio & DSP Effects
-8. `roblox-08-memory-lifecycle` (186-210): Memory & Janitor Auditing
-9. `roblox-09-economy-devex` (211-225): Economy & DevEx 2026
-10. `roblox-10-tooling-automation` (226-235): Tooling & Studio Automation
-
-### Construcción, Nivelación y Efectos Visuales (11 - 13)
-11. `roblox-11-map-making` (236-250): Level Design, Zoning & AABB Spatial Check
-12. `roblox-12-model-maker` (251-265): Modular 3D Assembly, Trims & Anti-Neon
-13. `roblox-13-vfx-maker` (266-280): Particle Emitters, Beams, Trails & Dynamic Lighting
-
-### Sistemas de Juego, Monetización y Compliance (14 - 20)
-14. `roblox-14-npc-ai-pathfinding` (281-295): PathfindingService, FSM & Spatial Queries
-15. `roblox-15-input-action-systems` (296-310): ContextActionService, Gamepad & Mobile Touch
-16. `roblox-16-chat-voice-social` (311-325): TextChatService & Spatial Voice Wire API
-17. `roblox-17-analytics-liveops` (326-340): AnalyticsService Funnels & LiveOps Flags
-18. `roblox-18-monetization-suite` (341-355): MarketplaceService & Robux Subscriptions
-19. `roblox-19-testing-ci-pipeline` (356-370): TestEZ BDD, Selene & CI Automation
-20. `roblox-20-moderation-compliance` (371-385): Content Maturity & GDPR Compliance
-
-### Motor, Plataforma y Rendimiento Avanzado (21 - 28)
-21. `roblox-21-physics-mechanisms` (386-400): Modern Physics Constraints & Assemblies
-22. `roblox-22-camera-cinematics` (401-415): Scriptable Cameras & Cinemachine
-23. `roblox-23-parallel-luau` (416-430): Actor Concurrency & SharedTable
-24. `roblox-24-localization-i18n` (431-445): LocalizationService & Semantic Tables
-25. `roblox-25-platform-performance` (446-460): StreamingEnabled & MicroProfiler Budgets
-26. `roblox-26-accessibility` (461-475): High-Contrast UI & Accessible Controls
-27. `roblox-27-teleport-matchmaking` (476-490): TeleportAsync & Global Matchmaking
-28. `roblox-28-instance-service-internals` (491-505): CollectionService & Instance Lifecycle
-
-### Profundidad de Juego, Combate e Interacción (29 - 35)
-29. `roblox-29-animation-authoring-retargeting` (506-520): R15 Retargeting & CurveAnimation
-30. `roblox-30-avatar-customization` (521-535): HumanoidDescription & Layered Clothing
-31. `roblox-31-combat-systems` (536-550): Spatial Queries, Raycasting & Hitboxes
-32. `roblox-32-world-interactions` (551-565): ProximityPrompt & Environmental Systems
-33. `roblox-33-team-collab-workflows` (566-580): Multi-Place Rojo Workflows & Wally
-34. `roblox-34-external-apis-secrets` (581-595): HttpService, GetSecret & Webhooks
-35. `roblox-35-dynamic-audio-music` (596-610): 2026 Wire Graph Architecture & Spatial Audio
+> **Extensiones RAASE 3.0** (fuera del registry JSON): `roblox-36-asset-pipeline` (pipeline Blender Vertex Colors + Palette Atlas UV → Open Cloud `.glb`/`.fbx`), `roblox-37-vfx-combat-pipeline` (VFX de combate estilo fighting-game promovido a `VFXAndJuiceEngine.luau`) y `roblox-38-env-vfx-craft` (VFX ambiental por recetas: antorchas, agua, clima, magia). Portabilidad de modelo/harness: `docs/HARNESS-PORTABILITY.md` + `adapters/`.
 
 Consulta la matriz canónica en [agent/raase_skills.json](file:///c:/Users/j1347/Desktop/Proyectos%20programacion/trabajos/IA%20INTEGRADA%20CON%20ROBLOX%20STUDIO/robloxIA/agent/raase_skills.json) y el índice general en [skills-roblox/roblox-engineer/SKILL.md](file:///c:/Users/j1347/Desktop/Proyectos%20programacion/trabajos/IA%20INTEGRADA%20CON%20ROBLOX%20STUDIO/robloxIA/skills-roblox/roblox-engineer/SKILL.md).
