@@ -17,6 +17,7 @@ local Workspace = game:GetService("Workspace")
 local sharedFolder = ReplicatedStorage:WaitForChild("RAASE_Shared")
 local Types = require(sharedFolder:WaitForChild("Types") :: any)
 local ZombieCatalogs = require(sharedFolder:WaitForChild("ZombieCatalogs") :: any)
+local ZombieModelBuilder = require(sharedFolder:WaitForChild("ZombieModelBuilder") :: any)
 local Janitor = require(sharedFolder:WaitForChild("Janitor") :: any)
 local WorldAssembler = require(sharedFolder:WaitForChild("WorldAssembler") :: any)
 
@@ -213,6 +214,8 @@ local function acquireModelFromPool(def: Types.UnitDefinition): Model
 	local model: Model
 	if pool and #pool > 0 then
 		model = table.remove(pool) :: Model
+	elseif def.faction == "Zombie" then
+		model = ZombieModelBuilder.buildZombieModel(def.id, CFrame.new())
 	else
 		model = buildPooledRigModel(def.poolCategory)
 	end

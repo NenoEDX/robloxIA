@@ -20,6 +20,7 @@ test("All Zombie Awareness v4.0 Luau modules start with --!strict and avoid depr
     "shared/Types.luau",
     "shared/ZombieCatalogs.luau",
     "shared/LobbyBuilder.luau",
+    "shared/ZombieModelBuilder.luau",
     "server/DataPersistenceService.luau",
     "server/MonetizationService.luau",
     "server/NetworkSecurityService.luau",
@@ -177,4 +178,9 @@ test("CombatAndArsenalService.luau and Client Controllers implement G-20 validat
 
   assert.ok(hudCtrl.includes("MAPA DE CONCIENCIA"), "HUD must render the Consciousness Map");
   assert.ok(hudCtrl.includes("CRISOLES ZvM"), "HUD must render West/East Crucibles and Mutex status");
+
+  const zombieBuilder = readSrc("shared/ZombieModelBuilder.luau");
+  assert.ok(zombieBuilder.includes("buildZombieModel"), "ZombieModelBuilder must expose buildZombieModel");
+  assert.ok(zombieBuilder.includes("buildZombieShowcaseGallery"), "ZombieModelBuilder must expose buildZombieShowcaseGallery");
+  assert.ok(zombieBuilder.includes("WeakPoint_Head") && zombieBuilder.includes("WeakPoint_Chest") && zombieBuilder.includes("WeakPoint_Back"), "Z-BOSS-01 must define all 3 official WeakPoints");
 });
