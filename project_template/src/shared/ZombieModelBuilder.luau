@@ -787,6 +787,8 @@ function ZombieModelBuilder.buildZombieModel(unitId: string, originCF: CFrame): 
 	local unitName = unitDef.name
 	local rigType = unitDef.masterRig
 	local subFaction = unitDef.subFaction
+	local cleanId = string.gsub(unitId, "%-", "")
+	local blenderMeshPrefix = "mesh_zombie_" .. cleanId
 
 	local model = Instance.new("Model")
 	model.Name = string.format("%s_%s", unitId, string.gsub(unitName, "[^%w_]", ""))
@@ -795,6 +797,8 @@ function ZombieModelBuilder.buildZombieModel(unitId: string, originCF: CFrame): 
 	model:SetAttribute("ZA_Faction", "Zombie")
 	model:SetAttribute("ZA_SubFaction", subFaction)
 	model:SetAttribute("ZA_MasterRig", rigType)
+	model:SetAttribute("ZA_BlenderMeshPrefix", blenderMeshPrefix)
+	model:SetAttribute("ZA_BlenderShowcaseBundle", "exports/zombies-v4/ZA_All61Zombies_Showcase.fbx")
 	if unitDef then
 		model:SetAttribute("ZA_MaxHP", unitDef.hp)
 		model:SetAttribute("ZA_DPS", unitDef.dps)
@@ -813,6 +817,40 @@ function ZombieModelBuilder.buildZombieModel(unitId: string, originCF: CFrame): 
 
 	local animator = Instance.new("Animator")
 	animator.Parent = hum
+
+	-- Si el creador ya importó la malla Blender (.fbx/.glb) en ReplicatedStorage.Assets.Zombies, clonarla directamente
+	local assetsRoot = ReplicatedStorage:FindFirstChild("Assets")
+	local zombiesAssets = if assetsRoot then assetsRoot:FindFirstChild("Zombies") else nil
+	if zombiesAssets then
+		for _, child in ipairs(zombiesAssets:GetChildren()) do
+			if string.sub(child.Name, 1, #blenderMeshPrefix) == blenderMeshPrefix or child.Name == unitId then
+				local cloned = child:Clone()
+				if cloned:IsA("BasePart") then
+					cloned.Name = "HumanoidRootPart"
+					cloned.Anchored = true
+					cloned.CanCollide = false
+					cloned.CFrame = originCF * CFrame.new(0, cloned.Size.Y / 2, 0)
+					cloned.Parent = model
+					model.PrimaryPart = cloned
+					return model
+				elseif cloned:IsA("Model") then
+					cloned:PivotTo(originCF)
+					for _, desc in ipairs(cloned:GetChildren()) do
+						desc.Parent = model
+					end
+					if not model.PrimaryPart then
+						local firstPart = model:FindFirstChildWhichIsA("BasePart")
+						if firstPart then
+							firstPart.Name = "HumanoidRootPart"
+							model.PrimaryPart = firstPart
+						end
+					end
+					cloned:Destroy()
+					return model
+				end
+			end
+		end
+	end
 
 	-- Caso especial 1: Bestias Infectadas Cuadrúpedas / Simiescas (Z-41 a Z-50, RIG-03)
 	if rigType == "RIG-03" then

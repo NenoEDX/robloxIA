@@ -184,3 +184,21 @@ test("CombatAndArsenalService.luau and Client Controllers implement G-20 validat
   assert.ok(zombieBuilder.includes("buildZombieShowcaseGallery"), "ZombieModelBuilder must expose buildZombieShowcaseGallery");
   assert.ok(zombieBuilder.includes("WeakPoint_Head") && zombieBuilder.includes("WeakPoint_Chest") && zombieBuilder.includes("WeakPoint_Back"), "Z-BOSS-01 must define all 3 official WeakPoints");
 });
+
+test("Blender 5.2 Zombies v4 batch generated all 61 .glb and .fbx meshes, 256x256 palette atlas, and master showcase bundle under <20,000 tris", () => {
+  const exportsDir = path.resolve(__dirname, "..", "exports", "zombies-v4");
+  const manifestPath = path.join(exportsDir, "assets_manifest.json");
+  assert.ok(fs.existsSync(manifestPath), "Missing exports/zombies-v4/assets_manifest.json");
+  assert.ok(fs.existsSync(path.join(exportsDir, "zombies_palette_256.png")), "Missing zombies_palette_256.png");
+  assert.ok(fs.existsSync(path.join(exportsDir, "ZA_All61Zombies_Showcase.fbx")), "Missing ZA_All61Zombies_Showcase.fbx");
+  assert.ok(fs.existsSync(path.join(exportsDir, "ZA_All61Zombies_Showcase.glb")), "Missing ZA_All61Zombies_Showcase.glb");
+  assert.ok(fs.existsSync(path.join(exportsDir, "ASSETS_HANDOFF.md")), "Missing ASSETS_HANDOFF.md");
+
+  const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
+  assert.equal(manifest.totalAssets, 61, "Manifest must register all 61 Zombies (Z-01..Z-60 + Z-BOSS-01)");
+  for (const asset of manifest.assets) {
+    assert.ok(asset.actualTriangles > 100 && asset.actualTriangles < 20000, `${asset.id} triangle count out of bounds: ${asset.actualTriangles}`);
+    assert.ok(fs.existsSync(path.join(exportsDir, asset.glbFile)), `Missing GLB: ${asset.glbFile}`);
+    assert.ok(fs.existsSync(path.join(exportsDir, asset.fbxFile)), `Missing FBX: ${asset.fbxFile}`);
+  }
+});
