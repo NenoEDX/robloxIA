@@ -42,13 +42,14 @@ Branch: `feat/zombie-awareness-v4` | Delivery: work-unit commits por tarea (Conv
 
 ## Tasks
 
-- [ ] **T1** (S1 | route: inline | status: in_progress): Purgar legado, actualizar `Types.luau`, crear `ZombieCatalogs.luau` (150 unidades, 32 armas Lv1–10, 9 VFX presets, 16 eventos) y reescribir `DataPersistenceService.luau`.
-- [ ] **T2** (S2 | route: inline | status: pending): Implementar `MissionGenService.luau` (semilla 8 chars, Z0–Z7, Zonas Especiales, prefabs con brechas 400 HP) y `ThreatAndDistrictService.luau`.
-- [ ] **T3** (S3 | route: inline | status: pending): Implementar `AIService.luau` (Object Pool 180 NPCs, Perception Batching 20/frame, cola 4 `ComputeAsync`, Steering y `ServerBossMutex`).
-- [ ] **T4** (S4 | route: inline | status: pending): Implementar `CombatAndArsenalService.luau`, `EventSchedulerService.luau` (eventos E-01..E-16) y bootstrap `init.server.luau`.
-- [ ] **T5** (S5 | route: inline | status: pending): Reescribir `CharacterController.client.luau` y `HUDController.client.luau`, sincronizar escenario base en Roblox Studio y ejecutar suite `bridge/test_zombie_awareness_v4.mjs`.
+- [x] **T1** (S1 | route: inline | status: completed | commit: `2df1ca3`): Purgar legado en Studio, actualizar `Types.luau`, crear `ZombieCatalogs.luau` (150 unidades + 2 Mega Brutos, 32 armas Lv1–10, 9 VFX presets, 16 eventos) y reescribir `DataPersistenceService.luau` y `MonetizationService.luau`.
+- [x] **T2** (S2 | route: inline | status: completed | commit: `85852ad`): Implementar `MissionGenService.luau` (semilla 8 chars, Z0–Z7, Zonas Especiales, prefabs con brechas 400 HP) y `ThreatAndDistrictService.luau`.
+- [x] **T3** (S3 | route: inline | status: completed | commit: `576d45c`): Implementar `AIService.luau` (Object Pool 180 NPCs, Perception Batching 20/frame, cola 4 `ComputeAsync`, Steering y `ServerBossMutex`).
+- [x] **T4** (S4 | route: inline | status: completed | commit: `a2ea9ea`): Implementar `CombatAndArsenalService.luau`, `EventSchedulerService.luau` (eventos E-01..E-16) y bootstrap `init.server.luau`.
+- [x] **T5** (S5 | route: inline | status: completed | commit: pending): Reescribir `CharacterController.client.luau` y `HUDController.client.luau`, desplegar `Workspace.ZA_World_ZA40SEED` en Roblox Studio y verificar suite completa `node --test bridge/test_*.mjs` (22/22 PASS).
 
 ## Log
 
 - **L1 (2026-10-25)**: Solicitud original del usuario (verbatim): `"vamos a trabajar creando ese juego planifica investiga y tapa los puntos cciegos del gameloop que puedas encontrar etc etc"`.
 - **L2 (2026-10-25)**: Instrucción de arranque desde cero y limpieza total (verbatim): `"desde 0 todo lo que este ya viejo borralo"`. Ruta declarada: `inline` para T1–T5 (unidades secuenciales en el mismo árbol `robloxIA/project_template/src/` donde cada servicio depende de los contratos de tipos y catálogos previos; el padre ejecuta cada tarea, corre su suite de verificación y registra su commit).
+- **L3 (2026-10-25)**: Cierre verificado de T1 (`2df1ca3`), T2 (`85852ad`), T3 (`576d45c`), T4 (`a2ea9ea`) y T5 en rama `feat/zombie-awareness-v4`. Limpieza en vivo en Roblox Studio (`Campamento7_Lobby`, `Baseplate`, `ImpactSequencer`, `TestImpact` eliminados; `Workspace.ZA_World_ZA40SEED` desplegado) y suite completa `node --test bridge/test_*.mjs`: 22/22 tests PASS.
