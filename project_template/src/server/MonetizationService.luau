@@ -131,6 +131,10 @@ local function processReceipt(receiptInfo: { [string]: any }): Enum.ProductPurch
 	return Enum.ProductPurchaseDecision.PurchaseGranted
 end
 
+function MonetizationService.registerProductHandler(productId: number, handler: (player: Player) -> boolean)
+	productHandlers[productId] = handler
+end
+
 function MonetizationService.init()
 	MarketplaceService.ProcessReceipt = processReceipt
 end

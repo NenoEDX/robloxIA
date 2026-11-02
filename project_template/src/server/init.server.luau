@@ -15,10 +15,12 @@ local ThreatAndDistrictService = require(script:WaitForChild("ThreatAndDistrictS
 local AIService = require(script:WaitForChild("AIService") :: any)
 local CombatAndArsenalService = require(script:WaitForChild("CombatAndArsenalService") :: any)
 local EventSchedulerService = require(script:WaitForChild("EventSchedulerService") :: any)
+local SlimeCoreService = require(script:WaitForChild("SlimeCoreService") :: any)
 
--- Ejecutar el Pipeline Determinista de 6 Etapas por Semilla Alfanumérica de 8 Caracteres
+-- Ejecutar el Pipeline Determinista y construir el Anfiteatro Abisal de Slimes Abismales
 local worldReport = MissionGenService.generateWorldFromSeed("ZA40SEED")
 EventSchedulerService.seedInitialEcosystem()
+SlimeCoreService.buildAbyssalAmphitheater()
 
 print(
 	string.format(
