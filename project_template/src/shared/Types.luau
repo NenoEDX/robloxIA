@@ -369,4 +369,136 @@ export type VFXCastOptions = {
 	KnockbackImpulse: Vector3?,
 }
 
+-- ============================================================================
+-- SLIME PIT: DIVE FOR MUTANTS! (ABYSSAL SLIME CORE) CONTRACTS
+-- ============================================================================
+
+export type SlimeRarityGradeId =
+	"GRADE_01_BASIC"
+	| "GRADE_02_RARE"
+	| "GRADE_03_EPIC"
+	| "GRADE_04_LEGENDARY"
+	| "GRADE_05_MYTHICAL"
+	| "GRADE_06_EXOTIC"
+	| "GRADE_07_DIVINE"
+	| "GRADE_08_SUPERIOR"
+	| "GRADE_09_CELESTIAL_I"
+	| "GRADE_10_CELESTIAL_II"
+
+export type PerformanceMutationMode = "LOW_3" | "MEDIUM_6" | "HIGH_10"
+
+export type AcquisitionPath = "Earned_Free" | "Paid_Deterministic" | "Event_Crate"
+
+export type SlimeChassisDefinition = {
+	id: string,
+	name: string,
+	bones: { string },
+	movementPattern: string,
+	guardianAttackRadius: number,
+	baseScale: Vector3,
+}
+
+export type SlimeRaceDefinition = {
+	id: string,
+	name: string,
+	factionBonusPercent: number,
+	primaryColor: Color3,
+	accentFeature: string,
+}
+
+export type MutationVectorCategory =
+	"ECONOMIC"
+	| "COMBAT_GUARD"
+	| "ALCHEMICAL_JUICE"
+	| "ABYSSAL_EXPLORATION"
+	| "COSMIC_ADMIN"
+
+export type MutationDefinition = {
+	id: string,
+	numericId: number,
+	name: string,
+	vector: MutationVectorCategory,
+	statPercentBonus: number,
+	scaleMultiplier: number,
+	damageMitigationPercent: number,
+	cooldownReductionPercent: number,
+	alchemyPurityBonusPercent: number,
+	changesAppearance: boolean,
+	visualPriority: number,
+	primaryColor: Color3,
+	appearanceTag: string,
+}
+
+export type SlimeDefinition = {
+	id: string,
+	name: string,
+	biomeIndex: number,
+	macroRingIndex: number,
+	chassisId: string,
+	raceId: string,
+	rarityGrade: SlimeRarityGradeId,
+	isUltraSpecial: boolean,
+	ultraClass: ("NONE" | "HUGE" | "TITANIC"),
+	anchoredBaseRatio: number,
+	anchoredMaxRatioLv99: number,
+	basePower: number,
+	baseCoinsPerSec: number,
+	baseStabilityHP: number,
+	juiceType: string,
+}
+
+export type SlimePetInstance = {
+	uuid: string,
+	slimeId: string,
+	level: number,
+	experience: number,
+	stars: number,
+	raceId: string,
+	armorId: string?,
+	auraId: string?,
+	mutations: { string }, -- Hard-capped at MAX_MUTATIONS_PER_SLIME = 10
+	currentHP: number,
+	maxHP: number,
+	cooldownUntilOsTime: number,
+	acquisitionPath: AcquisitionPath,
+	capturedBiome: number,
+}
+
+export type EventCrateItem = {
+	id: string,
+	slimeId: string,
+	name: string,
+	rarityGrade: SlimeRarityGradeId,
+	probabilityPercent: number,
+	formattedOdds: string,
+	guaranteedMutationId: string?,
+	isUltra: boolean,
+}
+
+export type DynamicCaptureQuote = {
+	playerMaxBiome: number,
+	targetSlimeBiome: number,
+	biomeGap: number,
+	isDailyFreeAvailable: boolean,
+	dailyFreeCooldownRemainingSec: number,
+	computedRobuxCost: number,
+	mappedDeveloperProductId: number,
+	naturalCatchChancePercent: number,
+}
+
+export type AdminAbuseCommand = {
+	commandType:
+		"GlobalMutationStorm"
+		| "AbyssalInversion"
+		| "SpawnAbyssalCannon"
+		| "HostBroadcast"
+		| "PlayerTriggeredAbuse",
+	triggeredByUserId: number,
+	triggeredByName: string,
+	durationSec: number,
+	targetMutationId: string?,
+	sourceBiome: number?,
+	targetBiome: number?,
+}
+
 return {}
