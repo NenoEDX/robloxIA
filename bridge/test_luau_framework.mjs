@@ -5,7 +5,7 @@ import { fileURLToPath } from "node:url";
 import path from "node:path";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
-for (const name of ["lifecycle", "slime_events", "slime_service", "slime_client", "slime_hud", "syntax"]) {
+for (const name of ["lifecycle", "slime_events", "slime_service", "slime_client", "slime_hud", "slime_transactions", "syntax"]) {
   test(`Luau executable framework: ${name}`, { skip: !process.env.LUNE_BIN && "LUNE_BIN unavailable; Luau proof not run" }, () => {
     assert.ok(path.isAbsolute(process.env.LUNE_BIN), "LUNE_BIN must be an explicit absolute executable path");
     const result = spawnSync(process.env.LUNE_BIN, ["run", path.join(root, "tests/lune", `${name}.luau`)], {

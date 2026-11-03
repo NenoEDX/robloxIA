@@ -11,7 +11,6 @@
 	4. Tanque Dorsal Presurizado (riesgo 25% charco), Caldero de Alquimia y Banner Global de Admin Abuse.
 --]]
 
-local MarketplaceService = game:GetService("MarketplaceService")
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local TweenService = game:GetService("TweenService")
@@ -202,7 +201,7 @@ capturePanel.Parent = screenGui
 
 createStyledLabel(
 	capturePanel,
-	"Captura Asegurada (1 Gratis/Día + Cotizador Anti-Pay-To-Fast en Robux)",
+	"Captura Asegurada (1 Gratis/Día; compras deshabilitadas)",
 	UDim2.new(0.95, 0, 0, 20),
 	UDim2.new(0.04, 0, 0.04, 0),
 	11,
@@ -219,7 +218,7 @@ local dailyFreeBtn = createStyledButton(
 
 local quoteLabel = createStyledLabel(
 	capturePanel,
-	"Brecha de Bioma: ΔB = 0 | Cotización: 49 Robux\n(Tirarse al Bioma 30 siendo Bioma 1 cotiza a 10,000+ Robux)",
+	"Captura de pago no disponible\nNo hay productos ni precios configurados.",
 	UDim2.new(0.92, 0, 0, 36),
 	UDim2.new(0.04, 0, 0.46, 0),
 	10,
@@ -228,11 +227,13 @@ local quoteLabel = createStyledLabel(
 
 local skipTimerBtn = createStyledButton(
 	capturePanel,
-	"Saltar Tiempo (Skip Timer) - 99 R$",
+	"Salto de tiempo no disponible",
 	UDim2.new(0.92, 0, 0, 26),
 	UDim2.new(0.04, 0, 0.74, 0),
 	Color3.fromRGB(40, 70, 95)
 )
+skipTimerBtn.Active = false
+skipTimerBtn.AutoButtonColor = false
 
 -- 5. TIENDA DE EVENTO DÍA 1 (CAJA ESPECIAL DE EVENTO HASTA 0.0010%)
 local eventShopPanel = createStyledFrame(
@@ -391,20 +392,10 @@ local adminBannerLabel = createStyledLabel(
 	Color3.fromRGB(255, 180, 190)
 )
 
--- 8. CONSULTA ASÍNCRONA DE PRECIOS REGIONALES EN ROBUX (MarketplaceService pcall)
-task.spawn(function()
-	local testDevProductId = 200107 -- Multi-Crate x10
-	local fetchSuccess, productInfo = pcall(function()
-		return MarketplaceService:GetProductInfoAsync(testDevProductId, Enum.InfoType.Product)
-	end)
-
-	if fetchSuccess and productInfo and productInfo.PriceInRobux then
-		paidMultiCrateBtn.Text = string.format("Multi-Crate x10 (%d R$)", productInfo.PriceInRobux)
-	else
-		-- Fallback elegante si la llamada de red falla o está en entorno offline/mock
-		paidMultiCrateBtn.Text = "Multi-Crate x10 (2,999 R$)"
-	end
-end)
+-- No configured receipt-backed products: do not query or display invented prices.
+paidMultiCrateBtn.Text = "Compras no disponibles"
+paidMultiCrateBtn.Active = false
+paidMultiCrateBtn.AutoButtonColor = false
 
 -- Conexión segura para eventos de Admin Abuse y Banner
 task.spawn(function()

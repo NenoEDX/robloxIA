@@ -4,6 +4,7 @@ local luau = require("@lune/luau")
 for _, file in {
 	"shared/GameLifecycle.luau", "shared/SlimeEventContract.luau",
 	"shared/SlimeVisualRegistry.luau",
+	"shared/SlimeTradeLedger.luau",
 	"server/SlimeCoreService.luau", "server/init.server.luau",
 	"bootstrap/slime.server.luau", "client/SlimeClientController.client.luau",
 	"client/SlimeHUDController.client.luau",

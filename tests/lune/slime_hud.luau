@@ -43,6 +43,8 @@ local function newInstance(class)
 	})
 end
 local warnings = {}
+local priceQueries = 0
+local marketplaceFetches = 0
 local remotes = {}
 local children = {}
 for key, name in Contract.Names do
@@ -59,7 +61,7 @@ local modules = {
 }
 local playerGui = { ClassName = "PlayerGui", _children = {} }
 local services = {
-	MarketplaceService = { GetProductInfoAsync = function() error("offline") end },
+	MarketplaceService = { GetProductInfoAsync = function() priceQueries += 1; error("offline") end },
 	Players = { LocalPlayer = { WaitForChild = function(_, name) assert(name == "PlayerGui"); return playerGui end } },
 	ReplicatedStorage = { WaitForChild = function(_, name)
 		if name == "Remotes" then return folder end
@@ -68,7 +70,10 @@ local services = {
 }
 local hud = luau.load(fs.readFile("project_template/src/client/SlimeHUDController.client.luau"), {
 	debugName = "SlimeHUDController", environment = {
-		game = { GetService = function(_, name) return services[name] or {} end },
+		game = { GetService = function(_, name)
+			if name == "MarketplaceService" then marketplaceFetches += 1 end
+			return services[name] or {}
+		end },
 		script = { Destroying = destroying }, require = function(name) return assert(modules[name], name) end,
 		Instance = { new = newInstance }, task = { spawn = function(callback) callback() end, delay = function() end },
 		warn = function(message) table.insert(warnings, tostring(message)) end,
@@ -82,6 +87,20 @@ local hud = luau.load(fs.readFile("project_template/src/client/SlimeHUDControlle
 ok(type(hud.Stop) == "function", "HUD cleanup exists")
 ok(hud.ScreenGui.ClassName == "ScreenGui", "HUD creates its ScreenGui")
 ok(hud.GetSelectedPerformanceMode() == "MEDIUM_6", "Default performance mode preserved")
+ok(priceQueries == 0, "No product lookup without configured paid features")
+ok(marketplaceFetches == 0, "Unavailable paid UI never requests MarketplaceService")
+for _, object in created do
+	if type(object.Text) == "string" then
+		ok(not string.match(object.Text, "%d[%d,]*%s*R%$") and not string.match(object.Text, "%d[%d,]*%s*Robux"),
+			"Unavailable paid surfaces cannot display fabricated prices")
+	end
+end
+local unavailableTimer = nil
+for _, object in created do if object.Text == "Salto de tiempo no disponible" then unavailableTimer = object end end
+ok(unavailableTimer ~= nil and unavailableTimer.Active == false, "Unavailable timer cannot look actionable")
+local unavailableButton = nil
+for _, object in created do if object.ClassName == "TextButton" and object.Text == "Compras no disponibles" then unavailableButton = object end end
+ok(unavailableButton ~= nil and unavailableButton.Active == false, "Paid control is explicitly unavailable")
 ok(remotes.AdminAbuseBroadcast.OnClientEvent:Count() == 1, "Canonical admin event binds once")
 ok(remotes.DynamicCapturePrompt.OnClientEvent:Count() == 0, "Capture prompt does not initiate purchases")
 local function findText(value)

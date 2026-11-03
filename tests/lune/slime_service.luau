@@ -3,6 +3,7 @@ local fs = require("@lune/fs")
 local luau = require("@lune/luau")
 local Lifecycle = require("../../project_template/src/shared/GameLifecycle")
 local Contract = require("../../project_template/src/shared/SlimeEventContract")
+local TradeLedger = require("../../project_template/src/shared/SlimeTradeLedger")
 local connections = 0
 local function signal()
 	local listeners = {}
@@ -27,6 +28,7 @@ local modules = {
 		SLIMES_BY_ID = { ["slime-1"] = { rarityGrade = "GRADE_01_BASIC", baseStabilityHP = 100, raceId = "race-1" } },
 	},
 	GameLifecycle = Lifecycle, SlimeEventContract = Contract,
+	SlimeTradeLedger = TradeLedger,
 	NetworkSecurityService = { createGuardedRemote = function(_name)
 		remoteCount += 1
 		return { FireClient = function() end }

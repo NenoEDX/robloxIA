@@ -20,7 +20,7 @@ const compositions = [
     services: ["NetworkSecurityService", "SlimeCoreService"],
     clients: ["SlimeClientController", "SlimeHUDController"],
     shared: ["GameLifecycle", "ProceduralAnimator", "SlimeCatalogs", "SlimeCoreMath", "SlimeEventContract", "SlimeFrameworkTemplate",
-      "SlimeUpdatesRegistry", "SlimeVisualAndAnimEngine", "SlimeVisualRegistry", "Types", "VFXAndJuiceEngine"],
+      "SlimeTradeLedger", "SlimeUpdatesRegistry", "SlimeVisualAndAnimEngine", "SlimeVisualRegistry", "Types", "VFXAndJuiceEngine"],
   },
 ];
 

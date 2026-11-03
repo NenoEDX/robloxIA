@@ -111,7 +111,7 @@ test("S3 & S4: SlimeCoreService.luau and Client/HUD Controllers implement Amphit
   assert.ok(srvSrc.includes("UNREFINED_SPILL_PENALTY = 0.25"), "Must spill 25% of unrefined juice into a Mutagenic Puddle on wipe");
   assert.ok(srvSrc.includes("extractToCircularLobby"), "Must extract slimes to Circular Lobby applying up to 10 mutations max");
   assert.ok(srvSrc.includes("openEventSpecialCrates"), "Must support Day-1 Event Crate opening (free tokens + paid multi-crate x1/x3/x10)");
-  assert.ok(srvSrc.includes("ArePaidRandomItemsRestricted"), "Must audit PolicyService.ArePaidRandomItemsRestricted and switch to Deterministic Seed Queue");
+  assert.ok(srvSrc.includes("PAID_FEATURE_UNAVAILABLE"), "Unconfigured paid routes must fail closed before granting");
   assert.ok(srvSrc.includes("IsPaidItemTradingAllowed") && srvSrc.includes("Earned_Free"), "Must segregate Earned_Free metadata for trading");
   assert.ok(srvSrc.includes("attemptDynamicSlimeCapture"), "Must handle 1x/day free guaranteed capture and dynamic gap Robux capture");
   assert.ok(srvSrc.includes("triggerGlobalAdminAbuse"), "Must broadcast Admin Abuse LiveOps events via MessagingService");
@@ -121,6 +121,6 @@ test("S3 & S4: SlimeCoreService.luau and Client/HUD Controllers implement Amphit
   assert.ok(cliSrc.startsWith("--!strict"), "SlimeClientController.client.luau must start with --!strict");
   assert.ok(hudSrc.startsWith("--!strict"), "SlimeHUDController.client.luau must start with --!strict");
   assert.ok(hudSrc.includes("Details"), "HUD must label odds button explicitly with the word 'Details'");
-  assert.ok(hudSrc.includes("GetProductInfoAsync"), "HUD must fetch live regional Robux prices via GetProductInfoAsync");
+  assert.ok(hudSrc.includes("Compras no disponibles"), "Unconfigured paid features must be explicitly unavailable");
   assert.ok(hudSrc.includes("MODO RENDIMIENTO"), "HUD must provide Performance Mode toggle (3 / 6 / 10 mutaciones)");
 });

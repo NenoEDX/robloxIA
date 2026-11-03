@@ -15,7 +15,6 @@
 
 local CollectionService = game:GetService("CollectionService")
 local HttpService = game:GetService("HttpService")
-local MarketplaceService = game:GetService("MarketplaceService")
 local MessagingService = game:GetService("MessagingService")
 local Players = game:GetService("Players")
 local PolicyService = game:GetService("PolicyService")
@@ -28,6 +27,7 @@ local SlimeCatalogs = require(SharedFolder:WaitForChild("SlimeCatalogs") :: any)
 local SlimeCoreMath = require(SharedFolder:WaitForChild("SlimeCoreMath") :: any)
 local GameLifecycle = require(SharedFolder:WaitForChild("GameLifecycle") :: any)
 local SlimeEventContract = require(SharedFolder:WaitForChild("SlimeEventContract") :: any)
+local SlimeTradeLedger = require(SharedFolder:WaitForChild("SlimeTradeLedger") :: any)
 local NetworkSecurityService = require(script.Parent:WaitForChild("NetworkSecurityService") :: any)
 
 export type SlimeDefinition = Types.SlimeDefinition
@@ -51,9 +51,9 @@ SlimeCoreService.HOLE_INFESTATION_MUTATION_BUFF = 5.0
 local playerDorsalTanks: { [number]: { unrefinedJuice: number, pendingSlimes: { SlimePetInstance } } } = {}
 local playerInventories: { [number]: { [string]: SlimePetInstance } } = {}
 local playerDailyFreeCaptureTime: { [number]: number } = {}
-local playerDeterministicQueues: { [number]: { EventCrateItem } } = {}
 local activeHoleInfestations: { [Instance]: number } = {}
-local lockedTradeItems: { [string]: boolean } = {}
+local trades = SlimeTradeLedger.new(function(userId: number) return playerInventories[userId] end,
+	function() return HttpService:GenerateGUID(false) end)
 local activeFermentations: {
 	[number]: {
 		[number]: {
@@ -340,66 +340,34 @@ function SlimeCoreService.extractToCircularLobby(player: Player): {
 	}
 end
 
---[[
-	4. Tienda de Evento Día 1:
-	- Soporta x1, x3, x10 cajas con fichas de evento o vía de pago
-	- Audita PolicyService.ArePaidRandomItemsRestricted fail-closed
-	- Conmuta a Cola Determinista Pre-revelada en jurisdicciones restringidas
-]]
+-- Server-authorized free crates only. Paid grants require a separate receipt-backed implementation.
 function SlimeCoreService.openEventSpecialCrates(player: Player, count: number, usePaidPath: boolean): {
 	success: boolean,
+	reason: string?,
 	items: { EventCrateItem },
 	usedDeterministicQueue: boolean,
 }
-	local openCount = if count == 10 then 10 elseif count == 3 then 3 else 1
-
-	local policyCheckOk, policyInfo = pcall(function()
-		return PolicyService:GetPolicyInfoForPlayerAsync(player)
-	end)
-
-	local arePaidRandomRestricted = true
-	if policyCheckOk and policyInfo and typeof(policyInfo.ArePaidRandomItemsRestricted) == "boolean" then
-		arePaidRandomRestricted = policyInfo.ArePaidRandomItemsRestricted
+	if usePaidPath ~= false then
+		return { success = false, reason = "PAID_FEATURE_UNAVAILABLE", items = {}, usedDeterministicQueue = false }
 	end
-
+	if count ~= 1 and count ~= 3 and count ~= 10 then
+		return { success = false, reason = "INVALID_COUNT", items = {}, usedDeterministicQueue = false }
+	end
+	local openCount = count
 	local pool = SlimeCatalogs.EVENT_CRATE_DAY1_POOL
 	local grantedItems: { EventCrateItem } = {}
-	local usedDeterministic = false
-
-	if usePaidPath and arePaidRandomRestricted then
-		usedDeterministic = true
-		local queue = playerDeterministicQueues[player.UserId]
-		if not queue or #queue < openCount then
-			queue = {}
-			for i = 1, 10 do
-				local deterministicIndex = ((i * 3 + player.UserId) % #pool) + 1
-				table.insert(queue, pool[deterministicIndex])
-			end
-			playerDeterministicQueues[player.UserId] = queue
-		end
-
-		for _ = 1, openCount do
-			if #queue > 0 then
-				local item = table.remove(queue, 1) :: EventCrateItem
-				table.insert(grantedItems, item)
-			else
-				table.insert(grantedItems, pool[1])
+	for _ = 1, openCount do
+		local roll = math.random() * 100
+		local cumulative = 0
+		local selected = pool[1]
+		for _, item in pool do
+			cumulative += item.probabilityPercent
+			if roll <= cumulative then
+				selected = item
+				break
 			end
 		end
-	else
-		for _ = 1, openCount do
-			local roll = math.random() * 100
-			local cumulative = 0
-			local selected = pool[1]
-			for _, item in pool do
-				cumulative += item.probabilityPercent
-				if roll <= cumulative then
-					selected = item
-					break
-				end
-			end
-			table.insert(grantedItems, selected)
-		end
+		table.insert(grantedItems, selected)
 	end
 
 	local inventory = playerInventories[player.UserId] or {}
@@ -420,7 +388,7 @@ function SlimeCoreService.openEventSpecialCrates(player: Player, count: number, 
 			currentHP = 150,
 			maxHP = 150,
 			cooldownUntilOsTime = 0,
-			acquisitionPath = "Event_Crate",
+			acquisitionPath = "Earned_Free", -- This entrypoint cannot grant paid crates.
 			capturedBiome = 1,
 		}
 		inventory[petUuid] = pet
@@ -430,7 +398,7 @@ function SlimeCoreService.openEventSpecialCrates(player: Player, count: number, 
 	return {
 		success = true,
 		items = grantedItems,
-		usedDeterministicQueue = usedDeterministic,
+		usedDeterministicQueue = false,
 	}
 end
 
@@ -444,7 +412,7 @@ function SlimeCoreService.attemptDynamicSlimeCapture(
 	player: Player,
 	slimeId: string,
 	targetBiome: number
-): { success: boolean, quote: DynamicCaptureQuote, pet: SlimePetInstance?, promptedProduct: boolean }
+): { success: boolean, quote: DynamicCaptureQuote, pet: SlimePetInstance?, promptedProduct: boolean, reason: string? }
 	local slimeDef = SlimeCatalogs.SLIMES_BY_ID[slimeId]
 	local isUltra = if slimeDef then slimeDef.isUltraSpecial else false
 	local isTitanic = if slimeDef then (slimeDef.ultraClass == "TITANIC") else false
@@ -460,6 +428,10 @@ function SlimeCoreService.attemptDynamicSlimeCapture(
 		lastDaily,
 		os.time()
 	)
+	quote.mappedDeveloperProductId = 0 -- No configured receipt-backed product exists.
+	if not slimeDef then
+		return { success = false, quote = quote, pet = nil, promptedProduct = false, reason = "UNKNOWN_SLIME" }
+	end
 
 	if quote.isDailyFreeAvailable then
 		playerDailyFreeCaptureTime[player.UserId] = os.time()
@@ -487,8 +459,7 @@ function SlimeCoreService.attemptDynamicSlimeCapture(
 
 		return { success = true, quote = quote, pet = pet, promptedProduct = false }
 	else
-		remotes.DynamicCapturePrompt:FireClient(player, quote)
-		return { success = false, quote = quote, pet = nil, promptedProduct = true }
+		return { success = false, quote = quote, pet = nil, promptedProduct = false, reason = "PAID_FEATURE_UNAVAILABLE" }
 	end
 end
 
@@ -497,13 +468,12 @@ function SlimeCoreService.skipTimerWithRobux(
 	timerCategory: ("PET_COOLDOWN" | "FERMENTATION_VAT" | "DAILY_CAPTURE_RESET"),
 	remainingSeconds: number
 ): number
-	local robuxCost = SlimeCoreMath.computeSkipTimerRobux(remainingSeconds, timerCategory)
-	if robuxCost > 0 then
-		pcall(function()
-			MarketplaceService:PromptProductPurchase(player, 200101)
-		end)
-	end
-	return robuxCost
+	-- Disabled until a configured product, durable grant and receipt handler exist.
+	return 0
+end
+
+function SlimeCoreService.getCapabilities()
+	return { persistence = "session-only", paidPurchases = false, trading = "offer-accept" }
 end
 
 --[[
@@ -516,54 +486,29 @@ function SlimeCoreService.initiateTwoPhaseTrade(
 	playerB: Player,
 	petA_UUID: string,
 	petB_UUID: string
-): { success: boolean, reason: string? }
-	local policyAOk, policyA = pcall(function()
-		return PolicyService:GetPolicyInfoForPlayerAsync(playerA)
-	end)
-	local policyBOk, policyB = pcall(function()
-		return PolicyService:GetPolicyInfoForPlayerAsync(playerB)
-	end)
+): SlimeTradeLedger.Result
+	return trades:offer(playerA.UserId, playerB.UserId, petA_UUID, petB_UUID)
+end
 
-	local tradingAllowedA = policyAOk and policyA and (policyA.IsPaidItemTradingAllowed ~= false)
-	local tradingAllowedB = policyBOk and policyB and (policyB.IsPaidItemTradingAllowed ~= false)
-
-	local invA = playerInventories[playerA.UserId]
-	local invB = playerInventories[playerB.UserId]
-	if not invA or not invB then
-		return { success = false, reason = "Inventario no disponible" }
+function SlimeCoreService.acceptTrade(player: Player, tradeId: string): SlimeTradeLedger.Result
+	local a, b = trades:participants(player.UserId, tradeId)
+	if not a or not b then return { success = false, reason = "TRADE_NOT_FOUND" } end
+	if player.UserId ~= b then return { success = false, reason = "AWAITING_ACCEPTANCE" } end
+	local playerA, playerB = Players:GetPlayerByUserId(a), Players:GetPlayerByUserId(b)
+	if not playerA or not playerB then
+		trades:cancel(player.UserId, tradeId)
+		return { success = false, reason = "PLAYER_UNAVAILABLE" }
 	end
-
-	local petA = invA[petA_UUID]
-	local petB = invB[petB_UUID]
-	if not petA or not petB then
-		return { success = false, reason = "Mascota no encontrada" }
+	local function paidTradingAllowed(participant: Player): boolean
+		local ok, policy = pcall(function() return PolicyService:GetPolicyInfoForPlayerAsync(participant) end)
+		return ok and type(policy) == "table" and policy.IsPaidItemTradingAllowed == true
 	end
+	local allowedA, allowedB = paidTradingAllowed(playerA), paidTradingAllowed(playerB)
+	return trades:accept(player.UserId, tradeId, allowedA, allowedB)
+end
 
-	-- Validación de metadatos Earned_Free ante restricción de trading
-	if not tradingAllowedA and petA.acquisitionPath ~= ("Earned_Free" :: Types.AcquisitionPath) then
-		return { success = false, reason = "Intercambio de items de pago restringido por politica para Jugador A" }
-	end
-	if not tradingAllowedB and petB.acquisitionPath ~= ("Earned_Free" :: Types.AcquisitionPath) then
-		return { success = false, reason = "Intercambio de items de pago restringido por politica para Jugador B" }
-	end
-
-	-- Fase 1: Preparación y bloqueo atómico
-	if lockedTradeItems[petA_UUID] or lockedTradeItems[petB_UUID] then
-		return { success = false, reason = "Item actualmente bloqueado en otra transaccion" }
-	end
-	lockedTradeItems[petA_UUID] = true
-	lockedTradeItems[petB_UUID] = true
-
-	-- Fase 2: Confirmación atómica y desbloqueo
-	invA[petA_UUID] = nil
-	invB[petB_UUID] = nil
-	invA[petB_UUID] = petB
-	invB[petA_UUID] = petA
-
-	lockedTradeItems[petA_UUID] = nil
-	lockedTradeItems[petB_UUID] = nil
-
-	return { success = true }
+function SlimeCoreService.cancelTrade(player: Player, tradeId: string): SlimeTradeLedger.Result
+	return trades:cancel(player.UserId, tradeId)
 end
 
 function SlimeCoreService.getAlchemistBounties(player: Player): {
@@ -702,14 +647,13 @@ local function initializePlayer(player: Player)
 	playerDorsalTanks[player.UserId] = { unrefinedJuice = 250, pendingSlimes = {} }
 	playerInventories[player.UserId] = {}
 	playerDailyFreeCaptureTime[player.UserId] = 0
-	playerDeterministicQueues[player.UserId] = {}
 end
 
 local function removePlayer(player: Player)
+	trades:cancelFor(player.UserId)
 	playerDorsalTanks[player.UserId] = nil
 	playerInventories[player.UserId] = nil
 	playerDailyFreeCaptureTime[player.UserId] = nil
-	playerDeterministicQueues[player.UserId] = nil
 	activeFermentations[player.UserId] = nil
 end
 
@@ -744,6 +688,7 @@ function SlimeCoreService.start(): boolean
 end
 
 function SlimeCoreService.stop(): { string }
+	trades:clear()
 	local _, errors = lifecycle:stop()
 	return errors
 end

@@ -22,6 +22,7 @@
         "GameLifecycle": { "$path": "src/shared/GameLifecycle.luau" },
         "SlimeEventContract": { "$path": "src/shared/SlimeEventContract.luau" },
         "SlimeVisualRegistry": { "$path": "src/shared/SlimeVisualRegistry.luau" },
+        "SlimeTradeLedger": { "$path": "src/shared/SlimeTradeLedger.luau" },
         "SlimeFrameworkTemplate": { "$path": "src/shared/SlimeFrameworkTemplate.luau" },
         "SlimeUpdatesRegistry": { "$path": "src/shared/SlimeUpdatesRegistry.luau" },
         "SlimeVisualAndAnimEngine": { "$path": "src/shared/SlimeVisualAndAnimEngine.luau" },
