@@ -16,8 +16,8 @@ Delivery: ask-on-risk; user-selected `feature-branch-chain`, local work-unit com
 ## Tasks
 
 - [ ] **T1** | S1,S7 | inline; no writer trigger | isolation verified; original 52-entry dirty state retained, selective first-party overlay still pending; 127 ignored export files copied and SHA-256 verified | commit: pending.
-- [ ] **T2** | S1,S4 | inline; no writer trigger; delegated build action and item-5 verifier | implementation/builds verified with Rojo 7.7.1; exact generated trees checked independently; parent suite 38/38 including real builds; ready for isolated commit/native review | commit: pending.
-- [ ] **T3** | S2,S7 | inline; no writer trigger | local launcher/configuration independently verified; live discovery returned `{"studios":[]}`; parent final check 12/12; target playtest blocked on Studio connection | commit: pending.
+- [x] **T2** | S1,S4 | inline; no writer trigger; delegated build action and item-5 verifier | both Rojo builds and exact generated trees verified; parent suite 38/38; native high-risk review granted, approved and acknowledged | commit: `5b42ac0`.
+- [ ] **T3** | S2,S7 | inline; no writer trigger; independent item-2/3/5 verifier | local launcher/config/diagnostics independently verified; legacy compatibility preserved; live discovery `{"studios":[]}`; target playtest blocked on Studio connection | commit: pending.
 - [ ] **T4** | S3,S7 | inline; no writer trigger | pending: safe canonical vault access, snapshot/provenance workflow and plugin policy | commit: pending.
 - [ ] **T5** | S4,S7 | inline; no writer trigger | pending: shared game lifecycle/event contracts and Slime integration fixes | commit: pending.
 - [ ] **T6** | S4 | inline; no writer trigger | pending: validate/complete state and transaction seams, isolate unconfigured paid features | commit: pending.
@@ -143,3 +143,20 @@ Resume the feature from odd/tasks/system-overhaul.md. I authorize the recommende
 Rama de integración (recomendada)
 
 - Native single-select choice selects `feature-branch-chain`; cache it for this feature. Local work-unit commits remain authorized, but no push, PR creation or merge is authorized. T2 is the first isolated high-risk unit; existing T3 implementation stays outside its commit.
+
+### L14 — T2 work unit and native review closure
+
+- Committed T2 as `5b42ac0` with its tests and guide, excluding the pre-existing T3 worktree changes. The coherent unit contains 404 implementation/test/guide lines plus the 145-line feature log; it was not split into artificial code/test/doc commits. Running authored total: 549 lines. First reviewed boundary advanced from `9e9e67e` to `5b42ac0`.
+- Native assessment: high, item 5, `review_due: true`. Declared all remaining untracked files out of scope using the exact observed inventory. User explicitly chose "Revisar este cambio". Four reviewer slots were launched for the frozen T2 candidate only.
+- Interruption correction (user, verbatim): "I stopped by mistake continue". Re-entered exact bound STATUS; retained the admitted resilience result and relaunched only the three reoffered interrupted slots.
+- Native final closure approved with no blockers and no correction transition. Advisory topics: fixed seed/port literals and parser offset; opt-in build coverage; static require parser limitations; untested runtime return shapes/startup failure behavior. These do not reopen T2 and must not be silently turned into unrelated edits.
+- Exact acknowledgement returned `gentle-ai.review-acknowledged/v1`, `action: acknowledged`, `authority: burned`, lineage `review-69d3118ad6de7529`, target `sha256:777cad622c68c80f788ee194919a78cf7ec6e5c0f65e984f575eb1e4c8a68ea7`. No push/PR/merge. Next: bounded read-only mapping of T1/T3-T8 because the remaining unfamiliar work exceeds the inline evidence budget; implementation remains inline unless a writer trigger actually holds.
+
+### L15 — T3 local diagnostic completion boundary
+
+- Read-only explorer mapped remaining tasks. Parent verified the doctor source and current OpenCode V2 documentation. `{env:LOCALAPPDATA}` is supported client-side config interpolation, unlike literal `%LOCALAPPDATA%` passed to direct spawn; retain the existing working discovery-only configuration and its hard-deny policy.
+- Inline T3 scope: remove the obsolete missing-`--studio` warning, modernize the generic example's stable launcher path and add a presence-only inventory for the two isolated projects. Preserve all legacy diagnostic fields, security checks and resolver fallback. This does not grant editor tools or claim a live place handshake/playtest.
+- Risk: items 2/3/5 for the T3 unit (existing discovery-only client policy/process integration plus shared diagnostic behavior). Independent verifier will check the combined T3 delta against `5b42ac0`; no new dependency or tool installation.
+- RED: doctor tests returned 8 passed / 3 failed for the stale argument warning and missing inventory. GREEN: combined doctor/config suite 14/14. Full suite 38 passed / 0 failed / 2 skipped (unchanged T2 builds; temporary Rojo removed after verified use).
+- Independent verifier: scratch suite 14/14; baseline suite 5/5; reconstructed stable-launcher RED fails. Differential probes covered 21 config, 13 resolver, 11 report, 3 CLI and 7 sovereignty cases; only authorized differences, 29 input hashes unchanged. No blockers. Added three reusable probes for omitted args, invalid-JSON inventory honesty and the updated example; corrected the stale validation comment.
+- Parent rerun after incorporating probes: 17/17 passed, no skips. `git diff --check` passed; removed verifier scratch after checking for reparse points. Local T3 is ready for an isolated commit; S2 remains open for an explicitly selected Studio target and real editor verification.

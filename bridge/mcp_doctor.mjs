@@ -54,7 +54,7 @@ export const ROJO_MANAGED_CONTAINERS = Object.freeze([
 ]);
 
 /**
- * Busca el ejecutable mcp.bat en %LOCALAPPDATA%/Roblox/Versions/* y devuelve la ruta absoluta resuelta.
+ * Resolve the current Roblox/mcp.bat launcher, then fall back to legacy version folders.
  *
  * @param {string} [localAppData] Ruta a LocalAppData (por defecto process.env.LOCALAPPDATA)
  * @param {typeof fs} [fsImpl] Implementación de fs inyectable para tests
@@ -69,6 +69,16 @@ export function resolveWindowsStudioMcpBat(
   }
 
   const versionsDir = path.join(localAppData, "Roblox", "Versions");
+  const currentLauncher = path.join(localAppData, "Roblox", "mcp.bat");
+  if (fsImpl.existsSync(currentLauncher)) {
+    return {
+      found: true,
+      mcpBatPath: currentLauncher.replace(/\\/g, "/"),
+      studioExePath: null,
+      versionsDir,
+    };
+  }
+
   if (!fsImpl.existsSync(versionsDir)) {
     return { found: false, mcpBatPath: null, studioExePath: null, versionsDir };
   }
@@ -123,7 +133,7 @@ export function resolveWindowsStudioMcpBat(
 
 /**
  * Valida un objeto de configuración MCP (ej. claude_desktop_config.json o mcp_config.json).
- * Detecta variables de entorno sin expandir (%LOCALAPPDATA%, $env:), rutas relativas y args faltantes.
+ * Checks unexpanded environment variables and relative launcher paths; arguments are optional.
  *
  * @param {object} configObj
  * @returns {{ valid: boolean, errors: string[], warnings: string[] }}
@@ -157,11 +167,6 @@ export function validateMcpConfig(configObj) {
     if (!isWindowsAbs && !isPosixAbs) {
       errors.push(`El comando '${cmd}' debe ser una ruta absoluta hacia mcp.bat o el binario StudioMCP.`);
     }
-  }
-
-  const args = Array.isArray(studioMcp.args) ? studioMcp.args : [];
-  if (!args.includes("--studio")) {
-    warnings.push("Se recomienda incluir '--studio' en 'mcpServers.StudioMCP.args'.");
   }
 
   return {
@@ -274,6 +279,10 @@ export function runMcpDoctor(options = {}) {
       projectFileExists: hasRojoProject,
       mappingsValid: rojoMappingsOk,
       managedContainers: ROJO_MANAGED_CONTAINERS,
+      gameProjects: ["zombie", "slime"].map((game) => {
+        const projectFile = `project_template/${game}.project.json`;
+        return { game, projectFile, exists: fsImpl.existsSync(path.join(repoRoot, projectFile)) };
+      }),
     },
     mcpConfigExample: exampleConfigValidation,
     openCloud: {

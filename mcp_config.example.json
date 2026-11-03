@@ -3,10 +3,8 @@
   "_comment": "Configuración MCP para RAASE 3.0 Next-Gen (Roblox Studio). IMPORTANTE: En Windows, NO uses %LOCALAPPDATA% sin expandir en 'command'; usa la ruta absoluta resuelta por 'node bridge/mcp_doctor.mjs'.",
   "mcpServers": {
     "StudioMCP": {
-      "command": "C:/Users/TU_USUARIO/AppData/Local/Roblox/Versions/version-xxxxxxxxxxxxxxxx/mcp.bat",
-      "args": [
-        "--studio"
-      ]
+      "command": "C:/Users/TU_USUARIO/AppData/Local/Roblox/mcp.bat",
+      "args": []
     }
   },
   "raaseCoexistence": {
