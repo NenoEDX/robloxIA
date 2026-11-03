@@ -1,6 +1,6 @@
 # Plan maestro: renovación de RAASE y los proyectos Roblox
 
-Estado: T2 y las entregas locales T3–T7 implementadas y comprobadas; T8 reconciliada y verificada documentalmente, con revisión general RDD pendiente. La renovación operativa completa sigue pendiente de T1/T3/T9 y de las pruebas reales indicadas abajo.
+Estado: T2 y las entregas locales T3–T8 implementadas y comprobadas. La revisión general RDD de T6–T8 fue aprobada y reconocida. La renovación operativa completa sigue pendiente de T1/T3/T9 y de las pruebas reales indicadas abajo.
 Fecha de evaluación: 2026-11-03. Seguimiento: `odd/tasks/system-overhaul.md`.
 
 ## 1. Recomendación principal
@@ -220,11 +220,11 @@ redactarse y las credenciales afectadas rotarse con el propietario, sin reproduc
 | T5 | Framework y contratos | Luau ejecutado con límites simulados; `1baa883` revisado. Prueba visual/multicliente pendiente |
 | T6 | Estado/transacciones | `25991f5`, pruebas ejecutables y verificador independiente; pagos deshabilitados, datos de sesión. RDD individual omitido por el usuario |
 | T7 | Referencias, assets y mapas | `69d2dd3`, 16 checks de metadatos; consentimiento real y calidad de cada asset/mapa siguen pendientes |
-| T8 | Documentación reconciliada | Guías y contratos verificados; documentos históricos señalados, revisión general RDD pendiente |
+| T8 | Documentación reconciliada | `8b63b06`: guías y contratos verificados; documentos históricos señalados, revisión general RDD aprobada y reconocida |
 | T9 | Validación integral | Suite local registrada por comando; Studio, multicliente, dispositivo, recuperación y preparación para producción pendientes |
 
-Por decisión del usuario, la revisión RDD general se hará al finalizar T8 sobre el
-tramo pendiente desde `1baa883`, sin repetir las revisiones ya reconocidas. RDD no
+Por decisión del usuario, la revisión RDD general cubrió `1baa883..8b63b06` y fue
+aprobada y reconocida, sin repetir las revisiones anteriores. RDD no
 reemplaza pruebas ni autoriza publicación. Los conteos y resultados definitivos se
 registran en [las tareas](../odd/tasks/system-overhaul.md), no se deducen de esta tabla.
 

@@ -22,7 +22,7 @@ Delivery: ask-on-risk; user-selected `feature-branch-chain`, local work-unit com
 - [x] **T5** | S4,S7 | inline; mapping delegated beyond evidence budget; independent item-2/3/4/5 verifier | local framework verified: full suite 63/63, final expanded focused suite 12/12; native review granted, approved and acknowledged; Studio proof pending | commit: `1baa883`.
 - [x] **T6** | S4,S7 | inline; no writer trigger; independent item-2/3/4 verifier | local state/transaction slice verified: 65/65 full, 13/13 focused, independent 215 assertions; native review explicitly declined for this candidate; production persistence/payments unavailable | commit: `25991f5`.
 - [x] **T7** | S5,S6 | delegated direct; long-session context backstop, one bounded behavior unit | metadata gate and asset/map workflow verified 16/16; native medium/under_budget, general review deferred to T8; no generation/import | commit: `69d2dd3`.
-- [ ] **T8** | S8 | inline; delegated documentation map; item-3 independent verification | docs verified, integrated suite 81/81 and independent 112 links; general RDD pending | commit: pending recording.
+- [x] **T8** | S8 | inline; delegated documentation map; item-3 independent verification | docs verified, integrated suite 81/81 and independent 112 links; general T6-T8 RDD approved and acknowledged | commit: `8b63b06`.
 - [ ] **T9** | S1-S8 | inline checks + delegated independent verifier for named high-risk items | pending: functional, security, recovery and real Studio verification | commit: pending.
 
 ## Log
@@ -267,3 +267,8 @@ omitamos hasta saltar al ultimo T para hacer un rdd general y ahorrar tokens
 ### L31 — Final local verification
 
 - Selected integrated eleven-file suite: 81/81, zero failures/skips, including Lune, both Rojo builds and both local CLIs. Parent checked 54 links; independent T8 verifier checked 112, no broken links or blockers. Seven historical bodies are preserved; parent moved their notices to lines 3–5 and rechecked preservation. Only Markdown changed in T8; `git diff --check` passed. Verification scratch removed. No extra implementation/audit was opened; proceed to the single agreed RDD over T6–T8, then report remaining operational proof separately.
+
+### L32 — T4–T8 local delivery closure
+
+- T8 commit `8b63b06` contains the reconciled docs (802 authored changed lines). User granted the final general review of `1baa883..8b63b06`; four lenses approved with no correction. Exact acknowledgement returned `action: acknowledged`, `authority: burned`, lineage `review-170ef4464a36122b`, target `sha256:a3c4992fa356abc54f0bacdcb61f7b0d2a53654fc2c27d666a77496cd1ef076c`.
+- Non-blocking follow-ups: opt-in Lune checks, no automatic trade-offer expiry, pending-result naming and enum/type duplication. No review is reopened for these advisories. T4–T8 local deliveries are complete; T1 selective overlay, T3 live Studio and T9 integral/operational proof remain open. No production readiness, real asset completion, persistent payments, vault migration/restore, push or publication is claimed. Only this passive closure record changes after review.
