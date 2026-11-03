@@ -1,5 +1,7 @@
 # 🗃️ PROJECT DATA LEDGER: robloxIA / RAASE 2.0
 
+> **Registro histórico — 2026-11-03.** Los PASS/SHIP de este documento no certifican la renovación actual. El seguimiento canónico está en [odd/tasks/system-overhaul.md](odd/tasks/system-overhaul.md) y el [plan maestro](docs/PLAN_MAESTRO.md).
+
 ## 1. 📌 Project Identity
 - **Name**: robloxIA (Roblox Autonomous Agent Studio Engine - RAASE 2.0)
 - **Core Goal**: Convertir cualquier agente de IA (Antigravity, Claude Code, Codex, OpenCode) en un Ingeniero y Diseñador Autónomo de Roblox Studio de alto rendimiento capaz de construir, programar, auditar por visión computacional y desplegar experiencias completas sin intervención manual.

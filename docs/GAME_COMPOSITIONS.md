@@ -7,7 +7,7 @@ not the entrypoint for either isolated game.
 | Game | Project | Local serve port | Server modules | Client controllers | Shared modules |
 | --- | --- | --- | --- | --- | --- |
 | Zombie Awareness | `project_template/zombie.project.json` | 34872 | 8 | 2 | 9 |
-| SLIME PIT | `project_template/slime.project.json` | 34874 | 2 | 2 | 8 |
+| SLIME PIT | `project_template/slime.project.json` | 34874 | 2 | 2 | 12 |
 
 Both configurations bind to `127.0.0.1`. The shared instance names remain
 `RAASE_Server`, `RAASE_Shared`, and `RAASE_Client`, but each game uses a separate

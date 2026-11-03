@@ -2,6 +2,8 @@
 ## ROBLOX AUTONOMOUS AGENT STUDIO ENGINE (RAASE 2.1)
 ### ESPECIFICACIÓN TÉCNICA FORMAL: GRAFO DE ESCENA BIDIRECCIONAL, COLISIÓN ESPACIAL AABB, CATÁLOGO DE SKILLS Y DOCKWIDGET DE STUDIO
 
+> **Especificación histórica — 2026-11-03.** Este diseño SDD del bridge/plugin no gobierna la ruta MCP integrada ni certifica el estado actual. Las aprobaciones históricas no son autorización de ejecución. Consultar el [plan maestro](PLAN_MAESTRO.md) y [AGENTS.md](../AGENTS.md).
+
 ---
 
 **Clasificación:** Software Design Description (SDD) / Architectural Specification  

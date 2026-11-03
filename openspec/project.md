@@ -1,5 +1,7 @@
 # Contexto del Proyecto — robloxIA (RAASE 2.1)
 
+> **Contexto SDD histórico — 2026-11-03.** Se conserva para trazabilidad; el trabajo actual sigue el [registro ODD](../odd/tasks/system-overhaul.md), [AGENTS.md](../AGENTS.md) y el [plan maestro](../docs/PLAN_MAESTRO.md). Las referencias al bridge exclusivo no describen la ruta MCP actual.
+
 > Contexto OpenSpec para las fases SDD de este repositorio.
 > Inicializado: 2026-09-13 (sdd-init). Fuentes de detección: CLAUDE.md, PROJECT_TRACKER.md, bridge/, skills-roblox/.
 

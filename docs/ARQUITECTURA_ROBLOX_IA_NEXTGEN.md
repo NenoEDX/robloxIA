@@ -2,6 +2,8 @@
 > **Superando las Limitaciones de Plugins Locales hacia Pipelines Multimodales de Modelado 3D, Map Making, Animación, VFX y Game Feel**  
 > *Documento de especificación técnica y de ingeniería de sistemas agénticos para Roblox Studio (Edición 2026).*
 
+> **Documento histórico — 2026-11-03.** Se conserva como propuesta, no certificación vigente. Sus conteos de herramientas y afirmaciones de formatos/importación fueron sustituidos por el [plan actual](PLAN_MAESTRO.md) y [AGENTS.md](../AGENTS.md). Descubrir capacidades instaladas; no ejecutar sus recetas como autorización.
+
 ---
 
 ## 📑 Tabla de Contenidos

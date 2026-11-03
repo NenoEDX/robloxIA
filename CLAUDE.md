@@ -1,7 +1,7 @@
 # RAASE 3.0 / robloxIA — Reglas de Ingeniería para Agentes CLI
 
 ## Identidad y Alcance
-Este proyecto implementa el sistema **RAASE 3.0 Next-Gen (robloxIA)**: una arquitectura autónoma para Roblox Studio basada en agentes de IA, sincronización de código persistente con **Rojo**, control e inspección en vivo mediante el servidor oficial **`StudioMCP`** (`stdio`) y **`MCPBridge`** (`127.0.0.1:7843` / `:34873`), pipeline 3D coloreado con **Open Cloud Assets API (`v1/assets`)** y auditoría estética/funcional en bucle cerrado.
+Este proyecto desarrolla prototipos Roblox con Git/Rojo y MCP integrado de Studio como transporte preferido. El bridge/plugin RAASE es transitorio, no un segundo escritor automático. [AGENTS.md](AGENTS.md) define los límites actuales; el [plan maestro](docs/PLAN_MAESTRO.md) y las [tareas](odd/tasks/system-overhaul.md) separan implementación local de pruebas pendientes. Slime mantiene datos de sesión y compras deshabilitadas; no se afirma preparación para producción.
 
 ## Reglas Obligatorias de Luau 2026
 1. Todo script Luau (`.luau`) DEBE comenzar con `--!strict`.
@@ -18,7 +18,7 @@ Este proyecto implementa el sistema **RAASE 3.0 Next-Gen (robloxIA)**: una arqui
 - Desplegar remotos señuelo (*honeypots*) para expulsar automáticamente clientes que usen *RemoteSpy*.
 
 ## Ciclo de Vida y Memoria (Janitor)
-- Todo componente que escuche señales o instancie partes debe implementar el patrón `Janitor`.
+- Todo componente que escuche señales o instancie partes debe tener limpieza explícita; reutilizar `Janitor` o el `GameLifecycle` existente de Slime según la composición.
 - Desconectar obligatoriamente todo `RBXScriptConnection` al morir el personaje o destruirse la entidad.
 - Las instancias eliminadas deben desecharse formalmente con `:Destroy()`.
 
@@ -64,10 +64,11 @@ Este proyecto implementa el sistema **RAASE 3.0 Next-Gen (robloxIA)**: una arqui
 ## Arquitectura Next-Gen RAASE 3.0: Coexistencia Rojo + StudioMCP + 4 Módulos Maestros
 
 ### 1. Soberanía de Rojo vs. `StudioMCP` (`bridge/mcp_doctor.mjs`)
-- **Regla de Oro**: Todo código Luau persistente vive en `project_template/src/` y se sincroniza hacia Roblox Studio vía **Rojo** (`default.project.json` -> `ReplicatedStorage.RAASE_Shared`, `ServerScriptService.RAASE_Server`, `StarterPlayerScripts.RAASE_Client`).
+- **Regla de Oro**: Todo código Luau persistente vive en `project_template/src/`. Elegir `slime.project.json` o `zombie.project.json` según [GAME_COMPOSITIONS.md](docs/GAME_COMPOSITIONS.md); el proyecto default mixto es legado, no una composición operativa validada.
 - Queda **TERMINANTEMENTE PROHIBIDO** mutar `.Source` o destruir módulos dentro de contenedores gobernados por Rojo desde `execute_luau`. Usa `execute_luau` únicamente para requerir e invocar declarativamente los Módulos Maestros o inspeccionar el `DataModel`.
 - En Windows, configura `StudioMCP` usando la ruta absoluta resuelta hacia `mcp.bat` (ver `mcp_config.example.json` y `node bridge/mcp_doctor.mjs`); nunca uses `%LOCALAPPDATA%` sin expandir en `command`.
-- Las **10 herramientas oficiales de `StudioMCP`** son: `execute_luau`, `insert_model`, `generate_mesh`, `generate_material`, `start_stop_play`, `character_navigation`, `user_keyboard_input`, `user_mouse_input`, `get_console_output` y `screen_capture` (invocando primero `list_roblox_studios` para obtener `studio_id`). Para insertar un `assetId` de Open Cloud, usa `InsertService:LoadAsset(assetId)` vía `execute_luau` o `MCPBridge`.
+- Descubrir las capacidades instaladas y usar `list_roblox_studios` para identificar una copia autorizada; no asumir un número fijo de herramientas. Seguir [STUDIO_MCP_SETUP.md](docs/STUDIO_MCP_SETUP.md). Si falta una sesión/capacidad, registrar la verificación pendiente, sin ampliar permisos ni recurrir automáticamente al bridge.
+- Para assets, leer [ASSET_MAP_PIPELINE.md](docs/ASSET_MAP_PIPELINE.md): referencias y aprobación humana antes de generar; autorización separada antes de importar/publicar. Metadatos, `mock_...` y notas externas no son permisos ni activos terminados.
 
 ### 2. Los 4 Módulos Maestros Declarativos (`ReplicatedStorage.RAASE_Shared`)
 1. **`VoxelTerrainBuilder` (`project_template/src/shared/VoxelTerrainBuilder.luau`)**:
@@ -86,6 +87,7 @@ Este proyecto implementa el sistema **RAASE 3.0 Next-Gen (robloxIA)**: una arqui
 
 ### 3. Protocolo de QA Autónomo en Bucle Cerrado (Playtest QA + RN-11)
 Toda implementación de mecánicas de movimiento, combate o interacción concluye ejecutando:
+Los pasos siguientes requieren una sesión identificada, autorizada y con esas capacidades disponibles; de lo contrario, la prueba queda pendiente y no se presenta como realizada.
 1. `list_roblox_studios` -> obtener `studio_id`.
 2. `start_stop_play` -> iniciar simulación en vivo.
 3. `character_navigation` + `user_keyboard_input` / `user_mouse_input` -> navegar y disparar la interacción.
@@ -93,8 +95,8 @@ Toda implementación de mecánicas de movimiento, combate o interacción concluy
 5. `screen_capture` -> verificar fidelidad visual (respetando el tope máximo de 2 pases de `RN-11`) y detener el playtest con `start_stop_play`.
 
 ## DevEx 2026 y Soberanía del Creador (RN-10)
-- `MarketplaceService.ProcessReceipt` debe ser idempotente, guardando el `PurchaseId` en DataStore mediante `UpdateAsync()` antes de otorgar beneficios.
-- Configurar el juego exclusivamente con avatares R15 para calificar a la tasa preferencial U.S. 18+ ($0.0054 por Robux).
+- Slime no tiene pagos ni persistencia productiva habilitados. Una futura implementación de recibos debe guardar la concesión y su `PurchaseId` atómicamente, y confirmar `PurchaseGranted` solo tras persistir; ante fallo, `NotProcessedYet`. No confundir esto con evidencia de que el flujo ya existe.
+- Verificar las condiciones y tarifas vigentes de DevEx en fuentes oficiales antes de publicar; no inferir elegibilidad o ingresos por el tipo de avatar.
 - El usuario humano en Roblox Studio es la MÁXIMA AUTORIDAD del proyecto (`RN-10`). Prohibido re-crear o sobreescribir objetos borrados o bloqueados (`RAASE_Locked`) por el creador.
 
 ## Estructura del Repositorio

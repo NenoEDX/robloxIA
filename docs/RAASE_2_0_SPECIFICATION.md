@@ -2,6 +2,8 @@
 ## ROBLOX AUTONOMOUS AGENT STUDIO ENGINE (RAASE 2.0)
 ### ESPECIFICACIÓN TÉCNICA FORMAL, INGENIERÍA EN LUAU Y PROTOCOLO DE CONEXIÓN
 
+> **Especificación histórica — 2026-11-03.** Las declaraciones de aprobación/producción del texto son antecedentes, no evidencia actual. Consultar el [plan maestro](PLAN_MAESTRO.md) y los [contratos actuales](../AGENTS.md) antes de operar.
+
 ---
 
 **Clasificación:** Especificación Formal de Arquitectura de Software e IA Autónoma  
