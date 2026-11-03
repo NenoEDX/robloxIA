@@ -1,0 +1,40 @@
+{
+  "name": "SlimePit",
+  "serveAddress": "127.0.0.1",
+  "servePort": 34874,
+  "tree": {
+    "$className": "DataModel",
+    "ServerScriptService": {
+      "RAASE_Server": {
+        "$path": "src/bootstrap/slime.server.luau",
+        "$ignoreUnknownInstances": false,
+        "NetworkSecurityService": { "$path": "src/server/NetworkSecurityService.luau" },
+        "SlimeCoreService": { "$path": "src/server/SlimeCoreService.luau" }
+      }
+    },
+    "ReplicatedStorage": {
+      "RAASE_Shared": {
+        "$className": "Folder",
+        "$ignoreUnknownInstances": false,
+        "Types": { "$path": "src/shared/Types.luau" },
+        "SlimeCatalogs": { "$path": "src/shared/SlimeCatalogs.luau" },
+        "SlimeCoreMath": { "$path": "src/shared/SlimeCoreMath.luau" },
+        "SlimeFrameworkTemplate": { "$path": "src/shared/SlimeFrameworkTemplate.luau" },
+        "SlimeUpdatesRegistry": { "$path": "src/shared/SlimeUpdatesRegistry.luau" },
+        "SlimeVisualAndAnimEngine": { "$path": "src/shared/SlimeVisualAndAnimEngine.luau" },
+        "ProceduralAnimator": { "$path": "src/shared/ProceduralAnimator.luau" },
+        "VFXAndJuiceEngine": { "$path": "src/shared/VFXAndJuiceEngine.luau" }
+      }
+    },
+    "StarterPlayer": {
+      "StarterPlayerScripts": {
+        "RAASE_Client": {
+          "$className": "Folder",
+          "$ignoreUnknownInstances": false,
+          "SlimeClientController": { "$path": "src/client/SlimeClientController.client.luau" },
+          "SlimeHUDController": { "$path": "src/client/SlimeHUDController.client.luau" }
+        }
+      }
+    }
+  }
+}
