@@ -17,8 +17,8 @@ Delivery: ask-on-risk; user-selected `feature-branch-chain`, local work-unit com
 
 - [ ] **T1** | S1,S7 | inline; no writer trigger | isolation verified; original 52-entry dirty state retained, selective first-party overlay still pending; 127 ignored export files copied and SHA-256 verified | commit: pending.
 - [x] **T2** | S1,S4 | inline; no writer trigger; delegated build action and item-5 verifier | both Rojo builds and exact generated trees verified; parent suite 38/38; native high-risk review granted, approved and acknowledged | commit: `5b42ac0`.
-- [ ] **T3** | S2,S7 | inline; no writer trigger; independent item-2/3/5 verifier | local launcher/config/diagnostics independently verified; legacy compatibility preserved; live discovery `{"studios":[]}`; target playtest blocked on Studio connection | commit: pending.
-- [ ] **T4** | S3,S7 | inline; no writer trigger | pending: safe canonical vault access, snapshot/provenance workflow and plugin policy | commit: pending.
+- [ ] **T3** | S2,S7 | inline; no writer trigger; independent item-2/3/5 verifier | local unit committed, verified 17/17 and native review acknowledged; live discovery `{"studios":[]}`; target playtest blocked on Studio connection | commit: `f122c57`.
+- [ ] **T4** | S3,S7 | inline; no writer trigger; item-2 independent verifier | local CLI verified: 15/15, independent probes passed; snapshot guide complete; commit/native review pending; no actual vault migration or restore claimed | commit: pending.
 - [ ] **T5** | S4,S7 | inline; no writer trigger | pending: shared game lifecycle/event contracts and Slime integration fixes | commit: pending.
 - [ ] **T6** | S4 | inline; no writer trigger | pending: validate/complete state and transaction seams, isolate unconfigured paid features | commit: pending.
 - [ ] **T7** | S5,S6 | inline; no writer trigger | pending: reference approval and asset/map quality gates | commit: pending.
@@ -160,3 +160,26 @@ Rama de integración (recomendada)
 - RED: doctor tests returned 8 passed / 3 failed for the stale argument warning and missing inventory. GREEN: combined doctor/config suite 14/14. Full suite 38 passed / 0 failed / 2 skipped (unchanged T2 builds; temporary Rojo removed after verified use).
 - Independent verifier: scratch suite 14/14; baseline suite 5/5; reconstructed stable-launcher RED fails. Differential probes covered 21 config, 13 resolver, 11 report, 3 CLI and 7 sovereignty cases; only authorized differences, 29 input hashes unchanged. No blockers. Added three reusable probes for omitted args, invalid-JSON inventory honesty and the updated example; corrected the stale validation comment.
 - Parent rerun after incorporating probes: 17/17 passed, no skips. `git diff --check` passed; removed verifier scratch after checking for reparse points. Local T3 is ready for an isolated commit; S2 remains open for an explicitly selected Studio target and real editor verification.
+
+### L16 — T3 local review closure; T4 implementation boundary
+
+- T3 local commit `f122c57`: 282 additions / 13 deletions, 7 paths; running authored total 844 lines. Native high-risk assessment item 2, explicit user consent "Revisar este cambio". Four lenses plus native refuter completed; the alleged unrequested `studioExePath: null` regression was refuted. No correction opened. Other advisories remain non-blocking.
+- Exact native acknowledgement: `action: acknowledged`, `authority: burned`, lineage `review-2e14e49d458f5965`, target `sha256:e5218bddeb44bd7338fe793b55056328486852737595a4adbab9b45deb6e75dd`. Reviewed boundary is now `f122c57`; no publication. S2 stays pending live Studio proof.
+- T4 route: inline. Add an opt-in, local-only snapshot CLI, behavioral tests and vault policy. Reuse Node built-ins, no dependency install. Read notes as data only, canonicalize the selected root, reject nested links/path escapes and existing or in-vault destinations, collect bounded Markdown content before writes, record hashes/provenance and passive plugin configuration state. No restore/merge, plugin execution, vault modification or remote synchronization. Risk: item 2 (filesystem containment).
+
+### L17 — Resume request (verbatim, 2026-11-03)
+
+Resume the feature from odd/tasks/system-overhaul.md. T2 (5b42ac0) and T3 (f122c57) are already committed and reviewed. Proceed directly with T4 (Obsidian vault local snapshot CLI, provenance, and tests) and continue through T8 under the master plan. Provide all explanations in Spanish.
+
+- Located the explicitly selected `robloxIA-worktrees/system-overhaul` worktree after the session initially opened the unrelated skills checkout and then the containing directory. Reconciled this file with full Engram observation #642; T2/T3 commits are present, with reviewed boundary `f122c57`. Preserve the pre-existing log changes, untracked master plan and `.atl/` registry.
+- T4 uses Node built-ins and the existing pnpm runner; fixtures stay outside the worktree. No real vault, plugin or remote service is modified. The CLI is a local snapshot utility on a quiescent filesystem, not an OS sandbox or a full vault backup. All input validation/collection precedes output creation; a manifest is written last so interrupted output cannot claim completeness.
+- Risk: item 2 (local file containment). Existing commands and shared parsers are not changed. Delivery strategy remains `feature-branch-chain`; no publication.
+
+### L18 — T4 functional verification
+
+- RED: public CLI tests failed with exit 1 before `vault_snapshot.mjs` existed. GREEN: initial 7/7 passed; additional total-byte/depth limits passed in the full explicit offline suite: 49 passed, 0 failed, 2 existing opt-in Rojo build skips. No gameplay or Studio proof is inferred.
+- Independent verifier used fresh baseline/candidate scratch copies at `f122c57`: T4 8/8, baseline and candidate MCP diagnostics 17/17 each, 37 additional public CLI checks; rejected inputs preserved SHA-256 inventories. No blocker. Existing shared modules are untouched; no sibling command differential is applicable. Reconstructed RED: 0/8 with the new CLI absent.
+- Committed-form regression coverage incorporates seven verifier probes: case/alias containment, linked plugin files, unknown options, invalid config shape, empty/exact-limit capture, marker/destination links, and parent-file rejection. Parent spot check: `pnpm --dir bridge --config.verify-deps-before-run=false exec node --test test_vault_snapshot.mjs` returned 15/15, zero failures/skips. `node --check bridge/vault_snapshot.mjs` and `git diff --check` passed.
+- Clarified Windows ACL/device-name/cloud-placeholder limitations, non-file configuration errors and lack of power-loss durability in `docs/VAULT_SNAPSHOTS.md`. 10,000-note/50,000-entry ceilings and crash-incomplete-output behavior are implemented but not separately exercised. No restore or real-vault/cloud backup proof is claimed; those operational prerequisites remain pending.
+- Parent removed the verifier's external scratch directory, unlinking five junctions without following them; no source vault, original checkout, active client config or remote service was changed. No further verifier sweep is needed: there were no blockers and production code was unchanged after verification.
+- T4 remains one coherent high-risk CLI unit with its behavior tests and guide; the expanded adversarial tests exceed the approximate 400-line heuristic, so they are retained together rather than split into artificial code/test/docs commits. Native review scope is T4 alone against `f122c57`.
