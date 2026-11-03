@@ -20,8 +20,8 @@ Delivery: ask-on-risk; user-selected `feature-branch-chain`, local work-unit com
 - [ ] **T3** | S2,S7 | inline; no writer trigger; independent item-2/3/5 verifier | local unit committed, verified 17/17 and native review acknowledged; live discovery `{"studios":[]}`; target playtest blocked on Studio connection | commit: `f122c57`.
 - [x] **T4** | S3,S7 | inline; no writer trigger; item-2 independent verifier | local CLI verified 15/15; independent probes passed; native review granted, approved and acknowledged; actual vault migration/restore remains operationally pending | commit: `88c67df`.
 - [x] **T5** | S4,S7 | inline; mapping delegated beyond evidence budget; independent item-2/3/4/5 verifier | local framework verified: full suite 63/63, final expanded focused suite 12/12; native review granted, approved and acknowledged; Studio proof pending | commit: `1baa883`.
-- [ ] **T6** | S4,S7 | inline; no writer trigger; independent item-2/3/4 verifier | local state/transaction slice verified: 65/65 full, 13/13 focused, independent 215 assertions; commit/native review pending; production persistence/payments unavailable | commit: pending.
-- [ ] **T7** | S5,S6 | inline; no writer trigger | pending: reference approval and asset/map quality gates | commit: pending.
+- [x] **T6** | S4,S7 | inline; no writer trigger; independent item-2/3/4 verifier | local state/transaction slice verified: 65/65 full, 13/13 focused, independent 215 assertions; native review explicitly declined for this candidate; production persistence/payments unavailable | commit: `25991f5`.
+- [x] **T7** | S5,S6 | delegated direct; long-session context backstop, one bounded behavior unit | metadata gate and asset/map workflow verified 16/16; native medium/under_budget, general review deferred to T8; no generation/import | commit: pending recording.
 - [ ] **T8** | S8 | inline; no writer trigger | Spanish analysis/roadmap in docs/PLAN_MAESTRO.md; legacy architecture/operating docs still to reconcile | commit: pending.
 - [ ] **T9** | S1-S8 | inline checks + delegated independent verifier for named high-risk items | pending: functional, security, recovery and real Studio verification | commit: pending.
 
@@ -247,3 +247,15 @@ Resume the feature from odd/tasks/system-overhaul.md. T2 (5b42ac0) and T3 (f122c
 - Independent result: no blockers; candidate 13/13, baseline 12/12 focused/build checks. Additional 215 assertions covered actual service/ledger rejection immutability, consent/replay, concurrent acceptance, cancellation/stop/leave during policy yields, both-participant paid policy, free flows and baseline RED. Unaffected public APIs matched baseline. Both builds passed; Zombie remained byte-identical, and Slime includes the ledger (12 shared modules).
 - Accepted the narrow advisory about two more fabricated HUD prices. Observed RED on rendered mock text, removed paid capture/skip prices and disabled the timer control. Added durable stop/concurrent-acceptance, missing/error-policy and no-MarketplaceService probes. Focused parent run 13/13; limited independent recheck 13/13 plus 10 HUD/215 service assertions passed. No new sweep or transaction-code change after the initial verdict.
 - Stale source header comments are deferred to T8. Known intentional deltas: invalid counts reject instead of clamp, unknown slime IDs cannot consume daily capture, free crates are Earned_Free and do not query paid policy. Legacy default build still fails on missing Packages at baseline too. No Studio, typechecker, actual receipt or durable persistence proof is claimed.
+
+### L28 — Review cadence correction (verbatim)
+
+omitamos hasta saltar al ultimo T para hacer un rdd general y ahorrar tokens
+
+- T6 committed `25991f5` (616 authored changed lines; cumulative 2,935). User then selected "Omitir esta vez" in the closed native consent UI. Exact provider decline returned `action: declined`, `consent: declined_this_candidate`, target `sha256:c97792be4b09bd5ea8654d79522025b119217a411b8fe2b7fceef1ce01777636`; no review authority created.
+- Defer further per-unit native reviews until T8, then request one general review of the outstanding T6-T8 range from last acknowledged boundary `1baa883`. Keep functional checks and named-risk independent verification; do not disable or change the user-owned RDD switch.
+- T7 uses one bounded writer for the long-session context backstop, with exactly three new paths: `bridge/asset_reference_gate.mjs`, `bridge/test_asset_reference_gate.mjs`, `docs/ASSET_MAP_PIPELINE.md`. A read-only metadata result never authenticates approval or authorizes generation/import; explicit live user consent remains required. Parent retains task log and Git ownership. T8 read-only mapping may run independently against existing governance/architecture docs, excluding T7's edit surfaces.
+
+### L29 — T7 evidence
+
+- Writer observed RED/GREEN; parent reran 16/16 public-CLI tests after bounded calendar-date/read-limit corrections. Native assessment: medium, under_budget. Only the three allowed paths were edited; no retained scratch, reference reads, asset generation or imports. Metadata success always leaves authorization false and completion unverified. Risk: none (standalone read-only metadata validation, no existing shared code or execution authority changed). T8 uses the completed documentation map, not another exploration pass.
