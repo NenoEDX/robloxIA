@@ -16,6 +16,8 @@ local AIService = require(script:WaitForChild("AIService") :: any)
 local CombatAndArsenalService = require(script:WaitForChild("CombatAndArsenalService") :: any)
 local EventSchedulerService = require(script:WaitForChild("EventSchedulerService") :: any)
 local SlimeCoreService = require(script:WaitForChild("SlimeCoreService") :: any)
+SlimeCoreService.start()
+game:BindToClose(function() SlimeCoreService.stop() end)
 
 -- Ejecutar el Pipeline Determinista y construir el Anfiteatro Abisal de Slimes Abismales
 local worldReport = MissionGenService.generateWorldFromSeed("ZA40SEED")

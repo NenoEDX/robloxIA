@@ -50,8 +50,10 @@ do not swap projects in a shared editing session. For published test places,
 configure `servePlaceIds` using the verified target IDs, not historical memory.
 
 The bootstrap still runs its existing game-specific world generation at Play.
-Moving authored worlds out of startup and fixing existing Slime remote/data/
-purchase gaps are later work; splitting the projects does not fix those systems.
+Slime now has explicit service startup/cleanup and shared event/payload adapters;
+see [Game lifecycle](GAME_LIFECYCLE.md) for executable Luau checks and visual binding.
+Moving authored worlds out of startup, persistence/purchases and actual Studio
+integration remain separate work; a composition build does not prove those systems.
 
 ## Offline verification
 

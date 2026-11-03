@@ -26,6 +26,11 @@ local Types = require(sharedFolder:WaitForChild("Types") :: any)
 local SlimeCatalogs = require(sharedFolder:WaitForChild("SlimeCatalogs") :: any)
 local ProceduralAnimator = require(sharedFolder:WaitForChild("ProceduralAnimator") :: any)
 local VFXAndJuiceEngine = require(sharedFolder:WaitForChild("VFXAndJuiceEngine") :: any)
+local GameLifecycle = require(sharedFolder:WaitForChild("GameLifecycle") :: any)
+local SlimeEventContract = require(sharedFolder:WaitForChild("SlimeEventContract") :: any)
+local SlimeVisualRegistry = require(sharedFolder:WaitForChild("SlimeVisualRegistry") :: any)
+local lifecycle = GameLifecycle.new()
+lifecycle:start()
 
 type PerformanceMutationMode = Types.PerformanceMutationMode
 type Spring2D = ProceduralAnimator.Spring2D
@@ -165,14 +170,14 @@ local function activateExoMechVisuals(characterModel: Model?, durationSec: numbe
 	local duration = durationSec or 30.0
 	exoMechActiveUntilClock = os.clock() + duration
 
-	VFXAndJuiceEngine.PlayModulatedSound("rbxassetid://9114223120", 0.06)
+	VFXAndJuiceEngine.PlayModulatedSound("rbxassetid://9114223120", nil, 0.06)
 	VFXAndJuiceEngine.AddTrauma(0.55)
 	VFXAndJuiceEngine.TriggerHitFlash(targetChar, 0.3)
 
 	local rootPartInst = targetChar:FindFirstChild("HumanoidRootPart")
 	local rootPart = if rootPartInst and rootPartInst:IsA("BasePart") then rootPartInst else nil
 	if rootPart then
-		VFXAndJuiceEngine.CastEffect("HeavyImpact", rootPart.CFrame, {
+		VFXAndJuiceEngine.CastEffect("HeavyImpact", rootPart.CFrame, 1, {
 			PrimaryColor = Color3.fromRGB(0, 240, 255),
 			SecondaryColor = Color3.fromRGB(40, 90, 255),
 			DebrisCount = 14,
@@ -180,8 +185,9 @@ local function activateExoMechVisuals(characterModel: Model?, durationSec: numbe
 		})
 	end
 
+	local generation = lifecycle.generation
 	task.delay(duration, function()
-		if os.clock() >= exoMechActiveUntilClock and targetChar.Parent then
+		if lifecycle:isCurrent(generation) and os.clock() >= exoMechActiveUntilClock and targetChar.Parent then
 			VFXAndJuiceEngine.TriggerHitFlash(targetChar, 0.15)
 		end
 	end)
@@ -199,7 +205,7 @@ local function playCrateRarityReveal(rarityGrade: string, isMultiOpen: boolean?)
 	local trauma = if isHighTier then 0.95 else 0.45
 
 	VFXAndJuiceEngine.AddTrauma(trauma)
-	VFXAndJuiceEngine.PlayModulatedSound("rbxassetid://9114223120", 0.08)
+	VFXAndJuiceEngine.PlayModulatedSound("rbxassetid://9114223120", nil, 0.08)
 
 	local char = localPlayer.Character
 	if char then
@@ -210,7 +216,7 @@ local function playCrateRarityReveal(rarityGrade: string, isMultiOpen: boolean?)
 	end
 
 	local spawnCF = if camera then camera.CFrame * CFrame.new(0, 0, -8) else CFrame.identity
-	VFXAndJuiceEngine.CastEffect("MagicExplosion", spawnCF, {
+	VFXAndJuiceEngine.CastEffect("MagicExplosion", spawnCF, 1, {
 		PrimaryColor = gradeColor,
 		SecondaryColor = Color3.fromRGB(255, 255, 255),
 		DebrisCount = if isMultiOpen then 25 else 16,
@@ -224,7 +230,7 @@ local function playExtractionRarity(maxRarityGrade: string, tankFillRatio: numbe
 	local gradeColor = if gradeInfo then gradeInfo.color else Color3.fromRGB(64, 214, 108)
 
 	VFXAndJuiceEngine.AddTrauma(math.clamp(tankFillRatio * 0.75, 0.2, 0.8))
-	VFXAndJuiceEngine.PlayModulatedSound("rbxassetid://9114223120", 0.05)
+	VFXAndJuiceEngine.PlayModulatedSound("rbxassetid://9114223120", nil, 0.05)
 
 	local char = localPlayer.Character
 	if char then
@@ -232,7 +238,7 @@ local function playExtractionRarity(maxRarityGrade: string, tankFillRatio: numbe
 		local rootInst = char:FindFirstChild("HumanoidRootPart")
 		local root = if rootInst and rootInst:IsA("BasePart") then rootInst else nil
 		if root then
-			VFXAndJuiceEngine.CastEffect("DashBurst", root.CFrame, {
+			VFXAndJuiceEngine.CastEffect("DashBurst", root.CFrame, 1, {
 				PrimaryColor = gradeColor,
 				SecondaryColor = Color3.fromRGB(0, 255, 170),
 				TraumaAmount = 0.35,
@@ -244,7 +250,7 @@ end
 -- 3. Animación de llegada a la base circular (descarga de slime)
 local function playBaseArrival(slimeId: string, mutationsApplied: number)
 	VFXAndJuiceEngine.AddTrauma(0.35)
-	VFXAndJuiceEngine.PlayModulatedSound("rbxassetid://9114223120", 0.09)
+	VFXAndJuiceEngine.PlayModulatedSound("rbxassetid://9114223120", nil, 0.09)
 
 	local char = localPlayer.Character
 	if char then
@@ -252,7 +258,7 @@ local function playBaseArrival(slimeId: string, mutationsApplied: number)
 		local rootInst = char:FindFirstChild("HumanoidRootPart")
 		local root = if rootInst and rootInst:IsA("BasePart") then rootInst else nil
 		if root then
-			VFXAndJuiceEngine.CastEffect("MeleeSlash", root.CFrame, {
+			VFXAndJuiceEngine.CastEffect("MeleeSlash", root.CFrame, 1, {
 				PrimaryColor = Color3.fromRGB(255, 215, 0),
 				SecondaryColor = Color3.fromRGB(255, 120, 0),
 				DebrisCount = math.clamp(mutationsApplied * 3, 6, 24),
@@ -267,7 +273,7 @@ local function playPetExtractedMutation(slimeId: string, mutationId: string)
 	local mutColor = if mutDef then mutDef.primaryColor else Color3.fromRGB(186, 75, 255)
 
 	VFXAndJuiceEngine.AddTrauma(0.5)
-	VFXAndJuiceEngine.PlayModulatedSound("rbxassetid://9114223120", 0.07)
+	VFXAndJuiceEngine.PlayModulatedSound("rbxassetid://9114223120", nil, 0.07)
 
 	local char = localPlayer.Character
 	if char then
@@ -275,7 +281,7 @@ local function playPetExtractedMutation(slimeId: string, mutationId: string)
 		local rootInst = char:FindFirstChild("HumanoidRootPart")
 		local root = if rootInst and rootInst:IsA("BasePart") then rootInst else nil
 		if root then
-			VFXAndJuiceEngine.CastEffect("MagicExplosion", root.CFrame * CFrame.new(0, 2, 0), {
+			VFXAndJuiceEngine.CastEffect("MagicExplosion", root.CFrame * CFrame.new(0, 2, 0), 1, {
 				PrimaryColor = mutColor,
 				SecondaryColor = Color3.fromRGB(255, 255, 255),
 				DebrisCount = 18,
@@ -303,9 +309,9 @@ local function playMutationStrikeDrop(slimeTarget: Instance, mutationId: string)
 		else CFrame.identity
 
 	VFXAndJuiceEngine.AddTrauma(0.6)
-	VFXAndJuiceEngine.PlayModulatedSound("rbxassetid://9114223120", 0.08)
+	VFXAndJuiceEngine.PlayModulatedSound("rbxassetid://9114223120", nil, 0.08)
 
-	VFXAndJuiceEngine.CastEffect("HeavyImpact", targetCF, {
+	VFXAndJuiceEngine.CastEffect("HeavyImpact", targetCF, 1, {
 		PrimaryColor = strikeColor,
 		SecondaryColor = Color3.fromRGB(255, 255, 0),
 		DebrisCount = 20,
@@ -319,7 +325,7 @@ end
 -- 6. CICLO DE RENDER Y ESCUCHA DE EVENTOS REMOTOS
 --------------------------------------------------------------------------------
 
-RunService.Heartbeat:Connect(function(dt: number)
+local heartbeat = RunService.Heartbeat:Connect(function(dt: number)
 	local now = os.clock()
 
 	-- 1. Actualización de sincronización LOD de armaduras rígidas
@@ -343,62 +349,56 @@ RunService.Heartbeat:Connect(function(dt: number)
 		end
 	end
 end)
+lifecycle:track(function() heartbeat:Disconnect() end)
 
 -- Conexión segura a remotes de red
 task.spawn(function()
 	local remotes = ReplicatedStorage:WaitForChild("Remotes", 10)
+	if not lifecycle.active then return end
 	if not remotes then
+		warn("[SLIME PIT] Remotes folder unavailable; presentation is not connected")
 		return
 	end
-
-	local crateRevealRemote = remotes:FindFirstChild("Slime_CrateRarityReveal")
-	if crateRevealRemote and crateRevealRemote:IsA("RemoteEvent") then
-		crateRevealRemote.OnClientEvent:Connect(function(grade: string, isMulti: boolean?)
-			playCrateRarityReveal(grade, isMulti)
-		end)
-	end
-
-	local extractionRemote = remotes:FindFirstChild("Slime_ExtractionRarity")
-	if extractionRemote and extractionRemote:IsA("RemoteEvent") then
-		extractionRemote.OnClientEvent:Connect(function(maxGrade: string, fillRatio: number)
-			playExtractionRarity(maxGrade, fillRatio)
-		end)
-	end
-
-	local baseArrivalRemote = remotes:FindFirstChild("Slime_BaseArrival")
-	if baseArrivalRemote and baseArrivalRemote:IsA("RemoteEvent") then
-		baseArrivalRemote.OnClientEvent:Connect(function(slimeId: string, mutCount: number)
-			playBaseArrival(slimeId, mutCount)
-		end)
-	end
-
-	local petMutRemote = remotes:FindFirstChild("Slime_PetExtractedMutation")
-	if petMutRemote and petMutRemote:IsA("RemoteEvent") then
-		petMutRemote.OnClientEvent:Connect(function(slimeId: string, mutId: string)
-			playPetExtractedMutation(slimeId, mutId)
-		end)
-	end
-
-	local mutStrikeRemote = remotes:FindFirstChild("Slime_MutationStrikeDrop")
-	if mutStrikeRemote and mutStrikeRemote:IsA("RemoteEvent") then
-		mutStrikeRemote.OnClientEvent:Connect(function(target: Instance, mutId: string)
-			playMutationStrikeDrop(target, mutId)
-		end)
-	end
+	lifecycle:track(SlimeEventContract.connect(remotes, {
+		CrateRevealAnim = playCrateRarityReveal,
+		ExtractionRarityAnim = playExtractionRarity,
+		BaseArrivalAnim = playBaseArrival,
+		PetExtractedMutationAnim = playPetExtractedMutation,
+		MutationStrikeDropAnim = function(uuid: string, mutationId: string)
+			local target = SlimeVisualRegistry.get(uuid)
+			if target and target.Parent then
+				playMutationStrikeDrop(target, mutationId)
+			else
+				warn("[SLIME PIT] Strike-drop visual is unbound for pet " .. uuid)
+			end
+		end,
+	}, function(key: string) warn("[SLIME PIT] Rejected presentation payload: " .. key) end))
 
 	local exoMechRemote = remotes:FindFirstChild("Slime_ExoMechActivate")
 	if exoMechRemote and exoMechRemote:IsA("RemoteEvent") then
-		exoMechRemote.OnClientEvent:Connect(function(targetChar: Model?, durationSec: number?)
+		local connection = exoMechRemote.OnClientEvent:Connect(function(targetChar: Model?, durationSec: number?)
 			activateExoMechVisuals(targetChar, durationSec)
 		end)
+		lifecycle:track(function() connection:Disconnect() end)
 	end
 end)
+
+local function stopController()
+	lifecycle:stop()
+	table.clear(slimeSprings)
+	SlimeVisualRegistry.clear()
+	table.clear(registeredArmorBindings)
+end
+local destroying = script.Destroying:Connect(stopController)
+lifecycle:track(function() destroying:Disconnect() end)
 
 --------------------------------------------------------------------------------
 -- API PÚBLICA DEL CONTROLADOR CLIENTE
 --------------------------------------------------------------------------------
 
 local SlimeClientController = {
+	Stop = stopController,
+	RegisterSlimeVisual = SlimeVisualRegistry.register,
 	SetPerformanceMode = setPerformanceMode,
 	GetPerformanceMode = function(): PerformanceMutationMode
 		return currentPerformanceMode

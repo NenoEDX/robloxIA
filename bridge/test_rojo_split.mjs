@@ -19,8 +19,8 @@ const compositions = [
     id: "slime", name: "SlimePit", port: 34874,
     services: ["NetworkSecurityService", "SlimeCoreService"],
     clients: ["SlimeClientController", "SlimeHUDController"],
-    shared: ["ProceduralAnimator", "SlimeCatalogs", "SlimeCoreMath", "SlimeFrameworkTemplate",
-      "SlimeUpdatesRegistry", "SlimeVisualAndAnimEngine", "Types", "VFXAndJuiceEngine"],
+    shared: ["GameLifecycle", "ProceduralAnimator", "SlimeCatalogs", "SlimeCoreMath", "SlimeEventContract", "SlimeFrameworkTemplate",
+      "SlimeUpdatesRegistry", "SlimeVisualAndAnimEngine", "SlimeVisualRegistry", "Types", "VFXAndJuiceEngine"],
   },
 ];
 

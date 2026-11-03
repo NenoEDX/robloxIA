@@ -18,6 +18,10 @@ local TweenService = game:GetService("TweenService")
 
 local sharedFolder = ReplicatedStorage:WaitForChild("RAASE_Shared")
 local Types = require(sharedFolder:WaitForChild("Types") :: any)
+local GameLifecycle = require(sharedFolder:WaitForChild("GameLifecycle") :: any)
+local SlimeEventContract = require(sharedFolder:WaitForChild("SlimeEventContract") :: any)
+local lifecycle = GameLifecycle.new()
+lifecycle:start()
 local SlimeCatalogs = require(sharedFolder:WaitForChild("SlimeCatalogs") :: any)
 local SlimeCoreMath = require(sharedFolder:WaitForChild("SlimeCoreMath") :: any)
 
@@ -405,21 +409,29 @@ end)
 -- Conexión segura para eventos de Admin Abuse y Banner
 task.spawn(function()
 	local remotes = ReplicatedStorage:WaitForChild("Remotes", 10)
+	if not lifecycle.active then return end
 	if not remotes then
+		warn("[SLIME PIT] Remotes folder unavailable; admin banner is not connected")
 		return
 	end
 
-	local adminRemote = remotes:FindFirstChild("Slime_AdminAbuseAlert")
-	if adminRemote and adminRemote:IsA("RemoteEvent") then
-		adminRemote.OnClientEvent:Connect(function(commandType: string, triggeredBy: string)
+	lifecycle:track(SlimeEventContract.connect(remotes, {
+		AdminAbuseBroadcast = function(commandType: string, triggeredBy: string)
 			adminBannerLabel.Text = string.format("ALERTA GLOBAL DE ADMIN ABUSE [%s] activada por %s!", commandType, triggeredBy)
 			adminBanner.Visible = true
 			task.delay(10, function()
-				adminBanner.Visible = false
+				if lifecycle.active then adminBanner.Visible = false end
 			end)
-		end)
-	end
+		end,
+	}, function(key: string) warn("[SLIME PIT] Rejected HUD payload: " .. key) end))
 end)
+
+local function stopController()
+	lifecycle:stop()
+	screenGui:Destroy()
+end
+local destroying = script.Destroying:Connect(stopController)
+lifecycle:track(function() destroying:Disconnect() end)
 
 -- Asignación final del ScreenGui a PlayerGui
 screenGui.Parent = playerGui
@@ -429,6 +441,7 @@ screenGui.Parent = playerGui
 --------------------------------------------------------------------------------
 
 local SlimeHUDController = {
+	Stop = stopController,
 	ScreenGui = screenGui,
 	GetSelectedPerformanceMode = function(): PerformanceMutationMode
 		return currentPerfMode

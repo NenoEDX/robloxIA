@@ -26,6 +26,8 @@ local SharedFolder = ReplicatedStorage:WaitForChild("RAASE_Shared")
 local Types = require(SharedFolder:WaitForChild("Types") :: any)
 local SlimeCatalogs = require(SharedFolder:WaitForChild("SlimeCatalogs") :: any)
 local SlimeCoreMath = require(SharedFolder:WaitForChild("SlimeCoreMath") :: any)
+local GameLifecycle = require(SharedFolder:WaitForChild("GameLifecycle") :: any)
+local SlimeEventContract = require(SharedFolder:WaitForChild("SlimeEventContract") :: any)
 local NetworkSecurityService = require(script.Parent:WaitForChild("NetworkSecurityService") :: any)
 
 export type SlimeDefinition = Types.SlimeDefinition
@@ -64,16 +66,8 @@ local activeFermentations: {
 	},
 } = {}
 
--- Guarded RemoteEvents
-local remotes = {
-	ExtractionRarityAnim = NetworkSecurityService.createGuardedRemote("Slime_ExtractionRarityAnim"),
-	BaseArrivalAnim = NetworkSecurityService.createGuardedRemote("Slime_BaseArrivalAnim"),
-	MutationStrikeDropAnim = NetworkSecurityService.createGuardedRemote("Slime_MutationStrikeDropAnim"),
-	PetExtractedMutationAnim = NetworkSecurityService.createGuardedRemote("Slime_PetExtractedMutationAnim"),
-	CrateRevealAnim = NetworkSecurityService.createGuardedRemote("Slime_CrateRevealAnim"),
-	AdminAbuseBroadcast = NetworkSecurityService.createGuardedRemote("Slime_AdminAbuseBroadcast"),
-	DynamicCapturePrompt = NetworkSecurityService.createGuardedRemote("Slime_DynamicCapturePrompt"),
-}
+local lifecycle = GameLifecycle.new()
+local remotes: { [string]: RemoteEvent } = {}
 
 --[[
 	1. Constructor del Anfiteatro Abisal Cónico Invertido:
@@ -573,7 +567,7 @@ function SlimeCoreService.initiateTwoPhaseTrade(
 end
 
 function SlimeCoreService.getAlchemistBounties(player: Player): {
-	{ id: string, targetBiomeMin: number, requiredMutationVector: Types.MutationVectorCategory, rewardCoins: number },
+	{ id: string, targetBiomeMin: number, requiredMutationVector: Types.MutationVectorCategory, rewardCoins: number }
 }
 	return {
 		{ id = "BOUNTY-01", targetBiomeMin = 5, requiredMutationVector = "ECONOMIC", rewardCoins = 5000 },
@@ -703,30 +697,55 @@ function SlimeCoreService.getPlayerUnrefinedJuice(player: Player): number
 	return if tank then tank.unrefinedJuice else 0
 end
 
--- Suscripción a eventos globales de MessagingService
-task.spawn(function()
-	pcall(function()
-		MessagingService:SubscribeAsync("AbyssalAdminAbuseEvents", function(message)
-			if typeof(message.Data) == "table" then
-				SlimeCoreService.applyLocalAdminAbuse(message.Data :: Types.AdminAbuseCommand)
-			end
-		end)
-	end)
-end)
-
-Players.PlayerAdded:Connect(function(player: Player)
+local function initializePlayer(player: Player)
+	if playerDorsalTanks[player.UserId] then return end
 	playerDorsalTanks[player.UserId] = { unrefinedJuice = 250, pendingSlimes = {} }
 	playerInventories[player.UserId] = {}
 	playerDailyFreeCaptureTime[player.UserId] = 0
 	playerDeterministicQueues[player.UserId] = {}
-end)
+end
 
-Players.PlayerRemoving:Connect(function(player: Player)
+local function removePlayer(player: Player)
 	playerDorsalTanks[player.UserId] = nil
 	playerInventories[player.UserId] = nil
 	playerDailyFreeCaptureTime[player.UserId] = nil
 	playerDeterministicQueues[player.UserId] = nil
 	activeFermentations[player.UserId] = nil
-end)
+end
+
+function SlimeCoreService.start(): boolean
+	return lifecycle:start(function()
+		for key, name in SlimeEventContract.Names do
+			remotes[key] = NetworkSecurityService.createGuardedRemote(name)
+		end
+		local added = Players.PlayerAdded:Connect(initializePlayer)
+		lifecycle:track(function() added:Disconnect() end)
+		local removing = Players.PlayerRemoving:Connect(removePlayer)
+		lifecycle:track(function() removing:Disconnect() end)
+		for _, player in Players:GetPlayers() do initializePlayer(player) end
+		local generation = lifecycle.generation
+		task.spawn(function()
+			local ok, connection = pcall(function()
+				return MessagingService:SubscribeAsync("AbyssalAdminAbuseEvents", function(message)
+					if lifecycle:isCurrent(generation) and typeof(message.Data) == "table" then
+						SlimeCoreService.applyLocalAdminAbuse(message.Data :: Types.AdminAbuseCommand)
+					end
+				end)
+			end)
+			if not ok then
+				warn("[SLIME PIT] Cross-server subscription unavailable: " .. tostring(connection))
+			elseif lifecycle:isCurrent(generation) then
+				lifecycle:track(function() connection:Disconnect() end)
+			else
+				connection:Disconnect()
+			end
+		end)
+	end)
+end
+
+function SlimeCoreService.stop(): { string }
+	local _, errors = lifecycle:stop()
+	return errors
+end
 
 return SlimeCoreService
