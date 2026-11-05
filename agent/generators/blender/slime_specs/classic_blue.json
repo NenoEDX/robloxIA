@@ -1,0 +1,52 @@
+{
+  "schema": "robloxia.slime-asset/v1",
+  "slug": "classic_blue",
+  "name": "Classic Blue Slime",
+  "builder": "classic_blue",
+  "referenceFile": "Gemini_Generated_Image_o5nhsso5nhsso5nh.jfif",
+  "referenceNote": "simple blue happy blob with large glossy eyes, open smile and a soft highlight",
+  "silhouette": "rounded teardrop blob, wider at the base, no appendages",
+  "heightStuds": 3.0,
+  "textureSize": 1024,
+  "cameraAzimuth": 32,
+  "palette": {
+    "bottom": "#1E6FE0",
+    "top": "#6FCBFF",
+    "spot": "#DFF4FF",
+    "belly": "#A8E4FF",
+    "accent": "#8FDFFF",
+    "accentDeep": "#1B4C9C",
+    "eye": "#0A0C12",
+    "glint": "#FFFFFF",
+    "cheek": "#FF8FB4",
+    "core": "#E8FBFF"
+  },
+  "surface": {
+    "spotScale": 2.6,
+    "spotStrength": 0.34,
+    "roughness": 0.18,
+    "roughnessVar": 0.06,
+    "rim": 0.22
+  },
+  "face": {
+    "eyeRadius": 0.23,
+    "eyeSpacing": 0.54,
+    "eyeZ": 1.9,
+    "mouth": "smile",
+    "mouthWidth": 0.38,
+    "brows": false,
+    "cheeks": true,
+    "cheekRadius": 0.13
+  },
+  "vfx": {
+    "ambient": "DashBurst",
+    "extract": "MagicExplosion",
+    "release": "DashBurst",
+    "primary": [64, 150, 255],
+    "secondary": [150, 225, 255],
+    "scale": 1.0,
+    "trauma": 0.28
+  },
+  "clips": { "idle": 40, "extract": 36, "release": 30 },
+  "anim": { "bob": 0.045, "squash": 0.035, "strain": 0.12, "pop": 0.22 }
+}

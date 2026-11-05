@@ -1,0 +1,52 @@
+{
+  "schema": "robloxia.slime-asset/v1",
+  "slug": "spiral_slime",
+  "name": "Spiral Slime",
+  "builder": "spiral_slime",
+  "referenceFile": "Gemini_Generated_Image_a8ausaa8ausaa8au.jfif",
+  "referenceNote": "cyan soft-serve helix rising from a soft base blob, with a pointed tip",
+  "silhouette": "two-and-a-half turn soft-serve cone with a narrowing spiral",
+  "heightStuds": 3.6,
+  "textureSize": 1024,
+  "cameraAzimuth": 30,
+  "palette": {
+    "bottom": "#12A8CB",
+    "top": "#8CF6F7",
+    "spot": "#DDFFFF",
+    "belly": "#B6FAFB",
+    "accent": "#7FEEF2",
+    "accentDeep": "#0A6E88",
+    "eye": "#0A0C12",
+    "glint": "#FFFFFF",
+    "cheek": "#FF9FBE",
+    "core": "#F0FFFF"
+  },
+  "surface": {
+    "spotScale": 2.8,
+    "spotStrength": 0.3,
+    "roughness": 0.17,
+    "roughnessVar": 0.05,
+    "rim": 0.22
+  },
+  "face": {
+    "eyeRadius": 0.22,
+    "eyeSpacing": 0.56,
+    "eyeZ": 1.05,
+    "mouth": "open",
+    "mouthWidth": 0.32,
+    "brows": false,
+    "cheeks": true,
+    "cheekRadius": 0.11
+  },
+  "vfx": {
+    "ambient": "DashBurst",
+    "extract": "MagicExplosion",
+    "release": "DashBurst",
+    "primary": [40, 214, 232],
+    "secondary": [170, 255, 255],
+    "scale": 1.0,
+    "trauma": 0.26
+  },
+  "clips": { "idle": 40, "extract": 34, "release": 28 },
+  "anim": { "bob": 0.05, "squash": 0.045, "strain": 0.15, "pop": 0.25 }
+}

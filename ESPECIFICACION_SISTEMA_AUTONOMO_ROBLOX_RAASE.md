@@ -2,6 +2,8 @@
 ## ROBLOX AUTONOMOUS AGENT STUDIO ENGINE (RAASE) — ARCHITECTURAL BLUEPRINT
 ### ESPECIFICACIÓN TÉCNICA FORMAL, INGENIERÍA DE LUAU Y MATRIZ DE AUTOMATIZACIÓN
 
+> **Blueprint histórico — 2026-11-03.** Este documento conserva el diseño original; no demuestra implementación, seguridad ni preparación para producción. Fuentes operativas: [plan maestro](docs/PLAN_MAESTRO.md) y [AGENTS.md](AGENTS.md).
+
 ---
 
 **Clasificación del Documento:** Especificación Formal de Arquitectura de Software e Inteligencia Artificial Autónoma  

@@ -1,5 +1,7 @@
 # HARNESS-PORTABILITY.md — Contrato de Portabilidad de Modelo (RAASE 2.1)
 
+> **Contrato histórico del bridge — 2026-11-03.** Sus MUST y declaraciones de certificación se refieren al diseño RAASE 2.1, no son permisos ni garantías actuales. MCP integrado no exige iniciar el bridge/plugin. Para operar, seguir [AGENTS.md](../AGENTS.md), [Studio MCP](STUDIO_MCP_SETUP.md) y el [plan maestro](PLAN_MAESTRO.md).
+
 > Este documento define cómo RAASE sobrevive el cambio de modelo/harness (Gemini/Antigravity, GPT/Codex, Claude/Claude Code, OpenCode, cualquier agente con shell). Si una herramienta futura no cumple el contrato, RAASE la degrada explícitamente — nunca finge que funciona.
 
 ## Principio Rector

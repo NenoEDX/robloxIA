@@ -2,7 +2,7 @@
 
 Cada archivo define cómo correr RAASE desde una herramienta/modelo concreto: dónde van las skills, cómo se carga el system prompt, qué permisos necesita y qué se degrada si le falta una capacidad.
 
-Leer primero: [`../docs/HARNESS-PORTABILITY.md`](../docs/HARNESS-PORTABILITY.md) — el contrato completo de portabilidad.
+Leer primero: [AGENTS.md](../AGENTS.md) y [Studio MCP](../docs/STUDIO_MCP_SETUP.md). [HARNESS-PORTABILITY.md](../docs/HARNESS-PORTABILITY.md) conserva el diseño histórico del bridge, no la política operativa actual.
 
 | Adapter | Herramienta | Estado |
 |---|---|---|
@@ -14,4 +14,4 @@ Leer primero: [`../docs/HARNESS-PORTABILITY.md`](../docs/HARNESS-PORTABILITY.md)
 
 ## Regla común
 
-Todos los adapters apuntan al **mismo repo, mismo bridge, mismo plugin**. La diferencia es solo: dónde lee el tool sus skills y su prompt, y qué permisos exige. El ciclo operativo (introspectar → planificar → mutar → capturar → verificar) no cambia.
+Los adapters comparten los contratos del proyecto, no la obligación de usar el mismo transporte. MCP integrado es la ruta preferida; bridge/plugin es legado transitorio. Las capacidades, permisos y destinos se comprueban en cada runtime. Los estados de la tabla son históricos y no certifican una conexión actual.

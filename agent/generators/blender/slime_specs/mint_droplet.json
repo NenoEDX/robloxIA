@@ -1,0 +1,52 @@
+{
+  "schema": "robloxia.slime-asset/v1",
+  "slug": "mint_droplet",
+  "name": "Mint Droplet",
+  "builder": "mint_droplet",
+  "referenceFile": "Gemini_Generated_Image_t4qh2st4qh2st4qh.jfif",
+  "referenceNote": "mint teardrop with a tip that curls to one side and a soft puddle base",
+  "silhouette": "asymmetric droplet with a hooked tip on a scalloped puddle disc",
+  "heightStuds": 3.4,
+  "textureSize": 1024,
+  "cameraAzimuth": 28,
+  "palette": {
+    "bottom": "#43B98C",
+    "top": "#B4F2D2",
+    "spot": "#E8FFF5",
+    "belly": "#CFF8E2",
+    "accent": "#8FE9C2",
+    "accentDeep": "#2C8A67",
+    "eye": "#0A0C12",
+    "glint": "#FFFFFF",
+    "cheek": "#FF9FBE",
+    "core": "#EEFFF7"
+  },
+  "surface": {
+    "spotScale": 2.6,
+    "spotStrength": 0.3,
+    "roughness": 0.2,
+    "roughnessVar": 0.05,
+    "rim": 0.2
+  },
+  "face": {
+    "eyeRadius": 0.2,
+    "eyeSpacing": 0.5,
+    "eyeZ": 1.5,
+    "mouth": "smile",
+    "mouthWidth": 0.32,
+    "brows": false,
+    "cheeks": true,
+    "cheekRadius": 0.12
+  },
+  "vfx": {
+    "ambient": "DashBurst",
+    "extract": "MagicExplosion",
+    "release": "MeleeSlash",
+    "primary": [86, 214, 160],
+    "secondary": [196, 255, 226],
+    "scale": 1.0,
+    "trauma": 0.26
+  },
+  "clips": { "idle": 40, "extract": 34, "release": 28 },
+  "anim": { "bob": 0.05, "squash": 0.04, "strain": 0.14, "pop": 0.24 }
+}

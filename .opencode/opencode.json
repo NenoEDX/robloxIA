@@ -1,0 +1,19 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "servers": {
+      "roblox_studio": {
+        "type": "local",
+        "command": ["cmd.exe", "/d", "/c", "{env:LOCALAPPDATA}/Roblox/mcp.bat"],
+        "timeout": { "startup": 15000, "catalog": 15000, "execution": 30000 }
+      }
+    }
+  },
+  "permissions": [
+    { "action": "roblox_studio_*", "resource": "*", "effect": "ask" },
+    { "action": "roblox_studio_list_roblox_studios", "resource": "*", "effect": "allow" }
+  ],
+  "policies": [
+    { "action": "tool.use", "resource": "roblox_studio_*:*", "effect": "allow" }
+  ]
+}

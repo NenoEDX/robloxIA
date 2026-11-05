@@ -1,0 +1,52 @@
+{
+  "schema": "robloxia.slime-asset/v1",
+  "slug": "cosmic_orb",
+  "name": "Cosmic Orb Slime",
+  "builder": "cosmic_orb",
+  "referenceFile": "Gemini_Generated_Image_nnuwnfnnuwnfnnuw.jfif",
+  "referenceNote": "blue and purple orb with a luminous chest core and two thin orbit rings",
+  "silhouette": "round orb wrapped by two crossing thin rings with a glowing core on the chest",
+  "heightStuds": 4.4,
+  "textureSize": 1024,
+  "cameraAzimuth": 34,
+  "palette": {
+    "bottom": "#3A3FD8",
+    "top": "#9C6BF8",
+    "spot": "#EFE0FF",
+    "belly": "#C7A6FF",
+    "accent": "#8FD8FF",
+    "accentDeep": "#251E8C",
+    "eye": "#0A0C12",
+    "glint": "#FFFFFF",
+    "cheek": "#B49CFF",
+    "core": "#CFF6FF"
+  },
+  "surface": {
+    "spotScale": 2.4,
+    "spotStrength": 0.4,
+    "roughness": 0.14,
+    "roughnessVar": 0.05,
+    "rim": 0.3
+  },
+  "face": {
+    "eyeRadius": 0.22,
+    "eyeSpacing": 0.54,
+    "eyeZ": 1.78,
+    "mouth": "open",
+    "mouthWidth": 0.28,
+    "brows": false,
+    "cheeks": true,
+    "cheekRadius": 0.11
+  },
+  "vfx": {
+    "ambient": "MagicExplosion",
+    "extract": "DashBurst",
+    "release": "MagicExplosion",
+    "primary": [96, 110, 255],
+    "secondary": [180, 150, 255],
+    "scale": 1.1,
+    "trauma": 0.32
+  },
+  "clips": { "idle": 44, "extract": 36, "release": 30 },
+  "anim": { "bob": 0.06, "squash": 0.035, "strain": 0.12, "pop": 0.26 }
+}

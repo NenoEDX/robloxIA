@@ -1,0 +1,52 @@
+{
+  "schema": "robloxia.slime-asset/v1",
+  "slug": "crystal_golem",
+  "name": "Crystal Golem",
+  "builder": "crystal_golem",
+  "referenceFile": "Gemini_Generated_Image_7skyzw7skyzw7sky.jfif",
+  "referenceNote": "blue crystal golem with the face fused into the upper chest, rock shoulder fans and crystal fists",
+  "silhouette": "heavy humanoid: fused chest face, oversized crystal fists and large rock crystal shoulder fans",
+  "heightStuds": 6.5,
+  "textureSize": 1024,
+  "cameraAzimuth": 30,
+  "palette": {
+    "bottom": "#123FB4",
+    "top": "#3FB6F5",
+    "spot": "#9BEBFF",
+    "belly": "#6FD8FF",
+    "accent": "#63D8FF",
+    "accentDeep": "#5F6C88",
+    "eye": "#0A0C12",
+    "glint": "#FFFFFF",
+    "cheek": "#7FC8FF",
+    "core": "#DFFAFF"
+  },
+  "surface": {
+    "spotScale": 2.4,
+    "spotStrength": 0.46,
+    "roughness": 0.19,
+    "roughnessVar": 0.06,
+    "rim": 0.24
+  },
+  "face": {
+    "eyeRadius": 0.22,
+    "eyeSpacing": 0.6,
+    "eyeZ": 3.55,
+    "mouth": "frown",
+    "mouthWidth": 0.34,
+    "brows": true,
+    "cheeks": false,
+    "cheekRadius": 0.1
+  },
+  "vfx": {
+    "ambient": "MagicExplosion",
+    "extract": "HeavyImpact",
+    "release": "HeavyImpact",
+    "primary": [60, 140, 255],
+    "secondary": [130, 230, 255],
+    "scale": 1.25,
+    "trauma": 0.45
+  },
+  "clips": { "idle": 48, "extract": 40, "release": 32 },
+  "anim": { "bob": 0.04, "squash": 0.03, "strain": 0.1, "pop": 0.2 }
+}

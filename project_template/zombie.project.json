@@ -1,0 +1,47 @@
+{
+  "name": "ZombieAwareness",
+  "serveAddress": "127.0.0.1",
+  "servePort": 34872,
+  "tree": {
+    "$className": "DataModel",
+    "ServerScriptService": {
+      "RAASE_Server": {
+        "$path": "src/bootstrap/zombie.server.luau",
+        "$ignoreUnknownInstances": false,
+        "NetworkSecurityService": { "$path": "src/server/NetworkSecurityService.luau" },
+        "DataPersistenceService": { "$path": "src/server/DataPersistenceService.luau" },
+        "MonetizationService": { "$path": "src/server/MonetizationService.luau" },
+        "MissionGenService": { "$path": "src/server/MissionGenService.luau" },
+        "ThreatAndDistrictService": { "$path": "src/server/ThreatAndDistrictService.luau" },
+        "AIService": { "$path": "src/server/AIService.luau" },
+        "CombatAndArsenalService": { "$path": "src/server/CombatAndArsenalService.luau" },
+        "EventSchedulerService": { "$path": "src/server/EventSchedulerService.luau" }
+      }
+    },
+    "ReplicatedStorage": {
+      "RAASE_Shared": {
+        "$className": "Folder",
+        "$ignoreUnknownInstances": false,
+        "Types": { "$path": "src/shared/Types.luau" },
+        "Janitor": { "$path": "src/shared/Janitor.luau" },
+        "ZombieCatalogs": { "$path": "src/shared/ZombieCatalogs.luau" },
+        "ZombieModelBuilder": { "$path": "src/shared/ZombieModelBuilder.luau" },
+        "LobbyBuilder": { "$path": "src/shared/LobbyBuilder.luau" },
+        "VoxelTerrainBuilder": { "$path": "src/shared/VoxelTerrainBuilder.luau" },
+        "WorldAssembler": { "$path": "src/shared/WorldAssembler.luau" },
+        "ProceduralAnimator": { "$path": "src/shared/ProceduralAnimator.luau" },
+        "VFXAndJuiceEngine": { "$path": "src/shared/VFXAndJuiceEngine.luau" }
+      }
+    },
+    "StarterPlayer": {
+      "StarterPlayerScripts": {
+        "RAASE_Client": {
+          "$className": "Folder",
+          "$ignoreUnknownInstances": false,
+          "CharacterController": { "$path": "src/client/CharacterController.client.luau" },
+          "HUDController": { "$path": "src/client/HUDController.client.luau" }
+        }
+      }
+    }
+  }
+}
