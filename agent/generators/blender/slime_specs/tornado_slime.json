@@ -1,0 +1,52 @@
+{
+  "schema": "robloxia.slime-asset/v1",
+  "slug": "tornado_slime",
+  "name": "Tornado Slime",
+  "builder": "tornado_slime",
+  "referenceFile": "Gemini_Generated_Image_bsa7cpbsa7cpbsa7.jfif",
+  "referenceNote": "inverted cyan whirlwind: wide flat swirl top, continuous helical ribbons and a wispy thin base",
+  "silhouette": "spiral funnel with a flat flared crown and a narrow wisped stem",
+  "heightStuds": 4.6,
+  "textureSize": 1024,
+  "cameraAzimuth": 30,
+  "palette": {
+    "bottom": "#22B6D6",
+    "top": "#9CF8FF",
+    "spot": "#E6FFFF",
+    "belly": "#C2FBFF",
+    "accent": "#7FEDF7",
+    "accentDeep": "#0E6E8A",
+    "eye": "#0A0C12",
+    "glint": "#FFFFFF",
+    "cheek": "#FF9FBE",
+    "core": "#F2FFFF"
+  },
+  "surface": {
+    "spotScale": 2.6,
+    "spotStrength": 0.24,
+    "roughness": 0.17,
+    "roughnessVar": 0.05,
+    "rim": 0.26
+  },
+  "face": {
+    "eyeRadius": 0.19,
+    "eyeSpacing": 0.5,
+    "eyeZ": 2.9,
+    "mouth": "open",
+    "mouthWidth": 0.3,
+    "brows": false,
+    "cheeks": false,
+    "cheekRadius": 0.1
+  },
+  "vfx": {
+    "ambient": "DashBurst",
+    "extract": "MagicExplosion",
+    "release": "HeavyImpact",
+    "primary": [56, 208, 232],
+    "secondary": [180, 255, 255],
+    "scale": 1.05,
+    "trauma": 0.3
+  },
+  "clips": { "idle": 44, "extract": 36, "release": 30 },
+  "anim": { "bob": 0.055, "squash": 0.045, "strain": 0.17, "pop": 0.28 }
+}

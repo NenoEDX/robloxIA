@@ -17,10 +17,10 @@ const compositions = [
   },
   {
     id: "slime", name: "SlimePit", port: 34874,
-    services: ["NetworkSecurityService", "SlimeCoreService"],
-    clients: ["SlimeClientController", "SlimeHUDController"],
+    services: ["NetworkSecurityService", "SlimeCoreService", "SlimePitService"],
+    clients: ["SlimeClientController", "SlimeHUDController", "SlimePitController"],
     shared: ["GameLifecycle", "ProceduralAnimator", "SlimeCatalogs", "SlimeCoreMath", "SlimeEventContract", "SlimeFrameworkTemplate",
-      "SlimeTradeLedger", "SlimeUpdatesRegistry", "SlimeVisualAndAnimEngine", "SlimeVisualRegistry", "Types", "VFXAndJuiceEngine"],
+      "SlimePitRules", "SlimePitWorld", "SlimeTradeLedger", "SlimeUpdatesRegistry", "SlimeVisualAndAnimEngine", "SlimeVisualRegistry", "Types", "VFXAndJuiceEngine"].sort(),
   },
 ];
 

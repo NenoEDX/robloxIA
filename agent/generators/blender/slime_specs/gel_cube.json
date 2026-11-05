@@ -1,0 +1,52 @@
+{
+  "schema": "robloxia.slime-asset/v1",
+  "slug": "gel_cube",
+  "name": "Gel Cube",
+  "builder": "gel_cube",
+  "referenceFile": "Gemini_Generated_Image_jnc8o6jnc8o6jnc8.jfif",
+  "referenceNote": "rounded square of teal jelly with a friendly face and no limb geometry",
+  "silhouette": "soft rounded cuboid with heavy corner radius",
+  "heightStuds": 3.4,
+  "textureSize": 1024,
+  "cameraAzimuth": 34,
+  "palette": {
+    "bottom": "#0FB9A8",
+    "top": "#6FF4E2",
+    "spot": "#D8FFF9",
+    "belly": "#B8FBF0",
+    "accent": "#8FF7EA",
+    "accentDeep": "#0C7C74",
+    "eye": "#0A0C12",
+    "glint": "#FFFFFF",
+    "cheek": "#FF9FC0",
+    "core": "#EEFFFD"
+  },
+  "surface": {
+    "spotScale": 2.8,
+    "spotStrength": 0.24,
+    "roughness": 0.16,
+    "roughnessVar": 0.05,
+    "rim": 0.24
+  },
+  "face": {
+    "eyeRadius": 0.26,
+    "eyeSpacing": 0.68,
+    "eyeZ": 1.95,
+    "mouth": "open",
+    "mouthWidth": 0.36,
+    "brows": false,
+    "cheeks": false,
+    "cheekRadius": 0.1
+  },
+  "vfx": {
+    "ambient": "DashBurst",
+    "extract": "HeavyImpact",
+    "release": "HeavyImpact",
+    "primary": [60, 232, 208],
+    "secondary": [180, 255, 246],
+    "scale": 1.0,
+    "trauma": 0.3
+  },
+  "clips": { "idle": 40, "extract": 36, "release": 30 },
+  "anim": { "bob": 0.04, "squash": 0.05, "strain": 0.16, "pop": 0.26 }
+}

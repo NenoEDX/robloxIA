@@ -1,0 +1,52 @@
+{
+  "schema": "robloxia.slime-asset/v1",
+  "slug": "jellyfish_slime",
+  "name": "Jellyfish Slime",
+  "builder": "jellyfish_slime",
+  "referenceFile": "Gemini_Generated_Image_g67waog67waog67w.jfif",
+  "referenceNote": "purple bell with a scalloped rim and six curling tentacles",
+  "silhouette": "dome bell on a fringe of dangling tentacles",
+  "heightStuds": 4.2,
+  "textureSize": 1024,
+  "cameraAzimuth": 30,
+  "palette": {
+    "bottom": "#8A2ED0",
+    "top": "#DC8CF8",
+    "spot": "#F6D6FF",
+    "belly": "#E4A8FA",
+    "accent": "#C77BF0",
+    "accentDeep": "#5A1A96",
+    "eye": "#0A0C12",
+    "glint": "#FFFFFF",
+    "cheek": "#FF9FD0",
+    "core": "#F8E8FF"
+  },
+  "surface": {
+    "spotScale": 2.6,
+    "spotStrength": 0.28,
+    "roughness": 0.15,
+    "roughnessVar": 0.05,
+    "rim": 0.26
+  },
+  "face": {
+    "eyeRadius": 0.21,
+    "eyeSpacing": 0.52,
+    "eyeZ": 2.92,
+    "mouth": "open",
+    "mouthWidth": 0.28,
+    "brows": false,
+    "cheeks": true,
+    "cheekRadius": 0.12
+  },
+  "vfx": {
+    "ambient": "MagicExplosion",
+    "extract": "MeleeSlash",
+    "release": "MagicExplosion",
+    "primary": [178, 96, 240],
+    "secondary": [240, 190, 255],
+    "scale": 1.05,
+    "trauma": 0.3
+  },
+  "clips": { "idle": 44, "extract": 36, "release": 30 },
+  "anim": { "bob": 0.06, "squash": 0.04, "strain": 0.16, "pop": 0.26 }
+}

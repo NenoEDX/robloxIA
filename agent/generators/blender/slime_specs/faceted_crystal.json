@@ -1,0 +1,53 @@
+{
+  "schema": "robloxia.slime-asset/v1",
+  "slug": "faceted_crystal",
+  "name": "Faceted Crystal Slime",
+  "builder": "faceted_crystal",
+  "referenceFile": "Gemini_Generated_Image_i1vs4ci1vs4ci1vs.jfif",
+  "referenceNote": "round blue gem with many flat facets, a big happy open face and a bright inner sparkle",
+  "silhouette": "round multifacet gem ball, no appendages, chunky flat planes catching light",
+  "heightStuds": 3.8,
+  "textureSize": 1024,
+  "cameraAzimuth": 30,
+  "palette": {
+    "bottom": "#123FC0",
+    "top": "#63B4FF",
+    "spot": "#BEE4FF",
+    "belly": "#8FD0FF",
+    "accent": "#9EE2FF",
+    "accentDeep": "#0E2C86",
+    "eye": "#0A0C12",
+    "glint": "#FFFFFF",
+    "cheek": "#8FC4FF",
+    "core": "#F0FAFF"
+  },
+  "surface": {
+    "spotScale": 2.4,
+    "spotStrength": 0.16,
+    "roughness": 0.09,
+    "roughnessVar": 0.04,
+    "rim": 0.3,
+    "coreGlow": { "center": [0.5, -1.0, 2.5], "radius": 0.62, "strength": 0.9 }
+  },
+  "face": {
+    "eyeRadius": 0.32,
+    "eyeSpacing": 0.62,
+    "eyeZ": 2.05,
+    "mouth": "open",
+    "mouthWidth": 0.34,
+    "brows": false,
+    "cheeks": false,
+    "cheekRadius": 0.1
+  },
+  "vfx": {
+    "ambient": "MagicExplosion",
+    "extract": "HeavyImpact",
+    "release": "MeleeSlash",
+    "primary": [70, 150, 255],
+    "secondary": [180, 226, 255],
+    "scale": 1.1,
+    "trauma": 0.34
+  },
+  "clips": { "idle": 40, "extract": 36, "release": 30 },
+  "anim": { "bob": 0.04, "squash": 0.03, "strain": 0.11, "pop": 0.24 }
+}

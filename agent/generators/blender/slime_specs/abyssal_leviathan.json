@@ -1,0 +1,52 @@
+{
+  "schema": "robloxia.slime-asset/v1",
+  "slug": "abyssal_leviathan",
+  "name": "Abyssal Leviathan",
+  "builder": "abyssal_leviathan",
+  "referenceFile": "Gemini_Generated_Image_ofqi2cofqi2cofqi.jfif",
+  "referenceNote": "thick cyan eastern-dragon serpent: coiled body, big crested head with a crystal mane, cheek fins and dorsal fin chain",
+  "silhouette": "thick coiled serpent tower with a large crested head and a crystal mane",
+  "heightStuds": 7.0,
+  "textureSize": 1024,
+  "cameraAzimuth": 26,
+  "palette": {
+    "bottom": "#0F9AC8",
+    "top": "#6FEFF8",
+    "spot": "#CBFFFF",
+    "belly": "#A8F6FF",
+    "accent": "#8FF6FF",
+    "accentDeep": "#08607E",
+    "eye": "#0A0C12",
+    "glint": "#FFFFFF",
+    "cheek": "#8FE0FF",
+    "core": "#F0FFFF"
+  },
+  "surface": {
+    "spotScale": 2.2,
+    "spotStrength": 0.4,
+    "roughness": 0.16,
+    "roughnessVar": 0.05,
+    "rim": 0.26
+  },
+  "face": {
+    "eyeRadius": 0.18,
+    "eyeSpacing": 0.52,
+    "eyeZ": 0.0,
+    "mouth": "open",
+    "mouthWidth": 0.24,
+    "brows": true,
+    "cheeks": false,
+    "cheekRadius": 0.08
+  },
+  "vfx": {
+    "ambient": "MagicExplosion",
+    "extract": "HeavyImpact",
+    "release": "MagicExplosion",
+    "primary": [40, 200, 235],
+    "secondary": [160, 250, 255],
+    "scale": 1.2,
+    "trauma": 0.38
+  },
+  "clips": { "idle": 48, "extract": 40, "release": 32 },
+  "anim": { "bob": 0.05, "squash": 0.03, "strain": 0.14, "pop": 0.26 }
+}

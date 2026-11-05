@@ -1,0 +1,24 @@
+{
+  "schema": "robloxia.slime-asset-pack/v1",
+  "pack": "slime-v1",
+  "fps": 30,
+  "units": "1 Blender unit = 1 Roblox stud",
+  "origin": "bottom-center (min Z = 0, XY centered on 0)",
+  "forward": "-Y in Blender. glTF Y-up conversion maps it to +Z in glTF space; Roblox import orientation is unverified.",
+  "clipNames": ["Idle", "Extract", "Release"],
+  "designs": [
+    "classic_blue",
+    "mint_droplet",
+    "gel_cube",
+    "spiral_slime",
+    "faceted_crystal",
+    "jellyfish_slime",
+    "cosmic_orb",
+    "tornado_slime",
+    "celestial_winged",
+    "blob_hydra",
+    "crystal_golem",
+    "dragon_hydra",
+    "abyssal_leviathan"
+  ]
+}

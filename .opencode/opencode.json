@@ -10,11 +10,10 @@
     }
   },
   "permissions": [
-    { "action": "roblox_studio_*", "resource": "*", "effect": "deny" },
+    { "action": "roblox_studio_*", "resource": "*", "effect": "ask" },
     { "action": "roblox_studio_list_roblox_studios", "resource": "*", "effect": "allow" }
   ],
   "policies": [
-    { "action": "tool.use", "resource": "roblox_studio_*:*", "effect": "deny" },
-    { "action": "tool.use", "resource": "roblox_studio_list_roblox_studios:*", "effect": "allow" }
+    { "action": "tool.use", "resource": "roblox_studio_*:*", "effect": "allow" }
   ]
 }

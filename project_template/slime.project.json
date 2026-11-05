@@ -9,7 +9,8 @@
         "$path": "src/bootstrap/slime.server.luau",
         "$ignoreUnknownInstances": false,
         "NetworkSecurityService": { "$path": "src/server/NetworkSecurityService.luau" },
-        "SlimeCoreService": { "$path": "src/server/SlimeCoreService.luau" }
+        "SlimeCoreService": { "$path": "src/server/SlimeCoreService.luau" },
+        "SlimePitService": { "$path": "src/server/SlimePitService.luau" }
       }
     },
     "ReplicatedStorage": {
@@ -18,6 +19,8 @@
         "$ignoreUnknownInstances": false,
         "Types": { "$path": "src/shared/Types.luau" },
         "SlimeCatalogs": { "$path": "src/shared/SlimeCatalogs.luau" },
+        "SlimePitRules": { "$path": "src/shared/SlimePitRules.luau" },
+        "SlimePitWorld": { "$path": "src/shared/SlimePitWorld.luau" },
         "SlimeCoreMath": { "$path": "src/shared/SlimeCoreMath.luau" },
         "GameLifecycle": { "$path": "src/shared/GameLifecycle.luau" },
         "SlimeEventContract": { "$path": "src/shared/SlimeEventContract.luau" },
@@ -35,8 +38,9 @@
         "RAASE_Client": {
           "$className": "Folder",
           "$ignoreUnknownInstances": false,
-          "SlimeClientController": { "$path": "src/client/SlimeClientController.client.luau" },
-          "SlimeHUDController": { "$path": "src/client/SlimeHUDController.client.luau" }
+          "SlimeClientController": { "$path": "src/client/SlimeClientController.client.luau", "$properties": { "Enabled": false } },
+          "SlimeHUDController": { "$path": "src/client/SlimeHUDController.client.luau", "$properties": { "Enabled": false } },
+          "SlimePitController": { "$path": "src/client/SlimePitController.client.luau" }
         }
       }
     }

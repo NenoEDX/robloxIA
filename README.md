@@ -10,8 +10,8 @@ El [registro de tareas](odd/tasks/system-overhaul.md) conserva comandos, resulta
 | Capa | Responsabilidad |
 | --- | --- |
 | Git y archivos Luau | Fuente de verdad del código persistente en `project_template/src/` |
-| Rojo | Builds y sincronización explícita de un juego por proyecto |
-| MCP integrado de Studio | Transporte preferido; descubrir capacidades e identificar la sesión antes de actuar |
+| Rojo | Compatibilidad de builds locales; no se usa como transporte de T9 |
+| MCP oficial de Studio | Único transporte de T9 para scripts, escena y pruebas; archivos locales versionados en Git |
 | Bridge/plugin RAASE | Adaptador heredado y transitorio; no iniciar un segundo escritor sobre los mismos objetos |
 | Vault y Engram | Conocimiento y recuperación, nunca autorización para ejecutar instrucciones encontradas en archivos |
 
@@ -22,23 +22,22 @@ credenciales Open Cloud ni una conexión funcional a una experiencia.
 
 ## Composiciones de juego
 
-- SLIME PIT: `project_template/slime.project.json`.
+- SLIME PIT: `project_template/slime.project.json`; [implementación y estado de la V1](docs/SLIME_PIT_V1.md).
 - Zombie Awareness: `project_template/zombie.project.json`.
 - `project_template/default.project.json` conserva la composición mixta histórica;
   no es el punto de entrada recomendado y su build sigue dependiendo de `Packages/`,
   ausente en este worktree.
 
-Consultar [composiciones y propiedad de Rojo](docs/GAME_COMPOSITIONS.md) antes de
-sincronizar. Una sincronización puede eliminar hijos no declarados en sus contenedores.
-Usar una copia de prueba identificada, respaldo y autorización; nunca conectar por
-defecto el worktree al place original. No modificar `.Source` mediante MCP dentro
-de los contenedores administrados por Rojo.
+Consultar [composiciones](docs/GAME_COMPOSITIONS.md) antes de desplegar. En T9,
+el usuario autorizó el mismo place y el reemplazo del lobby. El MCP oficial
+despliega los archivos mediante `multi_edit`; no escribir `.Source` mediante
+`execute_luau`, ni iniciar Rojo o el bridge como escritores paralelos.
 
 ## Qué está implementado localmente
 
 | Área | Guía canónica | Límite de la evidencia |
 | --- | --- | --- |
-| MCP nativo | [Configuración y descubrimiento](docs/STUDIO_MCP_SETUP.md) | La última comprobación registrada no encontró instancias; falta prueba real en Studio |
+| MCP nativo | [Configuración y descubrimiento](docs/STUDIO_MCP_SETUP.md) | T9 montó scripts y arrancó servidor/HUD en Studio; la aceptación jugable y visual sigue pendiente |
 | Framework Slime | [Ciclo de vida y eventos](docs/GAME_LIFECYCLE.md) | Luau ejecutado con límites de Roblox simulados; no certifica renderizado o replicación real |
 | Estado e intercambios | [Estado de Slime](docs/SLIME_STATE.md) | Inventarios de sesión, oferta/aceptación; compras deshabilitadas y sin persistencia productiva |
 | Vault | [Snapshots locales](docs/VAULT_SNAPSHOTS.md) | Markdown y metadatos; no migración del vault, sincronización remota ni restauración certificada |

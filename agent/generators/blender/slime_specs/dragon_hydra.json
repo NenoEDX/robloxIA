@@ -1,0 +1,52 @@
+{
+  "schema": "robloxia.slime-asset/v1",
+  "slug": "dragon_hydra",
+  "name": "Dragon Hydra",
+  "builder": "dragon_hydra",
+  "referenceFile": "Gemini_Generated_Image_nonte0nonte0nont.jfif",
+  "referenceNote": "green slime dragon with three long necks, crested skulls, small wings, forelegs and a tail",
+  "silhouette": "squat quadruped with three crested dragon necks and swept membrane wings",
+  "heightStuds": 6.8,
+  "textureSize": 1024,
+  "cameraAzimuth": 28,
+  "palette": {
+    "bottom": "#22B158",
+    "top": "#8CF2AC",
+    "spot": "#DCFFE8",
+    "belly": "#BFF8D2",
+    "accent": "#7FEF9F",
+    "accentDeep": "#0F6B33",
+    "eye": "#0A0C12",
+    "glint": "#FFFFFF",
+    "cheek": "#FF9FBE",
+    "core": "#F0FFF5"
+  },
+  "surface": {
+    "spotScale": 2.2,
+    "spotStrength": 0.38,
+    "roughness": 0.15,
+    "roughnessVar": 0.05,
+    "rim": 0.28
+  },
+  "face": {
+    "eyeRadius": 0.12,
+    "eyeSpacing": 0.28,
+    "eyeZ": 0.0,
+    "mouth": "smile",
+    "mouthWidth": 0.3,
+    "brows": true,
+    "cheeks": false,
+    "cheekRadius": 0.07
+  },
+  "vfx": {
+    "ambient": "MeleeSlash",
+    "extract": "MeleeSlash",
+    "release": "HeavyImpact",
+    "primary": [64, 224, 120],
+    "secondary": [200, 255, 214],
+    "scale": 1.2,
+    "trauma": 0.4
+  },
+  "clips": { "idle": 48, "extract": 40, "release": 32 },
+  "anim": { "bob": 0.05, "squash": 0.035, "strain": 0.14, "pop": 0.26 }
+}

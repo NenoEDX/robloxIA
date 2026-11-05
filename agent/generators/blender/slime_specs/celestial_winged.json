@@ -1,0 +1,52 @@
+{
+  "schema": "robloxia.slime-asset/v1",
+  "slug": "celestial_winged",
+  "name": "Celestial Winged Slime",
+  "builder": "celestial_winged",
+  "referenceFile": "Gemini_Generated_Image_ir4dd4ir4dd4ir4d.jfif",
+  "referenceNote": "cyan-to-purple body with crystal antlers, four-blade crystal fan wings, one orbit ring and a visible galaxy core",
+  "silhouette": "round body flanked by fans of crystal blades, crowned antlers and a tilted halo ring",
+  "heightStuds": 5.2,
+  "textureSize": 1024,
+  "cameraAzimuth": 32,
+  "palette": {
+    "bottom": "#6B2FD0",
+    "top": "#7FF2FF",
+    "spot": "#F2E6FF",
+    "belly": "#D6C2FF",
+    "accent": "#DFF7FF",
+    "accentDeep": "#3D2A96",
+    "eye": "#0A0C12",
+    "glint": "#FFFFFF",
+    "cheek": "#FFA6CF",
+    "core": "#EAFBFF"
+  },
+  "surface": {
+    "spotScale": 2.4,
+    "spotStrength": 0.34,
+    "roughness": 0.13,
+    "roughnessVar": 0.05,
+    "rim": 0.3
+  },
+  "face": {
+    "eyeRadius": 0.23,
+    "eyeSpacing": 0.56,
+    "eyeZ": 2.05,
+    "mouth": "open",
+    "mouthWidth": 0.26,
+    "brows": false,
+    "cheeks": true,
+    "cheekRadius": 0.12
+  },
+  "vfx": {
+    "ambient": "MagicExplosion",
+    "extract": "DashBurst",
+    "release": "MagicExplosion",
+    "primary": [128, 120, 255],
+    "secondary": [190, 240, 255],
+    "scale": 1.15,
+    "trauma": 0.34
+  },
+  "clips": { "idle": 48, "extract": 38, "release": 32 },
+  "anim": { "bob": 0.07, "squash": 0.04, "strain": 0.14, "pop": 0.3 }
+}

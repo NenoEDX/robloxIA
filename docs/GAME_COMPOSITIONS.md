@@ -7,9 +7,10 @@ not the entrypoint for either isolated game.
 | Game | Project | Local serve port | Server modules | Client controllers | Shared modules |
 | --- | --- | --- | --- | --- | --- |
 | Zombie Awareness | `project_template/zombie.project.json` | 34872 | 8 | 2 | 9 |
-| SLIME PIT | `project_template/slime.project.json` | 34874 | 2 | 2 | 12 |
+| SLIME PIT | `project_template/slime.project.json` | 34874 (legacy, not started) | 3 | 3 (2 legacy disabled) | 14 |
 
-Both configurations bind to `127.0.0.1`. The shared instance names remain
+For T9, official Studio MCP is the sole transport. The retained port settings are
+offline compatibility metadata, not a request to run Rojo. The shared instance names remain
 `RAASE_Server`, `RAASE_Shared`, and `RAASE_Client`, but each game uses a separate
 place/session. No files are moved or copied between game source directories.
 
@@ -21,7 +22,8 @@ place/session. No files are moved or copied between game source directories.
   Rojo infers that class from the bootstrap's `.server.luau` filename. Do not
   combine an explicit `$className` with a file `$path`: Rojo 7.7.1 rejects it.
 - Each bootstrap loads only its game's services. Zombie constructs its seeded
-  world and initial ecosystem; Slime constructs only its existing amphitheater.
+  world and initial ecosystem; Slime now constructs the V1 biome map and starts
+  server-authoritative node interactions through `SlimePitService`.
 - Client controllers are explicitly enumerated rather than importing `src/client`.
 - Shared primitives are reused from their original files. Zombie-only catalogs
   are not shipped in Slime; Slime-only modules are not shipped in Zombie.
@@ -32,17 +34,16 @@ place/session. No files are moved or copied between game source directories.
 
 ## Build and serve
 
-With a supported Rojo CLI installed, these are the explicit commands:
+Optional offline build commands and the unchanged Zombie serve command:
 
 ```powershell
 rojo build project_template/zombie.project.json -o "$env:TEMP/ZombieAwareness.rbxlx"
 rojo build project_template/slime.project.json -o "$env:TEMP/SlimePit.rbxlx"
 rojo serve project_template/zombie.project.json
-# In a separate terminal, when needed:
-rojo serve project_template/slime.project.json
 ```
 
-**Do not connect either server to the original live place.** Use separate local
+**Do not start a Slime sync server for T9.** Use the official MCP deployment in
+[SLIME PIT V1](SLIME_PIT_V1.md). For other server-based workflows, use separate local
 test copies and verify the game/session identity before connecting. The three
 RAASE containers are explicitly owned (`$ignoreUnknownInstances: false`), so
 sync can remove unmapped children inside them. Preserve a place backup first;

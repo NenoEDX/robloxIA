@@ -4,8 +4,11 @@
 
 require(script:WaitForChild("NetworkSecurityService") :: ModuleScript)
 local SlimeCoreService = require(script:WaitForChild("SlimeCoreService") :: ModuleScript)
+local SlimePitService = require(script:WaitForChild("SlimePitService") :: ModuleScript)
 
 SlimeCoreService.start()
-game:BindToClose(function() SlimeCoreService.stop() end)
-local world = SlimeCoreService.buildAbyssalAmphitheater()
-print(string.format("[SLIME PIT] Server initialized | World: %s", world:GetFullName()))
+SlimePitService.start()
+game:BindToClose(function()
+	SlimePitService.stop()
+	SlimeCoreService.stop()
+end)

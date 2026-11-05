@@ -33,6 +33,13 @@ SlimeCatalogs.MACRO_RINGS = 6
 SlimeCatalogs.SUB_BIOMES_PER_RING = 5
 SlimeCatalogs.MAX_MUTATIONS_PER_SLIME = 10
 
+-- V1 cosmetic auras; earned in the world, never purchased.
+SlimeCatalogs.AURAS = table.freeze({
+	{ id = "AURA-MOSS", name = "Sporelight", color = Color3.fromRGB(165, 246, 117) },
+	{ id = "AURA-CRYSTAL", name = "Crystal pulse", color = Color3.fromRGB(68, 231, 225) },
+	{ id = "AURA-AMBER", name = "Amber embers", color = Color3.fromRGB(255, 183, 84) },
+})
+
 SlimeCatalogs.SKINNED_BONES = table.freeze({
 	"Base",
 	"Centro",

@@ -14,14 +14,17 @@ test("the isolated workspace connects through the built-in Windows launcher only
   });
 });
 
-test("the workspace hard-denies Studio tools except explicit session discovery", () => {
+test("all Studio tools are available with confirmation except session discovery", () => {
   const config = JSON.parse(readFileSync(configPath, "utf8"));
   assert.deepEqual(config.policies, [
-    { action: "tool.use", resource: "roblox_studio_*:*", effect: "deny" },
-    { action: "tool.use", resource: "roblox_studio_list_roblox_studios:*", effect: "allow" },
+    { action: "tool.use", resource: "roblox_studio_*:*", effect: "allow" },
   ]);
   assert.deepEqual(config.permissions, [
-    { action: "roblox_studio_*", resource: "*", effect: "deny" },
+    { action: "roblox_studio_*", resource: "*", effect: "ask" },
+    { action: "roblox_studio_list_roblox_studios", resource: "*", effect: "allow" },
+  ]);
+  // Policy allow lifts hard-denial, not the permission check or operation-specific consent.
+  assert.deepEqual(config.permissions.filter((rule) => rule.effect === "allow"), [
     { action: "roblox_studio_list_roblox_studios", resource: "*", effect: "allow" },
   ]);
   assert.equal(config.instructions, undefined, "External documents are not instruction imports");

@@ -1,0 +1,52 @@
+{
+  "schema": "robloxia.slime-asset/v1",
+  "slug": "blob_hydra",
+  "name": "Blob Hydra",
+  "builder": "blob_hydra",
+  "referenceFile": "Gemini_Generated_Image_gqrwaggqrwaggqrw.jfif",
+  "referenceNote": "green slime with three soft necks and three small heads, a face on every head",
+  "silhouette": "wide blob with three curved necks fanning up to separate heads",
+  "heightStuds": 5.0,
+  "textureSize": 1024,
+  "cameraAzimuth": 30,
+  "palette": {
+    "bottom": "#27B45F",
+    "top": "#7CF0A2",
+    "spot": "#D8FFE6",
+    "belly": "#B4F8CC",
+    "accent": "#8FF0B4",
+    "accentDeep": "#166B39",
+    "eye": "#0A0C12",
+    "glint": "#FFFFFF",
+    "cheek": "#FF9FBE",
+    "core": "#EEFFF4"
+  },
+  "surface": {
+    "spotScale": 2.6,
+    "spotStrength": 0.32,
+    "roughness": 0.16,
+    "roughnessVar": 0.05,
+    "rim": 0.26
+  },
+  "face": {
+    "eyeRadius": 0.14,
+    "eyeSpacing": 0.34,
+    "eyeZ": 0.0,
+    "mouth": "smile",
+    "mouthWidth": 0.26,
+    "brows": false,
+    "cheeks": false,
+    "cheekRadius": 0.08
+  },
+  "vfx": {
+    "ambient": "MagicExplosion",
+    "extract": "MeleeSlash",
+    "release": "HeavyImpact",
+    "primary": [64, 220, 128],
+    "secondary": [190, 255, 210],
+    "scale": 1.1,
+    "trauma": 0.32
+  },
+  "clips": { "idle": 48, "extract": 38, "release": 32 },
+  "anim": { "bob": 0.06, "squash": 0.04, "strain": 0.16, "pop": 0.28 }
+}

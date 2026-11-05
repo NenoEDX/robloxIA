@@ -44,7 +44,8 @@ export type PoolCategory =
 	| "Pool_Zombie_Base"
 	| "Pool_Brute"
 
-export type PathfindingPriority = 1 | 2 | 3 | 4 | 5
+-- Luau does not support numeric singleton types. Runtime priorities use 1–5.
+export type PathfindingPriority = number
 
 export type AmmoFamily = "Light" | "Medium" | "Heavy" | "Special" | "Explosive" | "None"
 

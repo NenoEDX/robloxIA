@@ -26,3 +26,8 @@ __pycache__/
 exports/
 
 
+.atl/
+.cache/
+LihFolk Vault V2/
+LihFolk-Assets/
+assets/vault_paths.local.json
